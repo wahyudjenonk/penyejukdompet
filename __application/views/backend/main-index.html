@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js sidebar-large lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js sidebar-large lt-ie9 lt-ie8"> <![endif]-->
+<html class="no-js sidebar-large">
+<head>
+    <!-- BEGIN META SECTION -->
+    <meta charset="utf-8">
+    <title>Aldeaz BackOffice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description" />
+    <meta content="themes-lab" name="author" />
+    <!-- END META SECTION -->
+    <!-- BEGIN MANDATORY STYLE -->
+    <link href="{$host}__assets/eb/css/icons/icons.min.css" rel="stylesheet">
+    <link href="{$host}__assets/eb/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$host}__assets/eb/css/plugins.min.css" rel="stylesheet">
+    <link href="{$host}__assets/eb/css/style.min.css" rel="stylesheet">
+    <!-- END  MANDATORY STYLE -->
+    <!-- BEGIN PAGE LEVEL STYLE -->
+    <link href="{$host}__assets/eb/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+    <link href="{$host}__assets/eb/plugins/metrojs/metrojs.css" rel="stylesheet">
+    <!-- END PAGE LEVEL STYLE -->
+    <script src="{$host}__assets/eb/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+
+<body data-page="dashboard">
+    <!-- BEGIN TOP MENU -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="menu-medium" class="sidebar-toggle tooltips">
+                    <i class="fa fa-outdent"></i>
+                </a>
+                <a class="navbar-brand" href="index.html">
+                   
+                </a>
+            </div>
+            <div class="navbar-center">CV. Aldeaz Sejahtera Printing</div>
+            <div class="navbar-collapse collapse">
+                <!-- BEGIN TOP NAVIGATION MENU -->
+                <ul class="nav navbar-nav pull-right header-menu">
+                    <!-- BEGIN NOTIFICATION DROPDOWN -->
+                    <li class="dropdown" id="notifications-header">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="glyph-icon flaticon-notifications"></i>
+                            <span class="badge badge-danger badge-header">6</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header clearfix">
+                                <p class="pull-left">Notifications</p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list withScroll" data-height="220">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-star p-r-10 f-18 c-orange"></i>
+                                            Steve have rated your photo
+                                            <span class="dropdown-time">Just now</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-heart p-r-10 f-18 c-red"></i>
+                                            John added you to his favs
+                                            <span class="dropdown-time">15 mins</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-file-text p-r-10 f-18"></i>
+                                            New document available
+                                            <span class="dropdown-time">22 mins</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-picture-o p-r-10 f-18 c-blue"></i>
+                                            New picture added
+                                            <span class="dropdown-time">40 mins</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-bell p-r-10 f-18 c-orange"></i>
+                                            Meeting in 1 hour
+                                            <span class="dropdown-time">1 hour</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-bell p-r-10 f-18"></i>
+                                            Server 5 overloaded
+                                            <span class="dropdown-time">2 hours</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-comment p-r-10 f-18 c-gray"></i>
+                                            Bill comment your post
+                                            <span class="dropdown-time">3 hours</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-picture-o p-r-10 f-18 c-blue"></i>
+                                            New picture added
+                                            <span class="dropdown-time">2 days</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-footer clearfix">
+                                <a href="#" class="pull-left">See all notifications</a>
+                                <a href="#" class="pull-right">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END NOTIFICATION DROPDOWN -->
+                    <!-- BEGIN USER DROPDOWN -->
+                    <li class="dropdown" id="user-header">
+                        <a href="#" class="dropdown-toggle c-white" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <img src="{$host}__assets/eb/img/avatars/avatar2.png" alt="user avatar" width="30" class="p-r-5">
+                            <span class="username">Bob Nilson</span>
+                            <i class="fa fa-angle-down p-r-10"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="extra_profile.html">
+                                    <i class="glyph-icon flaticon-account"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="calendar.html">
+                                    <i class="glyph-icon flaticon-calendar"></i> My Calendar
+                                </a>
+                            </li>
+                            <li>
+                                <a href="calendar.html">
+                                    <i class="glyph-icon flaticon-settings21"></i> Account Settings
+                                </a>
+                            </li>
+                            <li class="dropdown-footer clearfix">
+							<a href="javascript:;" class="toggle_fullscreen" title="Fullscreen">
+								<i class="glyph-icon flaticon-fullscreen3"></i>
+							</a>
+							<a href="{$host}backoffice-keluar" title="Logout">
+								<i class="fa fa-power-off"></i>
+							</a>
+						</li>
+                        </ul>
+                    </li>
+                    <!-- END USER DROPDOWN -->
+                </ul>
+                <!-- END TOP NAVIGATION MENU -->
+            </div>
+        </div>
+    </nav>
+    <!-- END TOP MENU -->
+    <!-- BEGIN WRAPPER -->
+    <div id="wrapper">
+        <!-- BEGIN MAIN SIDEBAR -->
+        <nav id="sidebar">
+            <div id="main-menu">
+                <ul class="sidebar-nav">
+                    <li class='current'>
+                        <a href="index.html"><i class="fa fa-dashboard"></i><span class="sidebar-text">Beranda</span></a>
+                    </li>
+                    <li>
+                        <a href="#" ><i class="glyph-icon flaticon-frontend"></i><span class="sidebar-text">Produk</span></a>
+                    </li>
+                    <li>
+                        <a href="maps.html"><i class="fa fa-edit"></i><span class="sidebar-text">Berita</span></a>
+                    </li>					
+                    <li>
+                        <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
+                        <ul class="submenu collapse">
+                            <li>
+                                <a href="timeline.html"><span class="sidebar-text">Transaksi Penjualan</span></a>
+                            </li>
+                            <li>
+                                <a href="blog-list.html"><span class="sidebar-text">User Pembeli</span></a>
+                            </li>
+                            <li>
+                                <a href="blog-list.html"><span class="sidebar-text">Stok Barang</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="glyph-icon flaticon-panels"></i><span class="sidebar-text">Master</span><span class="fa arrow"></span></a>
+                          <ul class="submenu collapse">
+                            <li>
+                                <a href="panels.html"><span class="sidebar-text">Kategori Barang</span></a>
+                            </li>
+                            <li>
+                                <a href="panels_draggable.html"><span class="sidebar-text">Grup User</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Manajemen User</span><span class="fa arrow"></span></a>
+                          <ul class="submenu collapse">
+                            <li>
+                                <a href="profil.html"><span class="sidebar-text">User Profile</span></a>
+                            </li>
+                            <li>
+                                <a href="login.html"><span class="sidebar-text">Data User</span></a>
+                            </li>
+                            <li>
+                                <a href="signup.html"><span class="sidebar-text">Hak Akses</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- END MAIN SIDEBAR -->
+
+
+        <!-- BEGIN MAIN CONTENT -->
+        <div id="main-content" class="dashboard">
+		</div>
+        
+		<!-- END MAIN CONTENT -->
+
+    </div>
+    <!-- END WRAPPER -->
+	
+    <!-- BEGIN MANDATORY SCRIPTS -->
+    <script src="{$host}__assets/eb/plugins/jquery-1.11.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-migrate-1.2.1.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap-select/bootstrap-select.js"></script>
+    <script src="{$host}__assets/eb/plugins/icheck/icheck.js"></script>
+    <script src="{$host}__assets/eb/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+    <script src="{$host}__assets/eb/plugins/nprogress/nprogress.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-sparkline/sparkline.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/breakpoints/breakpoints.js"></script>
+    <script src="{$host}__assets/eb/plugins/numerator/jquery-numerator.js"></script>
+    <!-- END MANDATORY SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{$host}__assets/eb/plugins/metrojs/metrojs.min.js"></script>
+    <script src='{$host}__assets/eb/plugins/fullcalendar/moment.min.js'></script>
+    <script src='{$host}__assets/eb/plugins/fullcalendar/fullcalendar.min.js'></script>
+    <script src="{$host}__assets/eb/plugins/simple-weather/jquery.simpleWeather.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/google-maps/markerclusterer.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="{$host}__assets/eb/plugins/google-maps/gmaps.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.animator.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.resize.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.time.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-morris/raphael.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-morris/morris.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script src="{$host}__assets/eb/js/calendar.js"></script>
+    <script src="{$host}__assets/eb/js/dashboard.js"></script>
+    <!-- END  PAGE LEVEL SCRIPTS -->
+    <script src="{$host}__assets/eb/js/application.js"></script>
+</body>
+
+</html>
