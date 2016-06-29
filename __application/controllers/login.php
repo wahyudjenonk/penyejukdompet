@@ -11,15 +11,18 @@ class Login extends MY_Controller {
 		$user = $this->db->escape_str($this->input->post('user'));
 		$pass = $this->db->escape_str($this->input->post('pwd'));
 		$error=false;
+		//echo $user;exit;
+		//echo $this->encrypt->encode($pass);exit;
 		if($user && $pass){
-			$cek_user = $this->mbackend->getdata('data_login','row_array',$user);			 
+			$cek_user = $this->mbackend->getdata('data_login','row_array',$user);
+			//print_r($cek_user);exit;
 			if(count($cek_user)>0){
 				if(isset($cek_user['status']) && $cek_user['status']==1){
 					if($pass == $this->encrypt->decode($cek_user['password'])){
 						$this->session->set_userdata('4ld33334zzzzzzt', base64_encode(serialize($cek_user)));	
 					}else{
 						$error=true;
-						$this->session->set_flashdata('error', 'Password Invalid');
+						$this->session->set_flashdata('error', 'Password Tidak Benar');
 					}
 				}else{
 					$error=true;

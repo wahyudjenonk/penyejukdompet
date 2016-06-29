@@ -17,6 +17,13 @@ class mbackend extends CI_Model{
 					WHERE username = '".$p1."'
 				";				
 			break;
+			case "tbl_buku":
+				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori 
+					FROM tbl_buku A
+					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id
+					LEFT JOIN cl_group_sekolah C ON A.cl_group_sekolah=C.id
+					LEFT JOIN cl_kategori D ON A.cl_kategori_id=D.id ";
+			break;
 		}
 		
 		if($balikan == 'json'){

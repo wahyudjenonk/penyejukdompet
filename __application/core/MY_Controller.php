@@ -17,6 +17,9 @@ class MY_Controller extends CI_Controller {
 		$host = $this->host;
 		$this->nsmarty->assign('host',$this->host);
 		$this->nsmarty->assign('auth', $this->auth);
+		if($this->session->flashdata('error')){
+			$this->nsmarty->assign("error", $this->session->flashdata('error'));
+		}
 	}
 }
 
