@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class frontend extends MY_Controller {
+class frontend extends JINGGA_Controller {
 	
 	function __construct(){
 		parent::__construct();
