@@ -28,4 +28,9 @@ $route['loading-histori'] = 'frontend/getdisplay/loading_page/histori';
 $route['kontak'] = 'frontend/getdisplay/main_page/kontak';
 $route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak';
 
+$route['kategori/(:any)'] = 'frontend/getdisplay/main_page/kategori/$1';
+$route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$1';
+
+
+
 

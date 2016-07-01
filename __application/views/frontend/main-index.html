@@ -160,12 +160,14 @@
 										        </li>                                                                             
 										        <li><a href="#">Katalog <span class="indicator"><i class="fa fa-angle-down"></i></span></a>
 										            <ul class="estut-dropdown">
-										                <li><a href="shop-fullwidth.html">Buku Umum</a></li>
-										                <li><a href="shop-fullwidth-2.html">Buku Sekolah</a></li>
+														{foreach from=$data_tingkatan item=row}
+															<li><a href="{$host}kategori/{$row.tingkatan|lower}">{$row.tingkatan}</a></li>
+														{/foreach}
 										            </ul>
 										        </li>
 												<li><a href="{$host}tracking">Tracking</a></li>      
 												<li><a href="{$host}histori">Histori</a></li>      
+												<li><a href="{$host}caraberbelanja">Cara Berbelanja</a></li>      
 												<li><a href="{$host}tentangkami">Tentang Kami</a></li>      
 										        <li><a href="{$host}kontak">Kontak Kami</a></li>
 										    </ul>
@@ -188,8 +190,14 @@
 												<li><a href="{$host}beranda">Beranda</a></li>
 												<li><a href="#">Katalog</a>
 													<ul>
+														{foreach from=$data_tingkatan item=row}
+															<li><a href="{$host}kategori/{$row.tingkatan|lower}">{$row.tingkatan}</a></li>
+														{/foreach}
+														
+														{*
 														<li><a href="shop-fullwidth.html">Buku Umum</a></li>
 										                <li><a href="shop-fullwidth-2.html">Buku Sekolah</a></li>
+														*}
 													</ul>
 												</li>
 												<li><a href="{$host}tracking">Tracking</a></li>      
@@ -237,8 +245,8 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-md-12 text-center">
-								<div class="copyright-wrap text-center">
-									<p>&copy; 2016 <a href="http://bootexperts.com/">Bootexperts.</a> All Rights Reserved</p>
+								<div class="copyright-wrap text-center" >
+									<p style='color:#fff !important;'>&copy; 2016 <a style='color:#fff !important;' href="http://bootexperts.com/">CV. Aldeaz Printing Sejahtera</a> All Rights Reserved. - Design By <a style='color:#fff !important;' href="http://www.jingga.co.id/">Jingga Sinergi Idea</a></p>
 								</div>
 							</div>
 						</div>
@@ -316,6 +324,7 @@
 		<script>
 			var host = "{$host}";
 			var cont = "{$konten}";
+			var cont2 = "{$param2|default:''}";
 		</script>
         <script src="{$host}__assets/ef/js/vendor/jquery-1.11.3.min.js"></script>
 		<!-- mixitup JS

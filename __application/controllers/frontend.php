@@ -8,14 +8,21 @@ class frontend extends JINGGA_Controller {
 	}
 	
 	function index(){
-		$this->nsmarty->assign( 'konten', 'beranda');		
+		$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+		$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
+		$this->nsmarty->assign('konten', 'beranda');		
 		$this->nsmarty->display( 'frontend/main-index.html');		
 	}
 	
 	function getdisplay($type="", $p1="", $p2="", $p3=""){
 		switch($type){
 			case "main_page":
-				$this->nsmarty->assign( 'konten', $p1);		
+				$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+				$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
+				$this->nsmarty->assign( 'konten', $p1);
+				if(isset($p2)){
+					$this->nsmarty->assign('param2', $p2);	
+				}
 				$this->nsmarty->display( 'frontend/main-index.html');	
 			break;
 			case "loading_page":
@@ -29,6 +36,23 @@ class frontend extends JINGGA_Controller {
 					case "kontak":
 						$temp = "frontend/modul/kontak-page.html";
 					break;
+					case "kategori":
+						$temp = "frontend/modul/kategori-page.html";
+						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
+						$data_buku = $this->mfrontend->getdata('data_buku_tingkatan', 'result_array', $id_tingkatan['id']);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+						}
+						$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+						$data_kategori = $this->db->get('cl_kategori')->result_array();
+						$data_pengguna = $this->db->get('cl_group_sekolah')->result_array();
+						
+						$this->nsmarty->assign('data_tingkatan', $data_tingkatan);
+						$this->nsmarty->assign('data_kategori', $data_kategori);
+						$this->nsmarty->assign('data_pengguna', $data_pengguna);
+						$this->nsmarty->assign('nama_kategori', strtoupper($p2));
+						$this->nsmarty->assign('data_buku', $data_buku);
+					break;
 				}		
 				
 				if(isset($temp)){
@@ -38,6 +62,9 @@ class frontend extends JINGGA_Controller {
 				}
 				
 				$array_page = array(
+					'loadbalancedt' => md5('Ymd'),
+					'loadbalancetm' => md5('H:i:s'),
+					'loadtmr' => md5('YmdHis'),
 					'page' => $template 
 				);
 				
