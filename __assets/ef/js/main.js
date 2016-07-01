@@ -1,5 +1,5 @@
 $('#main-template').html('');
-$.post(host+'loading-'+cont, {}, function(respons){
+$.post(host+'loading-'+cont+'/'+cont2, {}, function(respons){
 	var parsing = $.parseJSON(respons);
 	$('#main-template').html(parsing.page);
 });
