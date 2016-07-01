@@ -6,7 +6,7 @@
 .quick-add-to-cart .single_add_to_cart_button,
 .call-to-action .estut-btn,
 #scrollUp {
-    background: #03a9f4 none repeat scroll 0 0;
+    background: #FFA727 none repeat scroll 0 0;
 }
 .total-amount span {
     color: #03a9f4;
@@ -19,7 +19,7 @@
 .quick-add-to-cart .single_add_to_cart_button:hover,
 .call-to-action .estut-btn:hover,
 #scrollUp:hover {
-    background: #039be5 none repeat scroll 0 0;
+    background: #F54337 none repeat scroll 0 0;
 }
 .cart-form,
 .estut-dropdown {

@@ -1,3 +1,9 @@
+$('#main-template').html('');
+$.post(host+'loading-'+cont, {}, function(respons){
+	var parsing = $.parseJSON(respons);
+	$('#main-template').html(parsing.page);
+});
+
 (function($) {
     "use strict";
 
@@ -6,138 +12,6 @@
     ------------------------------ */
     jQuery('nav#dropdown').meanmenu();
 
-    /*----------------------------
-     	wow js active
-    ------------------------------ */
-    new WOW().init();
-
-    /*----------------------------
-    	Populer Courses Container
-    ------------------------------ */
-    $(".populer-courses-container").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 1,
-        /* transitionStyle : "fade", */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-        itemsDesktop: [1199, 1],
-        itemsDesktopSmall: [980, 2],
-        itemsTablet: [768, 2],
-        itemsMobile: [479, 1],
-    });
-
-    /*----------------------------
-    	Testimonial Container
-    ------------------------------ */
-    $(".testimonial-container").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: false,
-        navigation: true,
-        items: 1,
-        transitionStyle: "backSlide",
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-        itemsDesktop: [1199, 1],
-        itemsDesktopSmall: [980, 1],
-        itemsTablet: [768, 1],
-        itemsMobile: [479, 1]
-    });
-
-    /*----------------------------
-    	Brand List v1
-    ------------------------------ */
-    $(".brand-list").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: false,
-        navigation: false,
-        loop: true,
-        items: 6
-    });
-
-    /*----------------------------
-    	Online Shop List
-    ------------------------------ */
-    $(".online-shop-list").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 4,
-        /*transitionStyle : "backSlide",  */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-    });
-
-    /*----------------------------
-    	Latest Blog Area
-    ------------------------------ */
-    $(".blog-list").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 3,
-        /*transitionStyle : "backSlide",  */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-        itemsDesktop: [1199, 3],
-        itemsDesktopSmall: [980, 3],
-        itemsTablet: [768, 2],
-        itemsMobile: [479, 1],
-    });
-    /*----------------------------
-    	related-course-container
-    ------------------------------ */
-    $(".related-course-container").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 4,
-        /*transitionStyle : "backSlide",  */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-        itemsDesktop: [1199, 3],
-        itemsDesktopSmall: [980, 3],
-        itemsTablet: [768, 2],
-        itemsMobile: [479, 1],
-    });
-    /*----------------------------
-    	testimonials-list v3
-    ------------------------------ */
-    $(".testimonials-list").owlCarousel({
-        autoPlay: true,
-        slideSpeed: 2000,
-        pagination: false,
-        navigation: false,
-        items: 1,
-        transitionStyle: "backSlide",
-        itemsDesktop: [1199, 1],
-        itemsDesktopSmall: [980, 1],
-        itemsTablet: [768, 1],
-        itemsMobile: [479, 1],
-    });
-
-    /*----------------------------
-    	brand-logo-area-v3
-    ------------------------------ */
-    $(".brand-logo-area-v3").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 1,
-        transitionStyle: "backSlide",
-        itemsDesktop: [1199, 1],
-        itemsDesktopSmall: [980, 1],
-        itemsTablet: [768, 1],
-        itemsMobile: [479, 1],
-    });
 
     /*----------------------------
     	tab-carosual-list
@@ -153,11 +27,6 @@
         pager: false,
     });
 
-
-    /*-------------------------------
-    	mixItUp
-    ------------------------------- */
-    $('.online-shop-list').mixItUp();
 
 
     /*------------------------------
@@ -192,7 +61,6 @@
         delay: 10,
         time: 2000
     });
-
 
     /*--------------------------
      counter
@@ -248,8 +116,4 @@
     	Mobile menu
     --------------------- */
     $('nav#mobile-menu').meanmenu();
-
-
-
-
 })(jQuery);
