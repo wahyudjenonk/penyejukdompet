@@ -11,3 +11,21 @@ $route['backoffice-grid/(:any)'] = 'backend/get_grid/$1';
 $route['backoffice-form/(:any)'] = 'backend/get_form/$1';
 
 
+
+/* Routes Front End Routes */
+$route['beranda'] = 'frontend/getdisplay/main_page/beranda';
+$route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda';
+
+$route['tentangkami'] = 'frontend/getdisplay/main_page/tentangkami';
+$route['loading-tentangkami'] = 'frontend/getdisplay/loading_page/tentangkami';
+
+$route['tracking'] = 'frontend/getdisplay/main_page/tracking';
+$route['loading-tracking'] = 'frontend/getdisplay/loading_page/tracking';
+
+$route['histori'] = 'frontend/getdisplay/main_page/histori';
+$route['loading-histori'] = 'frontend/getdisplay/loading_page/histori';
+
+$route['kontak'] = 'frontend/getdisplay/main_page/kontak';
+$route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak';
+
+

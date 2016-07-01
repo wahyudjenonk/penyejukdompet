@@ -1,8 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['base_url'] = '';
+$config['base_url'] = "http://".$_SERVER['HTTP_HOST'];
+$config['base_url'] .= preg_replace('@/+$@','',dirname($_SERVER['SCRIPT_NAME'])).'/';
 $config['index_page'] = 'index.php';
-$config['uri_protocol']	= 'REQUEST_URI';
+$config['uri_protocol']	= 'AUTO';
 $config['url_suffix'] = '';
 $config['language']	= 'english';
 $config['charset'] = 'UTF-8';
