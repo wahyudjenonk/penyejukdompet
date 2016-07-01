@@ -1,46 +1,25 @@
-
 <div class="row">
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<form id="form1" class="form-horizontal" parsley-validate style="width:99%">
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Name <span class="asterisk">*</span>
-				</label>
-				<div class="col-sm-9">
-					<input type="text" parsley-minlength="3" class="form-control" required>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Complete</strong> Validation</h3>
+            </div>
+		<div class="panel-body">
+				<div class="row" style="width:100%">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<form id="form1" class="form-horizontal" parsley-validate style="width:99%">
+							{include file="backend/template/text.html" label="Judul Buku" type="text" name="judul_buku" id_na="judul_buku"}
+							{include file="backend/template/text.html" label="Desc. Buku" type="textarea" name="deskripsi_buku" id_na="deskripsi_buku"}
+							<div class="col-sm-7 col-sm-offset-3">
+								<div class="pull-right">
+									{include file="backend/template/button.html" text="Simpan"}
+									{include file="backend/template/button.html" text="Batal" style_btn="btn-default"}
+								</div>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Email <span class="asterisk">*</span>
-				</label>
-				<div class="col-sm-9">
-					<input type="text" parsley-type="email" class="form-control" required>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">URL</label>
-				<div class="col-sm-9">
-					<input type="url" name="url" class="form-control" parsley-type="url" required>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Phone Number</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" parsley-type="phone" placeholder="(XXX) XXXX XXX">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">Comment <span class="asterisk">*</span>
-				</label>
-				<div class="col-sm-9">
-					<textarea rows="5" class="form-control valid" placeholder="Write your comment... (minimum 3 words)" parsley-minwords="3" required></textarea>
-				</div>
-			</div>
-			<div class="col-sm-9 col-sm-offset-3">
-				<div class="pull-right">
-					<button class="btn btn-primary m-b-10" onclick="javascript:$('#form1').parsley('validate');">Submit</button>
-					<button type="reset" class="btn btn-default m-b-10">Cancel</button>
-				</div>
-			</div>
-		</form>
+		</div>
 	</div>
 </div>

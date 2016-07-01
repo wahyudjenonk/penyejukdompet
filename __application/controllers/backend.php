@@ -9,6 +9,7 @@ class backend extends JINGGA_Controller {
 			return $this->nsmarty->display('backend/login.html');
 			exit;
 		}
+		$this->nsmarty->assign('acak', md5(date('H:i:s')) );
 		$this->temp="backend/";
 		$this->load->model('mbackend');
 	}
