@@ -8,7 +8,7 @@ class frontend extends JINGGA_Controller {
 	}
 	
 	function index(){
-		$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+		$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
 		$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
 		$this->nsmarty->assign('konten', 'beranda');		
 		$this->nsmarty->display( 'frontend/main-index.html');		
@@ -17,7 +17,7 @@ class frontend extends JINGGA_Controller {
 	function getdisplay($type="", $p1="", $p2="", $p3=""){
 		switch($type){
 			case "main_page":
-				$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+				$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
 				$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
 				$this->nsmarty->assign( 'konten', $p1);
 				if(isset($p2)){

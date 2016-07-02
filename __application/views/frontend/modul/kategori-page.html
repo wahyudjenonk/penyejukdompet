@@ -46,11 +46,12 @@
 												
 													<div class="pro-info">
 														<p class="pro-category">{$row.nama_kategori}</p>
-														<font style='font-size:15px !important;'><a href="#">{$row.judul_buku}</a></font>
+														<font style='font-size:15px !important;'><a href="#">{* $row.judul_buku *} Title Product Here</a></font>
 													</div>
 												</div>
 											</div>
 										{/foreach}
+										{*
 											<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
 												<div class="single-product text-center">
 													<div class="pro-thumb overlay-bg">
@@ -65,11 +66,11 @@
 												
 													<div class="pro-info">
 														<p class="pro-category">tst</p>
-														<font style='font-size:15px !important;'><a href="#">{* $row.judul_buku *} TESTER AJA BRAYY</a></font>
+														<font style='font-size:15px !important;'><a href="#">{* $row.judul_buku  TESTER AJA BRAYY</a></font>
 													</div>
 												</div>
 											</div>
-										
+										*}
 									{else}
 									<center>-- Tidak Ada Data Tersedia -- </center>
 									{/if}

@@ -24,6 +24,12 @@ class mfrontend extends CI_Model{
 					$where AND C.id = '".$p1."'
 				";
 			break;
+			case "cl_tingkatan":
+				$sql = "
+					SELECT id, tingkatan
+					FROM cl_tingkatan
+				";
+			break;
 		}
 		
 		if($balikan == 'json'){
