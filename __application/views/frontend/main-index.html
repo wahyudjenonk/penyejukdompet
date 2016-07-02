@@ -77,6 +77,7 @@
 								<div class="col-md-7 hidden-sm hidden-xs">
 									<div class="header-top-left header-top-info">
 										<p><a href="tel:+3211234567"><i class="fa fa-phone"></i>021 878787878</a></p>
+										<p><a href="tel:+3211234567"><i class="fa fa-whatsapp"></i>081290007684</a></p>
 										<p><a href="mailto:info@aldeaz.id"><i class="fa fa-envelope"></i>info@aldeaz.id</a></p>  
 									</div>
 								</div>
@@ -146,7 +147,7 @@
 								<!-- Start Logo -->
 								<div class="col-md-3">
 									<div class="header-logo">
-										<a href="index.html"><img src="{$host}__assets/ef/img/logo.png" alt="main logo" /></a>
+										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz" /></a>
 									</div>
 								</div>
 								<!-- End Logo -->
@@ -155,9 +156,8 @@
                                     <div class="menu-wrap pull-right">
                                         <nav class="primary-menu">
 										    <ul>
-										        <li class="current">
-													<a href="{$host}beranda">Beranda</a>
-										        </li>                                                                             
+										        <li class="current"><a href="{$host}beranda">Beranda</a></li>  
+												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>												
 										        <li><a href="#">Katalog <span class="indicator"><i class="fa fa-angle-down"></i></span></a>
 										            <ul class="estut-dropdown">
 														{foreach from=$data_tingkatan item=row}
@@ -165,11 +165,11 @@
 														{/foreach}
 										            </ul>
 										        </li>
-												<li><a href="{$host}tracking">Tracking</a></li>      
+												<li><a href="#">Konfirmasi</a></li>      
+												<li><a href="{$host}tracking">Lacak Pesanan</a></li>      
 												<li><a href="{$host}histori">Histori</a></li>      
-												<li><a href="{$host}caraberbelanja">Cara Berbelanja</a></li>      
-												<li><a href="{$host}tentangkami">Tentang Kami</a></li>      
-										        <li><a href="{$host}kontak">Kontak Kami</a></li>
+												<li><a href="{$host}tentangkami">Pembatalan</a></li>      
+										        <!--li><a href="{$host}kontak">Kontak Kami</a></li-->
 										    </ul>
 										</nav>
                                     </div>
@@ -179,7 +179,7 @@
 							<div class="row">
 								<div class="col-sm-3 hidden-md hidden-lg">
 									<div class="mobile-logo">
-										<a href="index.html"><img src="{$host}__assets/ef/img/logo.png" alt="main logo" /></a>
+										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz"/></a>
 									</div>
 								</div>
 								<div class="col-sm-9 hidden-md hidden-lg">
@@ -188,6 +188,7 @@
 										<nav id="mobile-menu">
 											<ul>
 												<li><a href="{$host}beranda">Beranda</a></li>
+												<li><a href="{$host}beranda">Cara Beli</a></li>
 												<li><a href="#">Katalog</a>
 													<ul>
 														{foreach from=$data_tingkatan item=row}
@@ -200,10 +201,11 @@
 														*}
 													</ul>
 												</li>
-												<li><a href="{$host}tracking">Tracking</a></li>      
+												<li><a href="#">Konfirmasi Pesanan</a></li>      
+												<li><a href="{$host}tracking">Lacak Pesanan</a></li>      
 												<li><a href="{$host}histori">Histori</a></li>      
-												<li><a href="{$host}tentangkami">Tentang Kami</a></li>      
-										        <li><a href="{$host}kontak">Kontak Kami</a></li>
+												<li><a href="{$host}tentangkami">Pembatalan</a></li>      
+										        <!--li><a href="{$host}kontak">Kontak Kami</a></li-->
 											</ul>
 										</nav>
 									</div>
@@ -226,7 +228,7 @@
 							<div class="newsletter">
 								<div class="col-md-6 col-md-offset-3 text-center">
 									<div class="footer-logo">
-										<a href="index.html"><img src="{$host}__assets/ef/img/logo.png" alt="footer Logo" /></a>
+										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="footer Logo" /></a>
 									</div>
 									<div class="newsletter-form">
 										<form action="#" method="get">
@@ -246,7 +248,7 @@
 						<div class="row">
 							<div class="col-md-12 text-center">
 								<div class="copyright-wrap text-center" >
-									<p style='color:#fff !important;'>&copy; 2016 <a style='color:#fff !important;' href="http://bootexperts.com/">CV. Aldeaz Printing Sejahtera</a> All Rights Reserved. {* - Design By <a style='color:#fff !important;' href="http://www.jingga.co.id/">Jingga Sinergi Idea</a> *}</p>
+									<p style='color:#fff !important;'>&copy; 2016 | <a style='color:#fff !important;' href="http://www.aldeaz.com/">CV. Aldeaz Printing Sejahtera</a> All Rights Reserved. {* - Design By <a style='color:#fff !important;' href="http://www.jingga.co.id/">Jingga Sinergi Idea</a> *}</p>
 								</div>
 							</div>
 						</div>
