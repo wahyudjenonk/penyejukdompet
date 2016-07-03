@@ -6,7 +6,7 @@ class backend extends JINGGA_Controller {
 	function __construct(){
 		parent::__construct();
 		if(!$this->auth){
-			return $this->nsmarty->display('backend/login.html');
+			$this->nsmarty->display('backend/login.html');
 			exit;
 		}
 		$this->nsmarty->assign('acak', md5(date('H:i:s')) );
