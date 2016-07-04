@@ -14,20 +14,34 @@ class mfrontend extends CI_Model{
 		$where = " WHERE 1=1 ";
 		
 		switch($type){
+			case "data_buku":
 			case "data_buku_tingkatan":
+				if($type == 'data_buku'){
+					$where .= "";
+				}elseif($type == 'data_buku_tingkatan'){
+					$where .= " AND C.id = '".$p1."' ";
+				}
+				
 				$sql = "
 					SELECT A.*, D.nama_kategori
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON B.id = A.cl_kelas_id
 					LEFT JOIN cl_tingkatan C ON C.id = B.cl_tingkatan_id
 					LEFT JOIN cl_kategori D ON D.id = A.cl_kategori_id
-					$where AND C.id = '".$p1."'
+					$where 
 				";
 			break;
 			case "cl_tingkatan":
 				$sql = "
 					SELECT id, tingkatan
 					FROM cl_tingkatan
+				";
+			break;
+			case "zona_pengiriman":
+				$sql = "
+					SELECT harga_zona_".$p2."
+					FROM tbl_buku
+					WHERE id = '".$p1."'
 				";
 			break;
 		}

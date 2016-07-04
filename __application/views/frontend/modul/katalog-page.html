@@ -1,0 +1,169 @@
+<div class="page-content">
+	<div class="page-header-v1 bg-1 overlay-bg  text-center">
+		<div class="page-header-inner">
+			<p class="page-category">&nbsp;</p>
+			<h2 class="page-title">KATALOG BUKU ALDEAZ.ID</h2>
+			<div class="breadcrumbs">
+				&nbsp;
+			</div>
+		</div>
+	</div>
+	
+	<div class="shop-area shop-page bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 left-side-wrap-v1 ">
+					<div class="shop-content-area">
+						<div class="row">
+							<div class="product-toolbar clear">
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+									<!--start List & Grid  -->
+									<ul role="tablist" class="view-mode-tab-btn clear">
+										<li class="active" role="presentation"><a data-toggle="tab" role="tab" aria-controls="grid" title="Grid" href="#grid" aria-expanded="true"><i class="fa fa-th"></i></a></li>
+										<li role="presentation" class=""><a data-toggle="tab" role="tab" aria-controls="list" title="List" href="#list" aria-expanded="false"><i class="fa fa-th-list"></i></a></li>
+									</ul>
+									<!--End List & Grid  -->
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane fade in active" id="grid">
+									{if $data_buku}
+										{foreach from=$data_buku item=row}
+											<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
+												<div class="single-product text-center">
+													<div class="pro-thumb overlay-bg">
+														<img src="{$host}img/product/full/1.jpg" alt="product img" />
+														<div class="hover-btn">
+															<ul class="action-buttons">
+																{*<li class="cart"><a href="#"><i class="fa fa-shopping-cart"></i></a></li>*}
+																<li class="quickview"><a href="javascript:void(0);" onClick="productwindow('{$row.id}');" ><i class="fa fa-eye"></i></a></li>
+															</ul>
+														</div>
+													</div>
+												
+													<div class="pro-info">
+														<p class="pro-category">{$row.nama_kategori}</p>
+														<font style='font-size:15px !important;'><a href="#">{$row.judul_buku}</a></font>
+													</div>
+												</div>
+											</div>
+										{/foreach}
+									{else}
+									<center>-- Tidak Ada Data Tersedia -- </center>
+									{/if}
+								</div>
+								
+								<div role="tabpanel" class="tab-pane fade" id="list">
+									<div class="product-list-view-area clear">
+										{if $data_buku}									
+											{foreach from=$data_buku item=row}
+												<div class="col-md-12">
+													<div class="single-product text-left fix">
+														<div class="pro-thumb">
+															<img src="{$host}img/product/list/full/1.jpg" alt="product img" />
+														</div>
+														<div class="pro-info">
+															<p class="pro-category">{$row.nama_kategori}</p>
+															<h3 class="pro-title"><a href="#">{$row.judul_buku}</a></h3>
+															<div class="product-action">
+																<a href="#" class="estut-btn">ADD TO CART</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											{/foreach}
+										{else}
+											<center>-- Tidak Ada Data Tersedia -- </center>
+										{/if}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<div class="col-md-4 right-side-wrap-v1">
+					<div class="widget-wrap">
+						<aside class="widget widget-categories">
+							<h3 class="widget-title-v2">Katalog</h3>
+							<div class="widget-content">
+								<div id='categorymenu'>
+									<ul class="widget-menu widget-menu widget-submenu">   
+										{foreach from=$data_tingkatan item=row}
+											 <li {if $row.detil}class='has-sub'{/if}><a href='#'>{$row.tingkatan}</a>
+											 {if $row.detil}
+												<ul>
+													{foreach from=$row.detil item=riw}
+														<li><a href='#'>{$riw.nama_kelas}</a></li>
+													{/foreach}
+												</ul>
+											 {/if}
+											 </li>
+										{/foreach}
+									</ul>
+								</div>
+							</div>
+						</aside>
+						<aside class="widget widget-filtering">
+							<h3 class="widget-title-v2">Kategori</h3>
+							<div class="widget-content">
+								<div id='categorymenu'>
+									<ul class="widget-menu widget-submenu">   
+										{foreach from=$data_kategori item=rows}
+											<li><a href="#">{$rows.nama_kategori}</a></li>
+										{/foreach}
+									</ul>
+								</div>
+							</div>							
+						</aside>
+						<aside class="widget widget-categories">
+							<h3 class="widget-title-v2">Pengguna Buku</h3>
+							<div class="widget-content">
+								<div id='categorymenu'>
+									<ul class="widget-menu widget-submenu">   
+										{foreach from=$data_pengguna item=rowss}
+											<li><a href="#">{$rowss.nama_group}</a></li>
+										{/foreach}
+									</ul>
+								</div>							
+							</div>							
+						</aside>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#categorymenu li.active').addClass('open').children('ul').show();
+	$('#categorymenu li.has-sub>a').on('click', function() {
+		$(this).removeAttr('href');
+		var element = $(this).parent('li');
+		if (element.hasClass('open')) {
+			element.removeClass('open');
+			element.find('li').removeClass('open');
+			element.find('ul').slideUp(400);
+		} else {
+			element.addClass('open');
+			element.children('ul').slideDown(400);
+			element.siblings('li').children('ul').slideUp(400);
+			element.siblings('li').removeClass('open');
+			element.siblings('li').find('li').removeClass('open');
+			element.siblings('li').find('ul').slideUp(400);
+		}
+	});
+	
+	function productwindow(idpro){
+		$('#modalencuk').html('');
+		$.post(host+'detil-produk', { 'isds':idpro }, function(resp){
+			parsingan = $.parseJSON(resp)
+			$('#modalencuk').html(parsingan.page);
+			$('#productModal').modal('show'); 
+		})
+	}
+</script>

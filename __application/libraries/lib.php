@@ -164,7 +164,7 @@ class lib {
 	//Class Fillcombo
 	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){
 		$ci =& get_instance();
-		$ci->load->model('mhome');
+		$ci->load->model('mfrontend');
 		
 		$v = $ci->input->post('v');
 		if($v != ""){
@@ -195,8 +195,17 @@ class lib {
 					'1' => array('id'=>'0','txt'=>'Inactive'),
 				);
 			break;
+			case "zona_pengiriman":
+				$data = array(
+					'0' => array('id'=>'1','txt'=>'Zona Pengiriman 1'),
+					'1' => array('id'=>'2','txt'=>'Zona Pengiriman 2'),
+					'2' => array('id'=>'3','txt'=>'Zona Pengiriman 3'),
+					'3' => array('id'=>'4','txt'=>'Zona Pengiriman 4'),
+					'4' => array('id'=>'5','txt'=>'Zona Pengiriman 5'),
+				);
+			break;
 			default:
-				$data = $ci->mhome->get_combo($type, $p1, $p2);
+				$data = $ci->mfrontend->get_combo($type, $p1, $p2);
 			break;
 		}
 		

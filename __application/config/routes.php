@@ -28,8 +28,15 @@ $route['loading-histori'] = 'frontend/getdisplay/loading_page/histori';
 $route['kontak'] = 'frontend/getdisplay/main_page/kontak';
 $route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak';
 
+$route['katalog'] = 'frontend/getdisplay/main_page/katalog';
+$route['loading-katalog'] = 'frontend/getdisplay/loading_page/katalog';
+
 $route['kategori/(:any)'] = 'frontend/getdisplay/main_page/kategori/$1';
 $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$1';
+
+$route['detil-produk'] = 'frontend/getdisplay/loading_page/detail_produk';
+$route['harga-per-zona'] = 'frontend/getdisplay/loading_page/zona_pengiriman';
+
 
 
 

@@ -158,12 +158,14 @@
 										    <ul>
 										        <li class="current"><a href="{$host}beranda">Beranda</a></li>  
 												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>												
-										        <li><a href="#">Katalog <span class="indicator"><i class="fa fa-angle-down"></i></span></a>
-										            <ul class="estut-dropdown">
+										        <li><a href="{$host}katalog">Katalog</a>
+										            {*
+													<ul class="estut-dropdown">
 														{foreach from=$data_tingkatan item=row}
 															<li><a href="{$host}kategori/{$row.tingkatan|lower}">{$row.tingkatan}</a></li>
 														{/foreach}
 										            </ul>
+													*}
 										        </li>
 												<li><a href="#">Konfirmasi</a></li>      
 												<li><a href="{$host}tracking">Lacak Pesanan</a></li>      
@@ -188,18 +190,20 @@
 										<nav id="mobile-menu">
 											<ul>
 												<li><a href="{$host}beranda">Beranda</a></li>
-												<li><a href="{$host}beranda">Cara Beli</a></li>
-												<li><a href="#">Katalog</a>
+												<li><a href="{$host}carabeli">Cara Beli</a></li>
+												<li><a href="{$host}katalog">Katalog</a>
+													{*
 													<ul>
 														{foreach from=$data_tingkatan item=row}
 															<li><a href="{$host}kategori/{$row.tingkatan|lower}">{$row.tingkatan}</a></li>
 														{/foreach}
 														
-														{*
+														
 														<li><a href="shop-fullwidth.html">Buku Umum</a></li>
 										                <li><a href="shop-fullwidth-2.html">Buku Sekolah</a></li>
-														*}
+														
 													</ul>
+													*}
 												</li>
 												<li><a href="#">Konfirmasi Pesanan</a></li>      
 												<li><a href="{$host}tracking">Lacak Pesanan</a></li>      
@@ -271,7 +275,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</div>
 						<div class="modal-body">
-							<div class="modal-product">
+							<div id='modalencuk' class="modal-product">
 								<!-- Start product images -->
 								<div class="product-images">
 									<div class="main-image images">
