@@ -1,8 +1,8 @@
 var index_row;
 
-function loadUrl(obj, urls){
+function loadUrl(obj, urls,table){
     $("#main-content").html("").addClass("loading");
-	$.get(urls,function (html){
+	$.post(urls,{table:table},function (html){
 	    $("#main-content").html(html).removeClass("loading");
     });
 }
@@ -162,21 +162,48 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			judulnya = "Daftar Produk Aldeaz ";
 			urlnya = "tbl_buku";
 			fitnya = true;
+			nowrap=false;
 			//footer=true;
 			row_number=true;
-			kolom[modnya] = [	
+			frozen[modnya] = [	
 				{field:'kelas',title:'Kelas',width:100, halign:'center',align:'left'},
 				{field:'nama_group',title:'Group',width:100, halign:'center',align:'left'},
 				{field:'nama_kategori',title:'Kategori',width:100, halign:'center',align:'left'},
-				{field:'judul_buku',title:'Judul Buku',width:150, halign:'center',align:'left'},
+				{field:'judul_buku',title:'Judul Buku',width:150, halign:'center',align:'left'}
+			];
+			kolom[modnya] = [	
 				{field:'deskripsi_buku',title:'Desc. Buku',width:150, halign:'center',align:'left'},
-				{field:'jml_hal',title:'Jml. Hal',width:80, halign:'center',align:'right'},
+				{field:'jml_hal',title:'Jml. Hal',width:80, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
 				{field:'ukuran_buku',title:'Ukuran',width:80, halign:'center',align:'center'},
-				{field:'harga_zona_1',title:'Hrg. Zona 1',width:150, halign:'center',align:'right'},
-				{field:'harga_zona_2',title:'Hrg. Zona 2',width:150, halign:'center',align:'right'},
-				{field:'harga_zona_3',title:'Hrg. Zona 3',width:150, halign:'center',align:'right'},
-				{field:'harga_zona_4',title:'Hrg. Zona 4',width:150, halign:'center',align:'right'},
-				{field:'harga_zona_5',title:'Hrg. Zona 5',width:150, halign:'center',align:'right'}
+				{field:'harga_zona_1',title:'Hrg. Zona 1',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'harga_zona_2',title:'Hrg. Zona 2',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'harga_zona_3',title:'Hrg. Zona 3',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'harga_zona_4',title:'Hrg. Zona 4',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'harga_zona_5',title:'Hrg. Zona 5',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				}
 				
 				
 			];
@@ -285,7 +312,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 
 function genform(type, modulnya, submodulnya, stswindow, tabel){
 	var urlpost = host+'backoffice-form/'+modulnya;
-	var urldelete = host+'backend/simpansavedata/'+tabel;
+	var urldelete = host+'backoffice-delete';
 	var id_tambahan = "";
 	
 	switch(modulnya){
@@ -341,10 +368,10 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 				else if(type=='delete'){
 					if(confirm("Do You Want To Delete This Data ?")){
 						loadingna();
-						$.post(urldelete, {id:row.id,'editstatus':'delete'}, function(r){
+						$.post(urldelete, {id:row.id,'editstatus':'delete',mod:tabel}, function(r){
 							if(r==1){
 								winLoadingClose();
-								$.messager.alert('Bimbel',"Data Sudah Terhapus",'info');
+								$.messager.alert('Aldeaz',"Data Sudah Terhapus",'info');
 								$('#grid_'+modulnya).datagrid('reload');
 								
 								var arraynya = [
@@ -1190,4 +1217,21 @@ function gen_editor(id){
 		tinyMCE.execCommand('mceRemoveControl', true, id);
 		tinyMCE.execCommand('mceAddControl', true, id);
 	
+}
+function simpan_form(id_form,id_cancel,msg){
+	if ($('#'+id_form).form('validate')){
+		submit_form(id_form,function(r){
+			console.log(r)
+			if(r==1){
+				$.messager.alert('Aldeaz Back-Office',msg,'info');
+				$('#'+id_cancel).trigger('click');
+				grid_nya.datagrid('reload');
+			}else{
+				console.log(r);
+				$.messager.alert('Aldeaz Back-Office',"Tdak Dapat Menyimpan Data",'error');
+			}
+		});
+	}else{
+		$.messager.alert('Aldeaz Back-Office',"Isi Data Yang Kosong ",'info');
+	}
 }
