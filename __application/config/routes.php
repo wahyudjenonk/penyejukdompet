@@ -9,7 +9,10 @@ $route['backoffice-masuk'] = 'login';
 $route['backoffice-keluar'] = 'login/logout';
 $route['backoffice-grid/(:any)'] = 'backend/get_grid/$1';
 $route['backoffice-form/(:any)'] = 'backend/get_form/$1';
-
+$route['backoffice-combo'] = 'backend/get_combo';
+$route['backoffice-simpan/(:any)/(:any)'] = 'backend/simpandata/$1/$2';
+$route['backoffice-delete'] = 'backend/simpandata';
+$route['backoffice-upload'] = 'backend/simpandata';
 
 
 /* Routes Front End Routes */

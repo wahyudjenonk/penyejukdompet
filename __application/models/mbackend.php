@@ -17,12 +17,36 @@ class mbackend extends CI_Model{
 					WHERE username = '".$p1."'
 				";				
 			break;
+			case "cl_tingkatan":
+				$sql="SELECT A.*,A.tingkatan as text
+					FROM cl_tingkatan A ";
+			break;
+			case "cl_group_sekolah":
+				$sql="SELECT A.*,A.nama_group as text
+					FROM cl_group_sekolah A ";
+			break;
+			case "cl_kategori":
+				$sql="SELECT A.*,A.nama_kategori as text
+					FROM cl_kategori A ";
+			break;
 			case "tbl_buku":
-				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori 
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori,E.id as id_tingkatan 
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id
 					LEFT JOIN cl_group_sekolah C ON A.cl_group_sekolah=C.id
-					LEFT JOIN cl_kategori D ON A.cl_kategori_id=D.id ";
+					LEFT JOIN cl_kategori D ON A.cl_kategori_id=D.id 
+					LEFT JOIN cl_tingkatan E ON B.cl_tingkatan_id=E.id ".$where;
+					//echo $sql;
+			break;
+			case "cl_kelas":
+				$filter=$this->input->post('v2');
+				$sql="SELECT id as id,kelas as txt FROM cl_kelas ".$where;
+				if($filter){$sql .=" AND cl_tingkatan_id=".$filter;}
+				else{ $sql .=" AND cl_tingkatan_id=-1";}
+				//return $this->result_query($sql);
 			break;
 		}
 		
@@ -47,7 +71,7 @@ class mbackend extends CI_Model{
 		return $this->db->query($sql)->result_array();
 	}
 	
-	function simpansavedata($table,$data,$sts_crud){ //$sts_crud --> STATUS NYEE INSERT, UPDATE, DELETE
+	function simpandata($table,$data,$sts_crud){ //$sts_crud --> STATUS NYEE INSERT, UPDATE, DELETE
 		$this->db->trans_begin();
 		if(isset($data['id'])){
 			$id = $data['id'];
@@ -55,7 +79,9 @@ class mbackend extends CI_Model{
 		}
 		
 		switch($table){
-			case "transaksi_penjualan":
+			case "tbl_buku":
+				//print_r($data);exit;
+				unset($data['tingkatan']);
 			break;
 			
 		}
