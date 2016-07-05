@@ -518,12 +518,12 @@ body {} .padding100 {
     position: relative;
 }
 .hover-btn {
-    left: 50%;
+    left: 60%;
     margin-left: -45px;
     margin-top: -37px;
     opacity: 0;
     position: absolute;
-    top: 50%;
+    top: 55%;
     transition: all 0.3s ease 0s;
     visibility: hidden;
     z-index: 999;
@@ -2955,7 +2955,7 @@ label.filter-price-title {
     margin-bottom: 0;
 }
 .shop-page .col-md-4:nth-last-child(-n+3) .single-product {
-    margin-bottom: 0;
+    /* margin-bottom: 0;*/
 }
 .shop-content-area .col-md-3:nth-last-child(-n+4) .single-product {
     margin-bottom: 0;
