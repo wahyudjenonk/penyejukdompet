@@ -11,7 +11,6 @@
 		</div>
 	</div>
 	<div class="quick-add-to-cart">
-		<form method="post" class="cart">
 			<span>Zona Pengiriman :</span> 
 			<select id='combo_zona_{$data_buku.id}' style='padding:5px;'>
 				{$combo_buku}
@@ -19,10 +18,9 @@
 			<br/>
 			<br/>
 			<div class="numbers-row">
-				<input type="number" id="french-hens" value="0">
+				<input type="number" style='width:80px !important;' id="french-hens_{$data_buku.id}" value="1">
 			</div>
-			<button class="single_add_to_cart_button" type="submit">Add to cart</button>
-		</form>
+			<button id='sbm-cart_{$data_buku.id}' class="single_add_to_cart_button" >Add to cart</button>
 	</div>
 	<div class="quick-desc">
 		{$data_buku.deskripsi_buku}
@@ -36,4 +34,19 @@
 			$('#zon_{$data_buku.id}').html(responze);
 		});
 	});
+	
+	$('#sbm-cart_{$data_buku.id}').on('click', function(){
+		var posting = {};
+		posting['zn'] = $('#combo_zona_{$data_buku.id}').val();
+		posting['iipx'] = '{$data_buku.id}';
+		posting['yqt'] = $('#french-hens_{$data_buku.id}').val();
+		$.post(host+'keranjang-belanja-masuk', posting, function(resp){
+			if(resp){
+				$('#productModal').modal('hide'); 
+			}else{
+				alert('Terjadi Kegagalan System, Coba Lagi!');
+			}
+		});
+	});
+	
 </script>

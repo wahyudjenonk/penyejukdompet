@@ -21,6 +21,11 @@ class frontend extends JINGGA_Controller {
 			case "main_page":
 				//$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
 				//$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
+				
+				$data_cart = $this->cart->contents();
+				$jumlah_item = count($data_cart);
+				
+				$this->nsmarty->assign( 'tot_item', $jumlah_item );
 				$this->nsmarty->assign( 'konten', $p1);
 				if(isset($p2)){
 					$this->nsmarty->assign('param2', $p2);	
@@ -102,7 +107,11 @@ class frontend extends JINGGA_Controller {
 						echo $word;
 						exit;
 					break;
-					
+					case "keranjangnya":
+						$temp = "frontend/modul/keranjangbelanja-page.html";
+						$data_cart = $this->cart->contents();
+						$this->nsmarty->assign('data_cart', $data_cart);
+					break;
 				}		
 				
 				if(isset($temp)){
@@ -110,6 +119,8 @@ class frontend extends JINGGA_Controller {
 				}else{
 					$template = $this->nsmarty->fetch("konstruksi.html");
 				}
+				
+				//echo $template;exit;
 				
 				$array_page = array(
 					'loadbalancedt' => md5('Ymd'),
@@ -120,6 +131,56 @@ class frontend extends JINGGA_Controller {
 				
 				echo json_encode($array_page);
 			break;
+		}
+	}
+	
+	function keranjang_belanja($type){
+		switch($type){
+			case "add":
+				$id = $this->input->post('iipx');
+				$zona = $this->input->post('zn');
+				$qty = $this->input->post('yqt');
+				$harga = $this->mfrontend->getdata('zona_pengiriman', 'row_array', $id, $zona);
+				$data_buku = $this->db->get_where('tbl_buku', array('id'=>$id) )->row_array();
+				$data_cart = $this->cart->contents();
+				$flag = true;
+				
+				if($data_cart){
+					foreach ($data_cart as $item) {
+						if ($item['id'] == $id) {
+							$qtyd = $item['qty'] + $qty;
+							$data_update = array(
+								'rowid' => $item['rowid'],
+								'qty' => $qtyd,
+								'price' => $harga['harga_zona_'.$zona],
+							);
+							echo $this->cart->update($data_update);
+							$flag = false;
+						}
+					}
+				}
+				
+				if($flag){
+					$data_cart = array(
+						'id' => $id,
+						'qty' => $qty,
+						'price' => $harga['harga_zona_'.$zona],
+						'name' => $data_buku['judul_buku'],
+						'options' => array('jml_hal' => $data_buku['jml_hal'])
+					);
+					echo $this->cart->insert($data_cart);
+				}
+			break;
+			case "view":
+				$kontent = $this->cart->contents();
+				
+				echo "<pre>";
+				print_r($kontent);exit;
+			break;
+			case "destroy":
+				$this->cart->destroy();
+			break;
+			
 		}
 	}
 	

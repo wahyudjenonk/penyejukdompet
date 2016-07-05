@@ -37,6 +37,10 @@ $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$
 $route['detil-produk'] = 'frontend/getdisplay/loading_page/detail_produk';
 $route['harga-per-zona'] = 'frontend/getdisplay/loading_page/zona_pengiriman';
 
+$route['keranjang-belanja'] = 'frontend/getdisplay/main_page/keranjangnya';
+$route['loading-keranjangnya'] = 'frontend/getdisplay/loading_page/keranjangnya';
+$route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add';
+
 
 
 

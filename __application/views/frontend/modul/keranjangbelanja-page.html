@@ -1,0 +1,82 @@
+<div class="page-content">
+	<div class="page-header-v1 bg-1 overlay-bg  text-center">
+		<div class="page-header-inner">
+			<p class="page-category">&nbsp;</p>
+			<h2 class="page-title">KERANJANG BELANJA ANDA</h2>
+			<div class="breadcrumbs">
+				&nbsp;
+			</div>
+		</div>
+	</div>
+	
+	<div class="shop-content-area padding50 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="" style='display:inline !important;'>
+					{if $data_cart}
+						{foreach from=$data_cart item=rows}
+							<div class="cart-single-product">
+								<div class="cart-single-product-img">
+									<img alt="" src="{$host}__assets/img/cart/1.jpg">
+								</div>
+								<div class="cart-single-product-title">
+									<a href="#">{$rows.name}</a>
+									<input type='text' style='width:80px !important;' value='{$rows.qty}' /> 
+									x
+									<input type='text' style='width:200px !important;' value='{$rows.price}'> 
+								</div>
+								<div class="cart-single-product-del">
+									<a href="#"><i class="fa fa-times"></i></a>
+								</div>
+							</div>
+						{/foreach}
+						<div class="action-cart">
+							<a class="checkout" href="#">Check Out</a>
+						</div>
+					{else}
+						<center>-- Anda Belum Belanja --</center>
+					{/if}
+					
+					
+					
+					{*
+					<div class="cart-single-product">
+						<div class="cart-single-product-img">
+							<img alt="" src="{$host}__assets/img/cart/1.jpg">
+						</div>
+						<div class="cart-single-product-title">
+							<a href="#">Learning History </a>
+							<p>01 <span>X</span> $215.00</p>
+						</div>
+						<div class="cart-single-product-del">
+							<a href="#"><i class="fa fa-times"></i></a>
+						</div>
+					</div>
+					<div class="cart-single-product">
+						<div class="cart-single-product-img">
+							<img alt="" src="{$host}__assets/img/cart/2.jpg">
+						</div>
+						<div class="cart-single-product-title">
+							<a href="#">Et harum quide </a>
+							<p>01 <span>X</span> $125.00</p>
+						</div>
+						<div class="cart-single-product-del">
+							<a href="#"><i class="fa fa-times"></i></a>
+						</div>
+					</div>
+					<div class="total-amount fix">
+						<p>SUBTOTAL: </p><span>$330.00 </span>
+						
+					</div>
+					<div class="action-cart">
+						<a class="viewcart" href="#">View Cart</a>
+						<a class="checkout" href="#">Check Out</a>
+					</div>
+					*}
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
