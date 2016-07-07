@@ -48,7 +48,9 @@ class backend extends JINGGA_Controller {
 					$this->nsmarty->assign('kat',$kat);
 					if($sts=='edit'){
 						$data=$this->mbackend->getdata('tbl_buku','row_array');
+						$foto=$this->mbackend->getdata('tbl_foto_buku','result_array');
 						$this->nsmarty->assign('data',$data);
+						$this->nsmarty->assign('foto',$foto);
 						//print_r($data);
 					}
 				break;
@@ -87,5 +89,68 @@ class backend extends JINGGA_Controller {
 		if(isset($post['editstatus'])){$editstatus = $post['editstatus'];unset($post['editstatus']);}
 		else $editstatus = $p2;
 		echo $this->mbackend->simpandata($p1, $post, $editstatus);
+	}
+	function upload(){
+		//print_r($_POST);exit;
+		//echo microtime();exit;
+		$t = microtime(true);
+		$micro = sprintf("%06d",($t - floor($t)) * 1000000);
+		$d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+		$mod=$this->input->post('mod');
+		$data=array('create_date'=>date('Y-m-d H:i:s'),
+					'create_by'=>$this->auth['username']
+		);
+		switch($mod){
+			case "tbl_foto_buku":
+				$id=$this->input->post('tbl_buku_id');
+				
+				$upload_path='__repository/produk/';
+				$data['tbl_buku_id']=$id;
+				$tbl="tbl_foto_buku";
+				
+				$object='file_nya';
+				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				$upload_path .=$this->input->post('tingkat')."/";
+				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				$upload_path .=$this->input->post('kelas')."/";
+				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				$upload_path .=$this->input->post('group')."/";
+				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				$upload_path .=$this->input->post('kat')."/";
+				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				if(isset($_FILES['file_nya'])){
+					$file=$_FILES['file_nya']['name'];
+					$nameFile =$d->format("YmdHisu");// $this->string_sanitize(pathinfo($file, PATHINFO_FILENAME));
+						$upload=$this->lib->uploadnong($upload_path, $object, $nameFile);
+						if($upload){
+							$data['foto_buku']=$upload;
+							echo $this->mbackend->simpandata($tbl,$data,'add');
+						}else{
+							echo 2;
+						}
+				}
+			break;
+			
+		}
+		
+		
+		
+		//echo $upload;
+	}
+	function hapus_file(){
+		if($this->auth){
+			$mod=$this->input->post('mod');
+			switch($mod){
+				case "foto_buku":
+					$data=$this->mbackend->getdata('tbl_foto_buku','row_array');
+					if(isset($data['foto_buku'])){
+						$path='__repository/produk/'.$data['tingkatan'].'/'.$data['kelas'].'/'.$data['nama_group'].'/'.$data['nama_kategori'].'/';
+						chmod($path.$data['foto_buku'],0777);
+						unlink($path.$data['foto_buku']);
+						echo $this->mbackend->simpandata('tbl_foto_buku',$data,'delete');
+					}
+				break;
+			}
+		}
 	}
 }

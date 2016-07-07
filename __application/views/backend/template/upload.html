@@ -28,21 +28,14 @@ var settings = {
 		{
 			if(parseInt(data)==1){
 				upl_vid=upl_vid+parseInt(data);
-				if(upl_vid==jml_vid){
-					winLoadingClose();
-					$('#form_vid_{$acak}').hide();
-					$('#prev_{$acak}').show();
-					
-					$('#prev_{$acak}').addClass('loading').html('');
-					$.post(host+'preview',{ id_mat:id_materi,mod:'{$mod|default:"materi"}' },function(r){
-						$('#prev_{$acak}').removeClass('loading').html(r);
-					});
-				
+				if(upl_vid==uploadObj_{$id_na}_{$acak}.getFileCount()){
+					$.messager.alert('Aldeaz Back-Office','{$msg}','info');
+					$('#{$id_batal}').trigger('click');
+					grid_nya.datagrid('reload');
 				}
 			}
 			console.log(data);
 			//$("#status").html("<font color='green'>Upload is success</font>");
-	 
 		},
 		onError: function(files,status,errMsg)
 		{       

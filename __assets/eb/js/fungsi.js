@@ -1108,16 +1108,16 @@ function refreshCaptcha(imgCapcha){
 	capcha = $('#'+imgCapcha);
 	capcha.css({"background-image":"url('"+host+"capcha/"+Math.random()+"')"});	
 }
-function hapus_file(mod,id){
+function hapus_file(mod,id,id_list){
 	loadingna();
-	$.post(host+'hapusFile',{mod:mod,id:id},function(r){
+	$.post(host+'backoffice-hapusFile',{mod:mod,id:id},function(r){
 		if(r==1){
 			winLoadingClose();
-			$('#list_'+id).remove();
+			$('#'+id_list).remove();
 		}else{
 			console.log(r);
 			winLoadingClose();
-			$.messager.alert('Bimbel',"Gagal Menghapus File",'error');
+			$.messager.alert('Aldeaz',"Gagal Menghapus File",'error');
 		}
 	});
 }

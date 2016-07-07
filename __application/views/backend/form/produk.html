@@ -22,11 +22,32 @@
 							{include file="backend/template/text.html" label="Harga Zona 3" type="text" name="harga_zona_3" id_na="harga_zona_3" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_3|default:''}
 							{include file="backend/template/text.html" label="Harga Zona 4" type="text" name="harga_zona_4" id_na="harga_zona_4" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_4|default:''}
 							{include file="backend/template/text.html" label="Harga Zona 5" type="text" name="harga_zona_5" id_na="harga_zona_5" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_5|default:''}
-							{include file="backend/template/upload.html" label="Upload Gambar" name="foto_buku" id_na="foto_buku"}
+							{include file="backend/template/upload.html" label="Upload Gambar" name="foto_buku" id_na="foto_buku" mod="buku" id_batal="batal_buku_{$acak}" msg="Data Input Buku Sudah Tersimpan"}
+							{if $sts eq 'edit'}
+							<div class="form-group" >
+								<label class="col-sm-2 control-label"></label>
+								<div class="col-sm-8">
+									<div class="row">
+									{foreach from=$foto item=i}
+										  <div class="col-xs-6 col-md-3" id="list_{$acak}_{$i.id}">
+											<div class="thumbnail">
+											  <img src="{$host}__repository/produk/{$data.tingkatan}/{$data.kelas}/{$data.nama_group}/{$data.nama_kategori}/{$i.foto_buku|default:''}" alt="...">
+											   <div class="caption">
+												<center>
+												<a href="javascript:void(0);" onclick="hapus_file('foto_buku',{$i.id},'list_{$acak}_{$i.id}')" class="btn btn-primary" role="button">Hapus</a>
+												</center>
+											   </div>
+											</div>
+										  </div>
+									{/foreach}
+									</div>
+								</div>
+							</div>
+							{/if}
 							<div class="col-sm-7 col-sm-offset-3">
 								<div class="pull-right">
 									{include file="backend/template/button.html" text="Simpan" id_na="simpan_buku"}
-									{include file="backend/template/button.html" text="Batal" style_btn="btn-default" id_na="batal_buku"}
+									{include file="backend/template/button.html" text="Batal" style_btn="btn-default" id_na="batal_buku" }
 								</div>
 							</div>
 						</form>
@@ -37,6 +58,7 @@
 	</div>
 </div>
 <script>
+	var upl_vid=0;
 	gen_editor('#deskripsi_buku{$acak}');
 	$(".validasi").validatebox({ required:true }); 
 	$('.angka').numberbox({
@@ -57,7 +79,40 @@
 	});
 	$('#simpan_buku_{$acak}').bind('click',function(){
 		tinyMCE.get("deskripsi_buku{$acak}").save();
-		simpan_form('form_input_{$acak}','batal_buku_{$acak}','Data Input Buku Sudah Tersimpan');
+		if ($('#form_input_{$acak}').form('validate')){
+			submit_form('form_input_{$acak}',function(r){
+				console.log(r)
+				var js=JSON.parse(r);
+				if(js.msg==1){
+					if(uploadObj_foto_buku_{$acak}.getFileCount() > 0){
+						uploadObj_foto_buku_{$acak}.update({ dynamicFormData:function()
+						{
+							var data ={ tbl_buku_id:js.data,
+										mod:'tbl_foto_buku',
+										tingkat:$("#tingkatan{$acak} option:selected").text(), 
+										kelas:$("#cl_kelas_id{$acak} option:selected").text(), 
+										group:$("#cl_group_sekolah{$acak} option:selected").text(), 
+										kat:$("#cl_kategori_id{$acak} option:selected").text()
+									  }
+							return data;
+						} 
+						});
+						uploadObj_foto_buku_{$acak}.startUpload();
+					}else{
+						$.messager.alert('Aldeaz Back-Office','Data Input Buku Sudah Tersimpan','info');
+						$('#batal_buku_{$acak}').trigger('click');
+						grid_nya.datagrid('reload');
+					}
+				}else{
+					//console.log(r);
+					$.messager.alert('Aldeaz Back-Office',"Tdak Dapat Menyimpan Data",'error');
+				}
+			});
+		}else{
+			$.messager.alert('Aldeaz Back-Office',"Isi Data Yang Kosong ",'info');
+		} 
+	
+		/* simpan_form('form_input_{$acak}','batal_buku_{$acak}','Data Input Buku Sudah Tersimpan'); */
 	});
 	{if $sts eq 'edit'}
 		$('#tingkatan{$acak}').trigger('change');
