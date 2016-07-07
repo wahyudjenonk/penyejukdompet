@@ -561,17 +561,17 @@ function genTab(div,mod,sub_mod,tab_array,div_panel,judul_panel,mod_num, height_
 	
 }
 
-function cariData(typecari){
-	var costcenter = $('#cost_center_'+typecari).val();
-	var month = $('#bulan_'+typecari).val();
-	var year = $('#tahun_'+typecari).val();
+function cariData(acak){
 	var post_search = {};
 	
-	post_search['cost_center'] = costcenter;
-	post_search['month'] = month;
-	post_search['year'] = year;
-	
-	$('#grid_'+typecari).datagrid('reload', post_search);
+	post_search['kat'] = $('#kat_'+acak).val();
+	post_search['key'] = $('#key_'+acak).val();
+	if($('#kat_'+acak).val()!=''){
+		grid_nya.datagrid('reload',post_search);
+	}else{
+		$.messager.alert('Aldeaz Back-Office',"Pilih Kategori Pencarian",'error');
+	}
+	//$('#grid_'+typecari).datagrid('reload', post_search);
 }
 
 function fillCombo(url, SelID, value, value2, value3, value4){

@@ -25,10 +25,26 @@ class backend extends JINGGA_Controller {
 	}
 	function get_grid($mod){
 		$temp=$this->temp.'modul/grid.html';
+		$filter=$this->combo_option($mod);
 		$this->nsmarty->assign('mod',$mod);
+		$this->nsmarty->assign('data_select',$filter);
 		$this->nsmarty->assign('table',$this->input->post('table'));
 		if(!file_exists($this->config->item('appl').APPPATH.'views/'.$temp)){$this->nsmarty->display('konstruksi.html');}
 		else{$this->nsmarty->display($temp);}
+	}
+	
+	function combo_option($mod){
+		$opt="";
+		switch($mod){
+			case "produk":
+				$opt .="<option value='A.judul_buku'>Judul Buku</option>";
+				$opt .="<option value='A.deskripsi_buku'>Desc. Buku</option>";
+				$opt .="<option value='B.kelas'>Kelas</option>";
+				$opt .="<option value='C.nama_group'>Group</option>";
+				$opt .="<option value='D.nama_kategori'>Kategori</option>";
+			break;
+		}
+		return $opt;
 	}
 	function getdata($p1,$p2="",$p3=""){
 		echo $this->mbackend->getdata($p1,'json',$p3);

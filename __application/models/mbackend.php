@@ -33,6 +33,9 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
+				if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}
 				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori,E.id as id_tingkatan,E.tingkatan 
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id

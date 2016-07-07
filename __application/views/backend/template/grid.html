@@ -1,43 +1,8 @@
 <div id="grid_nya_{$main}" style="width:100%">
 	<div id='grid_{$main}'></div>
 	<div id='tb_{$main}' style="padding:5px;">
-		{if $filter_core|default:'' eq 'true'}
-			<div id='filter_core'>
-				<label style='width:80px;'>Filter Data</label>:
-				{if $filter_cost_center|default:'' eq 'true'}
-				<select id='cost_center_{$main}' style='width:150px;padding:3px;'>
-					<option value=''>-- Filter Cost Center --</option>
-					{$costcenter}
-				</select>				
-				&nbsp;&nbsp;
-				{/if}
-				{if $filter_tahun_bulan|default:'' eq 'true'}
-					<select id='bulan_{$main}' style='width:150px;padding:3px;'>
-						{$bulan}
-					</select>
-					&nbsp;&nbsp;&nbsp;
-					<select id='tahun_{$main}' style='width:150px;padding:3px;'>
-						{$tahun}
-					</select>
-				{/if}
-				&nbsp;&nbsp;&nbsp;
-				<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$main}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
-					</span>
-				</a>	
-			</div>
-		{/if}
 		{if $button|default:'' eq 'true'}
 			<div id='tombol'>
-				{if $button_duplicate|default:'' eq 'true'}
-				<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('duplicate_costing', '{$mod}','{$main}','','');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Duplicate Costing</span><span class="l-btn-icon duplicate">&nbsp;</span>
-					</span>
-				</a>	
-				&nbsp;			
-				{/if}
 					
 				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('add', '{$mod}','{$main}');">
 					<span class="l-btn-left l-btn-icon-left">
@@ -56,7 +21,24 @@
 						<span class="l-btn-text">Hapus</span><span class="l-btn-icon icon-remove">&nbsp;</span>
 					</span>
 				</a>
-				
+				&nbsp;
+				&nbsp;
+				&nbsp;
+				{if $filter|default:'' eq 'true'}
+					<label style='width:120px;'>Filter Berdasarkan </label>:
+					<select id='kat_{$acak}' style='width:150px;padding:3px;'>
+						<option value=''>-- Pilih --</option>
+						{$data_select|default:''}
+					</select>				
+					&nbsp;&nbsp;
+					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:30%;">
+					&nbsp;&nbsp;&nbsp;
+					<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
+						</span>
+					</a>	
+				{/if}
 			</div>
 		{/if}
 		{if $button_2|default:'' eq 'true'}
