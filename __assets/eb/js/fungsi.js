@@ -122,42 +122,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
-		case "peserta":
-			judulnya = "Daftar Peserta ";
-			urlnya = "cl_peserta";
-			fitnya = true;
-			footer=true;
-			row_number=false;
-			url_detil=host+"form/kelas";
-			//param['bulan']=$('#bulan_main').val();
-			//param['tahun']=$('#tahun_main').val();
-			kolom[modnya] = [	
-				{field:'sts',title:'Status',width:200, halign:'center',align:'center',
-					formatter:function(value,rowData,rowIndex){
-						if(value==1){
-							return 'User Aktif';
-						}
-						else{
-							return 'User Tidak Aktif';
-						}
-					},
-					styler:function(value,rowData,rowIndex){
-						if(value!=1){return 'background:red;'}
-					}
-				},
-				{field:'Nama',title:'Nama',width:250, halign:'center',align:'left'},
-				{field:'kelas',title:'Kelas',width:150, halign:'center',align:'left'},
-				{field:'Asal_sekolah',title:'Sekolah',width:150, halign:'center',align:'left'},
-				{field:'TempatLahir',title:'Tempat, Tgl. Lahir',width:250, halign:'center',align:'left',
-					formatter:function(value,rowData,rowIndex){
-							return value+', '+rowData.Tgl_Lahir;
-					}
-				},
-				{field:'Alamat',title:'Alamat',width:350, halign:'center',align:'left'},
-				{field:'reg_date',title:'Register Tgl',width:150, halign:'center',align:'center'}
-				
-			];
-		break;
+		
 		case "produk":
 			judulnya = "Daftar Produk Aldeaz ";
 			urlnya = "tbl_buku";
@@ -206,6 +171,65 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				}
 				
 				
+			];
+		break;
+		case "tingkatan":
+			judulnya = "Daftar Tingkatan Sekolah ";
+			urlnya = "cl_tingkatan";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'tingkatan',title:'Tingkatan',width:300, halign:'center',align:'left'},
+				{field:'deskripsi',title:'Deskripsi Tingkatan',width:400, halign:'center',align:'left'}
+			];
+		break;
+		case "kelas":
+			judulnya = "Daftar Kelas ";
+			urlnya = "cl_kelas";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'tingkatan',title:'Tingkatan',width:300, halign:'center',align:'left'},
+				{field:'kelas',title:'Kelas',width:400, halign:'center',align:'left'},
+				{field:'create_date',title:'DiBuat Oleh',width:150, halign:'center',align:'center'},
+				{field:'create_by',title:'Dibuat Tgl',width:100, halign:'center',align:'left'}
+			];
+		break;
+		case "group_sekolah":
+			judulnya = "Daftar Group Sekolah ";
+			urlnya = "cl_group_sekolah";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'nama_group',title:'Nama Group',width:300, halign:'center',align:'left'},
+				{field:'create_date',title:'DiBuat Oleh',width:150, halign:'center',align:'center'},
+				{field:'create_by',title:'Dibuat Tgl',width:100, halign:'center',align:'left'}
+			];
+		break;
+		case "kategori":
+			judulnya = "Daftar Kategori Produk ";
+			urlnya = "cl_kategori";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'nama_kategori',title:'Nama Group',width:200, halign:'center',align:'left'},
+				{field:'deskripsi',title:'Deskripsi Kategori',width:300, halign:'center',align:'left'},
+				{field:'user_create',title:'DiBuat Oleh',width:150, halign:'center',align:'left'},
+				{field:'tgl_buat',title:'Dibuat Tgl',width:100, halign:'center',align:'center'},
+				{field:'user_update',title:'DiUbah Oleh',width:150, halign:'center',align:'left'},
+				{field:'tgl_update',title:'DiUbah Tgl',width:100, halign:'center',align:'center'}
 			];
 		break;
 	}

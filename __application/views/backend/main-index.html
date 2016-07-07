@@ -24,45 +24,7 @@
     <link rel="stylesheet" href="{$host}__assets/easyui/themes/icon.css">
 	<link rel="stylesheet" href="{$host}__assets/eb/css/uploadfile.css">
     <!-- END PAGE LEVEL STYLE -->
-    <script src="{$host}__assets/eb/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-	 <!-- BEGIN MANDATORY SCRIPTS -->
-    <script src="{$host}__assets/eb/plugins/jquery-1.11.js"></script>
-    <script src="{$host}__assets/eb/plugins/jquery-migrate-1.2.1.js"></script>
-    <script src="{$host}__assets/eb/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/bootstrap-select/bootstrap-select.js"></script>
-    <script src="{$host}__assets/eb/plugins/icheck/icheck.js"></script>
-    <script src="{$host}__assets/eb/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
-    <script src="{$host}__assets/eb/plugins/nprogress/nprogress.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-sparkline/sparkline.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/breakpoints/breakpoints.js"></script>
-    <script src="{$host}__assets/eb/plugins/numerator/jquery-numerator.js"></script>
-    <!-- END MANDATORY SCRIPTS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="{$host}__assets/eb/plugins/metrojs/metrojs.min.js"></script>
-    <script src='{$host}__assets/eb/plugins/fullcalendar/moment.min.js'></script>
-    <script src='{$host}__assets/eb/plugins/fullcalendar/fullcalendar.min.js'></script>
-    <script src="{$host}__assets/eb/plugins/simple-weather/jquery.simpleWeather.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/google-maps/markerclusterer.js"></script>
-    <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    <script src="{$host}__assets/eb/plugins/google-maps/gmaps.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.animator.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.resize.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-flot/jquery.flot.time.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-morris/raphael.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/charts-morris/morris.min.js"></script>
-    <script src="{$host}__assets/eb/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-    <script src="{$host}__assets/eb/js/calendar.js"></script>
-    <script src="{$host}__assets/eb/js/dashboard.js"></script>
-    <!-- END  PAGE LEVEL SCRIPTS -->
-    <script src="{$host}__assets/eb/js/application.js"></script>
-	<script src="{$host}__assets/easyui/jquery.easyui.min.js"></script>
-	<script src="{$host}__assets/eb/js/jquery.uploadfile.js"></script>
-	<script src="{$host}__assets/eb/js/fungsi.js"></script>
-	<script src="{$host}__assets/tinymce/tinymce.min.js"></script>
+   
 	<script>
 		var host='{$host}';
 	</script>
@@ -242,11 +204,26 @@
                         <a href="#"><i class="glyph-icon flaticon-panels"></i><span class="sidebar-text">Master</span><span class="fa arrow"></span></a>
                           <ul class="submenu collapse">
                             <li>
-                                <a href="panels.html"><span class="sidebar-text">Kategori Barang</span></a>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/tingkatan','cl_tingkatan')" >									
+									<span class="sidebar-text">Tingkatan Sekolah</span>
+								</a>
                             </li>
-                            <li>
-                                <a href="panels_draggable.html"><span class="sidebar-text">Grup User</span></a>
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/kelas','cl_kelas')" >									
+									<span class="sidebar-text">Kelas Sekolah</span>
+								</a>
                             </li>
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/group_sekolah','cl_group_sekolah')" >
+									<span class="sidebar-text">Group Sekolah</span>
+								</a>
+                            </li>
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/kategori','cl_kategori')" >									
+									<span class="sidebar-text">Kategori</span>
+								</a>
+                            </li>
+							
                         </ul>
                     </li>
                     <li>
@@ -279,7 +256,39 @@
     </div>
     <!-- END WRAPPER -->
 	
-   
+    <script src="{$host}__assets/eb/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	 <!-- BEGIN MANDATORY SCRIPTS -->
+    <script src="{$host}__assets/eb/plugins/jquery-1.11.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-migrate-1.2.1.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/bootstrap-select/bootstrap-select.js"></script>
+    <script src="{$host}__assets/eb/plugins/icheck/icheck.js"></script>
+    <script src="{$host}__assets/eb/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+    <script src="{$host}__assets/eb/plugins/nprogress/nprogress.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-sparkline/sparkline.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/breakpoints/breakpoints.js"></script>
+    <script src="{$host}__assets/eb/plugins/numerator/jquery-numerator.js"></script>
+    <!-- END MANDATORY SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{$host}__assets/eb/plugins/metrojs/metrojs.min.js"></script>
+    <script src='{$host}__assets/eb/plugins/fullcalendar/moment.min.js'></script>
+    <script src='{$host}__assets/eb/plugins/fullcalendar/fullcalendar.min.js'></script>
+    <script src="{$host}__assets/eb/plugins/simple-weather/jquery.simpleWeather.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/google-maps/markerclusterer.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-morris/raphael.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/charts-morris/morris.min.js"></script>
+    <script src="{$host}__assets/eb/plugins/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script src="{$host}__assets/eb/js/calendar.js"></script>
+    <!--script src="{$host}__assets/eb/js/dashboard.js"></script-->
+    <!-- END  PAGE LEVEL SCRIPTS -->
+    <script src="{$host}__assets/eb/js/application.js"></script>
+	<script src="{$host}__assets/easyui/jquery.easyui.min.js"></script>
+	<script src="{$host}__assets/eb/js/jquery.uploadfile.js"></script>
+	<script src="{$host}__assets/eb/js/fungsi.js"></script>
+	<script src="{$host}__assets/tinymce/tinymce.min.js"></script>
 </body>
 
 </html>

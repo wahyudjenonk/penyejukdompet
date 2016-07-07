@@ -69,7 +69,7 @@
 
 	$('#tingkatan{$acak}').change(function(){
 		$('#cl_kelas_id{$acak}').empty();
-		fillCombo(host+'backoffice-combo','cl_kelas_id{$acak}','cl_kelas',$(this).val(),'{$data.cl_kelas_id|default:''}');
+		fillCombo(host+'backoffice-combo','cl_kelas_id{$acak}','c_kelas',$(this).val(),'{$data.cl_kelas_id|default:''}');
 	});
 	
 	$('#batal_buku_{$acak}').bind('click',function(){

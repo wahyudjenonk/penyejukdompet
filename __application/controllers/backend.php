@@ -43,6 +43,21 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='C.nama_group'>Group</option>";
 				$opt .="<option value='D.nama_kategori'>Kategori</option>";
 			break;
+			case "tingkatan":
+				$opt .="<option value='A.tingkatan'>Tingkatan</option>";
+				$opt .="<option value='A.deskripsi'>Desc. Tingkatan</option>";
+			break;
+			case "kelas":
+				$opt .="<option value='B.tingkatan'>Tingkatan</option>";
+				$opt .="<option value='A.kelas'>Kelas</option>";
+			break;
+			case "group_sekolah":
+				$opt .="<option value='A.nama_group'>Group</option>";
+			break;
+			case "kategori":
+				$opt .="<option value='A.nama_kategori'>Nama Kategori</option>";
+				$opt .="<option value='A.deskripsi'>Deskripsi</option>";
+			break;
 		}
 		return $opt;
 	}
@@ -70,7 +85,32 @@ class backend extends JINGGA_Controller {
 						//print_r($data);
 					}
 				break;
-				
+				case "tingkatan":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('cl_tingkatan','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
+				case "kelas":
+					$tingkat=$this->mbackend->getdata('cl_tingkatan','result_array');
+					$this->nsmarty->assign('tingkat',$tingkat);
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('cl_kelas','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
+				case "group_sekolah":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('cl_group_sekolah','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
+				case "kategori":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('cl_kategori','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
 			}
 			$this->nsmarty->assign('mod',$mod);
 			$this->nsmarty->assign('temp',$temp);

@@ -17,18 +17,6 @@ class mbackend extends CI_Model{
 					WHERE username = '".$p1."'
 				";				
 			break;
-			case "cl_tingkatan":
-				$sql="SELECT A.*,A.tingkatan as text
-					FROM cl_tingkatan A ";
-			break;
-			case "cl_group_sekolah":
-				$sql="SELECT A.*,A.nama_group as text
-					FROM cl_group_sekolah A ";
-			break;
-			case "cl_kategori":
-				$sql="SELECT A.*,A.nama_kategori as text
-					FROM cl_kategori A ";
-			break;
 			case "tbl_buku":
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
@@ -44,6 +32,47 @@ class mbackend extends CI_Model{
 					LEFT JOIN cl_tingkatan E ON B.cl_tingkatan_id=E.id ".$where;
 					//echo $sql;
 			break;
+			case "cl_tingkatan":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}
+				$sql="SELECT A.*,A.tingkatan as text FROM cl_tingkatan A  ".$where;
+				//echo $sql;
+			break;
+			case "cl_group_sekolah":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}
+				$sql="SELECT A.*,A.nama_group as text 
+					  FROM cl_group_sekolah A ".$where;
+			break;
+			case "cl_kategori":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}
+				$sql="SELECT A.*,A.nama_kategori as text
+					  FROM cl_kategori A ".$where;
+			break;
+			case "cl_kelas":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}
+				$sql="SELECT A.*, B.tingkatan 
+					  FROM cl_kelas A 
+					  LEFT JOIN cl_tingkatan B ON A.cl_tingkatan_id=B.id ".$where;
+			break;
 			case "tbl_foto_buku":
 				if($balikan=='row_array'){
 					 $where .=" AND A.id=".$this->input->post('id');
@@ -58,7 +87,7 @@ class mbackend extends CI_Model{
 					LEFT JOIN cl_kategori E ON B.cl_kategori_id=E.id 
 					LEFT JOIN cl_tingkatan F ON C.cl_tingkatan_id=F.id ".$where;
 			break;
-			case "cl_kelas":
+			case "l_kelas":
 				$filter=$this->input->post('v2');
 				$sql="SELECT id as id,kelas as txt FROM cl_kelas ".$where;
 				if($filter){$sql .=" AND cl_tingkatan_id=".$filter;}
@@ -111,6 +140,21 @@ class mbackend extends CI_Model{
 							}
 						}
 					}
+				}
+			break;
+			case "cl_group_sekolah":
+			case "cl_kelas":
+			
+				$data['create_date']=date('Y-m-d H:i:s');
+				$data['create_by']=$this->auth['username'];
+			break;
+			case "cl_kategori":
+				if($sts_crud=='add'){
+					$data['tgl_buat']=date('Y-m-d H:i:s');
+					$data['user_create']=$this->auth['username'];
+				}else if($sts_crud=='edit'){
+					$data['tgl_update']=date('Y-m-d H:i:s');
+					$data['user_update']=$this->auth['username'];
 				}
 			break;
 			
