@@ -2730,8 +2730,7 @@ body {} .padding100 {
     color: red;
     font-size: 15px;
 }
-.form-inner input[type="text"],
-textarea {
+.form-inner input[type="text"], textarea, select {
     border: 1px solid #ebebeb;
     height: 40px;
     line-height: 40px;

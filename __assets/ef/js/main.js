@@ -4,6 +4,20 @@ $.post(host+'loading-'+cont+'/'+cont2, {}, function(respons){
 	$('#main-template').html(parsing.page);
 });
 
+function kumpulAction(type, p1, p2, p3){
+	switch(type){
+		case "krj":
+			$('.modal-dialog').css({'width':'500px'});
+			$('#modalencuk').html('');
+			$.post(host+'keranjang-belanja', { }, function(resp){
+				parsingan = $.parseJSON(resp)
+				$('#modalencuk').html(parsingan.page);
+				$('#productModal').modal('show'); 
+			})
+		break;
+	}
+}
+
 (function($) {
     "use strict";
 
@@ -82,9 +96,10 @@ $.post(host+'loading-'+cont+'/'+cont2, {}, function(respons){
         style: 'btn-info',
         size: 4
     });
+	
     /*---------------------
     	Category menu
-    --------------------- */
+    --------------------- 
     $('#categorymenu li.active').addClass('open').children('ul').show();
     $('#categorymenu li.has-sub>a').on('click', function() {
         $(this).removeAttr('href');
@@ -102,7 +117,7 @@ $.post(host+'loading-'+cont+'/'+cont2, {}, function(respons){
             element.siblings('li').find('ul').slideUp(400);
         }
     });
-
+	*/
     // coming soon template
     $('[data-countdown]').each(function() {
         var $this = $(this),
