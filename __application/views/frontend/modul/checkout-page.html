@@ -1,0 +1,91 @@
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<div class="" style='display:inline !important;'>
+								<legend>Keranjang Belanja Anda</legend>
+								{if $data_cart}
+									{foreach from=$data_cart item=rows}
+										<div class="cart-single-product">
+											<div class="cart-single-product-img">
+												<img src="{$host}img/cart/2.jpg">
+											</div>
+											<div class="cart-single-product-title">
+												<a href="#">{$rows.name}</a>
+												<input type='text' style='width:80px !important;' value='{$rows.qty}' /> 
+												x
+												Rp. {$rows.price}
+												=
+												Rp. {$rows.subtotal}
+											</div>
+											<div class="cart-single-product-del">
+												<a href="#"><i class="fa fa-refresh"></i></a>
+												<a href="#"><i class="fa fa-times"></i></a>
+											</div>
+										</div>
+									{/foreach}
+								{else}
+									<center>-- Anda Belum Belanja --</center>
+								{/if}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<form action="#">
+								<legend>Form Checkout</legend>
+								<div class="form-inner" style='min-height:300px !important;'>								
+									<div class="single-input">
+										<label>Tipe Belanja<span>*</span></label> 
+										<select>
+											<option value=''>Choose Combo</option>
+										</select>
+									</div>
+									<div id='load-form'>
+										<div class="single-input one-half left">
+											<label>Nama Sekolah <span>*</span></label> 
+											<input type="text" name="email" required="required">
+										</div>
+										<div class="single-input one-half right">
+											<label>NPSN <span>*</span></label> 
+											<input name="subject" type="text" required="required">
+										</div>
+										<div class="single-input one-half left">
+											<label>Nama PIC <span>*</span></label> 
+											<input type="text" name="email" required="required">
+										</div>
+										<div class="single-input one-half right">
+											<label>Email <span>*</span></label> 
+											<input name="subject" type="text" required="required">
+										</div>
+										<div class="single-input one-half left">
+											<label>No. Telp. <span>*</span></label> 
+											<input type="text" name="email" required="required">
+										</div>
+										<div class="single-input one-half right">
+											<label>No. Handphone <span>*</span></label> 
+											<input name="subject" type="text" required="required">
+										</div>
+										<br/>
+										<div class="single-input">
+											<label>Alamat Pengiriman <span>*</span></label> 
+											<textarea name="message" class="textarea"></textarea>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>

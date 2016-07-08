@@ -11,16 +11,16 @@
 		</div>
 	</div>
 	<div class="quick-add-to-cart">
-			<span>Zona Pengiriman :</span> 
-			<select id='combo_zona_{$data_buku.id}' style='padding:5px;'>
-				{$combo_buku}
-			</select>
-			<br/>
-			<br/>
-			<div class="numbers-row">
-				<input type="number" style='width:80px !important;' id="french-hens_{$data_buku.id}" value="1">
-			</div>
-			<button id='sbm-cart_{$data_buku.id}' class="single_add_to_cart_button" >Add to cart</button>
+		<span>Zona Pengiriman :</span> 
+		<select id='combo_zona_{$data_buku.id}' style='padding:5px;'>
+			{$combo_buku}
+		</select>
+		<br/>
+		<br/>
+		<div class="numbers-row">
+			<input type="number" style='width:80px !important;' id="french-hens_{$data_buku.id}" value="1">
+		</div>
+		<button id='sbm-cart_{$data_buku.id}' class="single_add_to_cart_button" >Add to cart</button>
 	</div>
 	<div class="quick-desc">
 		{$data_buku.deskripsi_buku}
@@ -43,6 +43,9 @@
 		$.post(host+'keranjang-belanja-masuk', posting, function(resp){
 			if(resp){
 				$('#productModal').modal('hide'); 
+				$.post(host+'banyak-belanja', { } , function(prsp) {
+					$('#tot_item').html(prsp);
+				} );
 			}else{
 				alert('Terjadi Kegagalan System, Coba Lagi!');
 			}

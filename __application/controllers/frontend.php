@@ -110,6 +110,25 @@ class frontend extends JINGGA_Controller {
 					case "keranjangnya":
 						$temp = "frontend/modul/keranjangbelanja-page.html";
 						$data_cart = $this->cart->contents();
+						foreach($data_cart as $key => $v){
+							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
+							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						}
+						$this->nsmarty->assign('data_cart', $data_cart);
+					break;
+					case "total_item";
+						$data_cart = $this->cart->contents();
+						$jumlah_item = count($data_cart);
+						echo $jumlah_item;
+						exit;
+					break;
+					case "checkout_belanja":
+						$temp = "frontend/modul/checkout-page.html";
+						$data_cart = $this->cart->contents();
+						foreach($data_cart as $key => $v){
+							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
+							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						}
 						$this->nsmarty->assign('data_cart', $data_cart);
 					break;
 				}		

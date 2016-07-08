@@ -159,6 +159,7 @@
 	});
 	
 	function productwindow(idpro){
+		$('.modal-dialog').css( { 'width':'870px' } );
 		$('#modalencuk').html('');
 		$.post(host+'detil-produk', { 'isds':idpro }, function(resp){
 			parsingan = $.parseJSON(resp)
