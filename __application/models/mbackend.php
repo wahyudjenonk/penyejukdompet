@@ -8,8 +8,25 @@ class mbackend extends CI_Model{
 	
 	function getdata($type="", $balikan="", $p1="", $p2="",$p3="",$p4=""){
 		$where = " WHERE 1=1 ";
-		
+		if($this->input->post('key')){
+				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+		}
 		switch($type){
+			case "get_pemesanan":
+				$data=array();
+				$id=$this->input->post('id');
+				if($id)$where .=" AND A.id=".$id;
+				$sql="SELECT A.*,B.nama_sekolah 
+					  FROM tbl_h_pemesanan A 
+					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
+				$data['header']=$this->db->query($sql)->row_array();
+				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total
+					  FROM tbl_d_pemesanan A 
+					  LEFT JOin tbl_buku B ON A.tbl_buku_id=B.id
+					  WHERE A.tbl_h_pemesanan_id=".$id;
+				$data['detil']=$this->db->query($sql)->result_array();
+				return $data;
+			break;
 			case "data_login":
 				$sql = "
 					SELECT *
@@ -21,9 +38,9 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				if($this->input->post('key')){
+				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
-				}
+				}*/
 				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori,E.id as id_tingkatan,E.tingkatan 
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id
@@ -32,13 +49,22 @@ class mbackend extends CI_Model{
 					LEFT JOIN cl_tingkatan E ON B.cl_tingkatan_id=E.id ".$where;
 					//echo $sql;
 			break;
+			case "tbl_h_pemesanan":
+				
+				$sql="SELECT A.*,B.nama_sekolah 
+					  FROM tbl_h_pemesanan A 
+					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
+					  ".$where."
+					  ORDER BY A.tgl_order DESC";
+			
+			break;
 			case "cl_tingkatan":
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				if($this->input->post('key')){
+				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
-				}
+				}*/
 				$sql="SELECT A.*,A.tingkatan as text FROM cl_tingkatan A  ".$where;
 				//echo $sql;
 			break;
@@ -46,9 +72,9 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				if($this->input->post('key')){
+				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
-				}
+				}*/
 				$sql="SELECT A.*,A.nama_group as text 
 					  FROM cl_group_sekolah A ".$where;
 			break;
@@ -56,9 +82,9 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				if($this->input->post('key')){
+				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
-				}
+				}*/
 				$sql="SELECT A.*,A.nama_kategori as text
 					  FROM cl_kategori A ".$where;
 			break;
@@ -66,9 +92,9 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				if($this->input->post('key')){
+				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
-				}
+				}*/
 				$sql="SELECT A.*, B.tingkatan 
 					  FROM cl_kelas A 
 					  LEFT JOIN cl_tingkatan B ON A.cl_tingkatan_id=B.id ".$where;

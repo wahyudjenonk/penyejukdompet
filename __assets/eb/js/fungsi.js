@@ -122,7 +122,58 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
-		
+		case "invoice":
+			judulnya = "Daftar Invoice Order Pelanggan ";
+			urlnya = "tbl_h_pemesanan";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id',title:'Lihat Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/cost_object.png'></a>";
+					}
+				},
+				{field:'status',title:'Status',width:120, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){return 'Proses Pembayaran';}
+						else return 'Sudah Bayar';
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background:red;color:navy;'}
+						else {return 'background:green;color:navy;'}
+						
+					}
+				},
+				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				
+			];
+			kolom[modnya] = [	
+				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'pajak',title:'Pajak',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				
+				
+				
+				
+			];
+		break;
 		case "produk":
 			judulnya = "Daftar Produk Aldeaz ";
 			urlnya = "tbl_buku";
@@ -173,6 +224,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				
 			];
 		break;
+		
 		case "tingkatan":
 			judulnya = "Daftar Tingkatan Sekolah ";
 			urlnya = "cl_tingkatan";
@@ -260,36 +312,11 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 		onLoadSuccess:function(d){
 			//console.log(d.total);
 			if(modnya=='list_act'){
-				if(d.key=='off'){
-					if(d.total==0){
-						$.messager.confirm('ABC System','No Data In This Period, Do You Want To Get Data In First Period ?',function(r){
-							if(r){
-								loadingna();
-								$.post(host+'home/copy_act',{bulan:$('#bulan_main').val(),tahun:$('#tahun_main').val()},function(resp){
-									if(resp==1){
-										$.messager.alert('ABC System', "Data Was Copied", 'info');
-										winLoadingClose();
-										grid_nya.datagrid('reload');
-									}
-									else if(resp==2){
-										$.messager.alert('ABC System', "No Data In Last Period, Please Upload Or Insert Data Activity", 'error');
-										winLoadingClose();
-										console.log(resp);
-									}
-									else{
-										$.messager.alert('ABC System', "No Data Activity In New Period", 'error');
-										winLoadingClose();
-										console.log(resp);
-									}
-								});
-							}
-						});
-					}
-				}
+				
 			}
 			//gridVRList.datagrid('selectRow', 0);
-			$('.yes').linkbutton({  
-					iconCls: 'icon-cancel'  
+			$('.prev').linkbutton({  
+					iconCls: 'cost_object'  
 			});
 			$('.no').linkbutton({  
 					iconCls: 'icon-ok'  
@@ -1258,4 +1285,11 @@ function simpan_form(id_form,id_cancel,msg){
 	}else{
 		$.messager.alert('Aldeaz Back-Office',"Isi Data Yang Kosong ",'info');
 	}
+}
+function get_detil(mod,id_data){
+	$('#grid_nya_'+mod).hide();
+	$('#detil_nya_'+mod).html('').show().addClass("loading");
+	$.post(host+'backoffice-GetDetil',{mod:mod,id:id_data},function(r){
+		$('#detil_nya_'+mod).html(r).removeClass("loading");
+	});
 }

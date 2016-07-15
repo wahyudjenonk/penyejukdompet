@@ -1,1 +1,6 @@
+
+{if $mod eq 'invoice'}
+{include file="backend/template/grid.html" main={$mod} button="false" table={$table|default:''} filter="true" }
+{else}
 {include file="backend/template/grid.html" main={$mod} button="true" table={$table|default:''} filter="true"}
+{/if}

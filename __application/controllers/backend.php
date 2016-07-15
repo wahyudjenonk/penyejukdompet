@@ -58,6 +58,10 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='A.nama_kategori'>Nama Kategori</option>";
 				$opt .="<option value='A.deskripsi'>Deskripsi</option>";
 			break;
+			case "invoice":
+				$opt .="<option value='A.no_order'>No Order</option>";
+				$opt .="<option value='B.nama_sekolah'>Nama Sekolah</option>";
+			break;
 		}
 		return $opt;
 	}
@@ -119,6 +123,22 @@ class backend extends JINGGA_Controller {
 			else{$this->nsmarty->display($temp);}
 		
 	}
+	function get_konten(){
+		$mod=$this->input->post('mod');
+		$this->nsmarty->assign('mod',$mod);
+		$temp="backend/modul/".$mod.".html";
+		switch($mod){
+			case "invoice":
+				$data=$this->mbackend->getdata('get_pemesanan','result_array');
+				$this->nsmarty->assign('data',$data);
+			break;
+		}
+		$this->nsmarty->assign('temp',$temp);
+		if(!file_exists($this->config->item('appl').APPPATH.'views/'.$temp)){$this->nsmarty->display('konstruksi.html');}
+		else{$this->nsmarty->display($temp);}
+	}
+	
+	
 	function get_combo(){
 		$mod=$this->input->post('v');
 		$val=$this->input->post('v3');

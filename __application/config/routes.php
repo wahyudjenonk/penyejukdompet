@@ -14,6 +14,7 @@ $route['backoffice-simpan/(:any)/(:any)'] = 'backend/simpandata/$1/$2';
 $route['backoffice-delete'] = 'backend/simpandata';
 $route['backoffice-upload'] = 'backend/upload';
 $route['backoffice-hapusFile'] = 'backend/hapus_file';
+$route['backoffice-GetDetil'] = 'backend/get_konten';
 
 
 /* Routes Front End Routes */

@@ -184,7 +184,18 @@
                         <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')" ><i class="glyph-icon flaticon-frontend"></i><span class="sidebar-text">Produk</span></a>
                     </li>
                     <li>
-                        <a href="maps.html"><i class="fa fa-edit"></i><span class="sidebar-text">Berita</span></a>
+                        <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
+                        <ul class="submenu collapse">
+                            <li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi','tbl_konfirmasi')"><span class="sidebar-text">Konfirmasi</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/tracking','tbl_tracking_pengiriman')"><span class="sidebar-text">Tracking</span></a>
+                            </li>
+                        </ul>
                     </li>					
                     <li>
                         <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
