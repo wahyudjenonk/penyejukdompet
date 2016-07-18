@@ -15,6 +15,8 @@ $route['backoffice-delete'] = 'backend/simpandata';
 $route['backoffice-upload'] = 'backend/upload';
 $route['backoffice-hapusFile'] = 'backend/hapus_file';
 $route['backoffice-GetDetil'] = 'backend/get_konten';
+$route['backoffice-Cetak'] = 'backend/cetak';
+$route['backoffice-SetFlag'] = 'backend/set_flag';
 
 
 /* Routes Front End Routes */

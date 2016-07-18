@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {exit('No direct script access allowed');}
 
 class backend extends JINGGA_Controller {
 	
@@ -62,6 +61,20 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='A.no_order'>No Order</option>";
 				$opt .="<option value='B.nama_sekolah'>Nama Sekolah</option>";
 			break;
+			case "konfirmasi":
+				$opt .="<option value='A.konfirmasi_no'>No Konfirmasi</option>";
+				$opt .="<option value='B.no_order'>No Order</option>";
+				$opt .="<option value='C.nama_lengkap'>PIC</option>";
+				$opt .="<option value='C.nama_sekolah'>Nama Sekolah</option>";
+			break;
+			case "gudang_konfirmasi":
+			case "gudang_kirim":
+				$opt .="<option value='A.no_gudang'>No Gudang</option>";
+				$opt .="<option value='B.konfirmasi_no'>No Konfirmasi</option>";
+				$opt .="<option value='C.no_order'>No Order</option>";
+				$opt .="<option value='D.nama_lengkap'>PIC</option>";
+				$opt .="<option value='D.nama_sekolah'>Nama Sekolah</option>";
+			break;
 		}
 		return $opt;
 	}
@@ -115,6 +128,13 @@ class backend extends JINGGA_Controller {
 						$this->nsmarty->assign('data',$data);
 					}
 				break;
+				case "remark":
+					$modul=$this->input->post('mod');
+					$id=$this->input->post('id');
+					$this->nsmarty->assign('modul',$modul);
+					$this->nsmarty->assign('id',$id);
+					//$id=$this
+				break;
 			}
 			$this->nsmarty->assign('mod',$mod);
 			$this->nsmarty->assign('temp',$temp);
@@ -128,7 +148,9 @@ class backend extends JINGGA_Controller {
 		$this->nsmarty->assign('mod',$mod);
 		$temp="backend/modul/".$mod.".html";
 		switch($mod){
+			case "gudang_konfirmasi":
 			case "invoice":
+				if($mod=='gudang_konfirmasi'){$temp="backend/modul/invoice.html";}
 				$data=$this->mbackend->getdata('get_pemesanan','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
@@ -228,5 +250,156 @@ class backend extends JINGGA_Controller {
 				break;
 			}
 		}
+	}
+	
+	function cetak(){
+		$mod=$this->input->post('mod');
+			switch($mod){
+				case "cetak_bast":
+					$data=$this->mbackend->getdata('get_bast');
+					$tgl=$this->konversi_tgl(date('Y-m-d'));
+					$file_name=$data['header']['konfirmasi_no'];
+					$this->hasil_output('pdf',$mod,$data,$file_name,'BERITA ACARA SERAH TERIMA BUKU',$data['header']['konfirmasi_no'],$tgl);
+				break;
+			}
+	}
+	function hasil_output($p1,$mod,$data,$file_name,$judul_header,$nomor="",$param=""){
+		switch($p1){
+			case "pdf":
+				$this->load->library('mlpdf');	
+				//$data=$this->mhome->getdata('cetak_voucher');
+				$pdf = $this->mlpdf->load();
+				$this->nsmarty->assign('param', $param);
+				$this->nsmarty->assign('judul_header', $judul_header);
+				$this->nsmarty->assign('nomor', $nomor);
+				$this->nsmarty->assign('data', $data);
+				$this->nsmarty->assign('mod', $mod);
+				
+				$htmlcontent = $this->nsmarty->fetch("backend/template/temp_pdf.html");
+				$htmlheader = $this->nsmarty->fetch("backend/template/header.html");
+				
+				//echo $htmlcontent;exit;
+				
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 33, 20, 5, 2, 'P');
+				$spdf->ignore_invalid_utf8 = true;
+				// bukan sulap bukan sihir sim salabim jadi apa prok prok prok
+				$spdf->allow_charset_conversion = true;     // which is already true by default
+				$spdf->charset_in = 'iso-8859-1';  // set content encoding to iso
+				$spdf->SetDisplayMode('fullpage');		
+				$spdf->SetHTMLHeader($htmlheader);
+				//$spdf->keep_table_proportions = true;
+				$spdf->useSubstitutions=false;
+				$spdf->simpleTables=true;
+				
+				$spdf->SetHTMLFooter('
+					<div style="font-family:arial; font-size:8px; text-align:center; font-weight:bold;">
+						<table width="100%" style="font-family:arial; font-size:8px;">
+							<tr>
+								<td width="30%" align="left">
+									
+								</td>
+								<td width="40%" align="center">
+									
+								</td>
+								<td width="30%" align="right">
+									Hal. {PAGENO} dari {nbpg}
+								</td>
+							</tr>
+						</table>
+					</div>
+				');				
+				//$file_name = date('YmdHis');
+				$spdf->SetProtection(array('print'));				
+				$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+				//$spdf->Output('repositories/Dokumen_LS/LS_PDF/'.$filename.'.pdf', 'F'); // save to file because we can
+				//$spdf->Output('repositories/Billing/'.$filename.'.pdf', 'F');
+				$spdf->Output($file_name.'.pdf', 'I'); // view file	
+			break;
+		}
+	}
+	function konversi_tgl($date){
+		$this->load->helper('terbilang');
+		$data=array();
+		$timestamp = strtotime($date);
+		$day = date('D', $timestamp);
+		$day_angka = date('d', $timestamp);
+		$month = date('m', $timestamp);
+		$years = date('Y', $timestamp);
+		switch($day){
+			case "Mon":$data['hari']='Senin';break;
+			case "Tue":$data['hari']='Selasa';break;
+			case "Wed":$data['hari']='Rabu';break;
+			case "Thu":$data['hari']='Kamis';break;
+			case "Fri":$data['hari']='Jumat';break;
+			case "Sat":$data['hari']='Sabtu';break;
+			case "Sun":$data['hari']='Minggu';break;
+		}
+		switch($month){
+			case "01":$data['bulan']='Januari';break;	
+			case "02":$data['bulan']='Februari';break;	
+			case "03":$data['bulan']='Maret';break;	
+			case "04":$data['bulan']='April';break;	
+			case "05":$data['bulan']='Mei';break;	
+			case "06":$data['bulan']='Juni';break;	
+			case "07":$data['bulan']='Juli';break;	
+			case "08":$data['bulan']='Agustus';break;	
+			case "09":$data['bulan']='September';break;	
+			case "10":$data['bulan']='Oktober';break;	
+			case "11":$data['bulan']='November';break;	
+			case "12":$data['bulan']='Desember';break;	
+		}
+		$data['tahun']=ucwords(number_to_words($years));
+		$data['tgl_text']=ucwords(number_to_words($day_angka));
+		return $data;
+	}
+	function set_flag(){
+		$mod=$this->input->post('mod');
+		switch($mod){
+			case "kirim_gudang":
+				$sts='add';
+				$data_konfirmasi=$this->mbackend->getdata('get_bast');
+				$no_gudang=$this->mbackend->getdata('get_no_gudang');
+				$data=array('tbl_konfirmasi_id'=>$data_konfirmasi['header']['id'],
+							'tbl_h_pemesanan_id'=>$data_konfirmasi['header']['tbl_h_pemesanan_id'],
+							'no_gudang'=>$no_gudang,
+							'tgl_masuk'=>date('Y-m-d H:i:s'),
+							'remark'=>$this->input->post('remark'),
+							'flag'=>'P',
+							'create_date'=>date('Y-m-d H:i:s'),
+							'create_by'=>$this->auth['username']
+				);
+			break;
+			case "set_packing":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'flag'=>'PK',
+							'packing_date'=>date('Y-m-d H:i:s'),
+							'packing_by'=>$this->auth['username'],
+							'packing_remark'=>$this->input->post('remark')
+				);
+			break;
+			case "set_kirim":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'flag'=>'F',
+							'kirim_date'=>date('Y-m-d H:i:s'),
+							'kirim_by'=>$this->auth['username'],
+							'kirim_remark'=>$this->input->post('remark')
+				);
+			break;
+			case "cancel_pesanan":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'flag'=>'C',
+							'cancel_date'=>date('Y-m-d H:i:s'),
+							'cancel_by'=>$this->auth['username'],
+							'cancel_remark'=>$this->input->post('remark')
+				);
+				echo $this->mbackend->simpandata('tbl_konfirmasi',$data,$sts);
+				exit;
+			break;
+		}
+		
+		echo $this->mbackend->simpandata('tbl_gudang',$data,$sts);
 	}
 }

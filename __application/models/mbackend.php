@@ -12,6 +12,64 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "get_no_gudang":
+				$sql=" SELECT *  FROM tbl_gudang ";
+				$res=$this->db->query($sql)->result_array();
+				if(count($res)>0){
+					$sql=" SELECT max(no_gudang)+1 as nogud_baru  FROM tbl_gudang ";
+					$qry=$this->db->query($sql)->row();
+					$id=$qry->nogud_baru;
+				}else{
+					$id=1;
+				}
+				if($id<10){$id_baru='0000'.$id;}
+				if($id<100 && $id >=10){$id_baru='000'.$id;}
+				if($id<1000 && $id >=100){$id_baru='00'.$id;}
+				if($id<10000 && $id >=1000){$id_baru='0'.$id;}
+				return $id_baru;
+			break;
+			case "tbl_gudang":
+				$sql="SELECT A.*,B.konfirmasi_no,B.konfirmasi_tgl,B.total_pembayaran,
+						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,C.id as id_pemesanan 
+						FROM tbl_gudang A 
+						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
+						LEFT JOIN tbl_h_pemesanan C ON (A.tbl_h_pemesanan_id=C.id AND B.tbl_h_pemesanan_id=C.id)
+						LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
+						".$where." 
+						 ORDER BY A.tgl_masuk DESC"; 
+			break;
+			case "tbl_konfirmasi":
+				
+				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap 
+						FROM tbl_konfirmasi A 
+						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+					  ".$where."
+					  ORDER BY A.konfirmasi_tgl DESC";
+			
+			break;
+			case "get_bast":
+				$data=array();
+				$id=$this->input->post('id');
+				if($id)$where .=" AND A.id=".$id;
+				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
+						C.nama_lengkap,C.nip,C.jabatan,C.npsn,C.alamat,C.tlp,C.no_hp,C.email
+						FROM tbl_konfirmasi A 
+						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+					  ".$where;
+				$data['header']=$this->db->query($sql)->row_array();
+				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total,E.kelas,F.nama_group
+					  FROM tbl_d_pemesanan A 
+					  LEFT JOin tbl_buku B ON A.tbl_buku_id=B.id
+					  LEFT JOIN tbl_h_pemesanan C ON A.tbl_h_pemesanan_id=C.id
+					  LEFT JOIN tbl_konfirmasi D ON D.tbl_h_pemesanan_id=C.id
+					  LEFT JOIN cl_kelas E ON B.cl_kelas_id=E.id
+					  LEFT JOIN cl_group_sekolah F ON B.cl_group_sekolah=F.id
+					  WHERE  D.id=".$id;
+				$data['detil']=$this->db->query($sql)->result_array();
+				return $data;
+			break;
 			case "get_pemesanan":
 				$data=array();
 				$id=$this->input->post('id');
@@ -183,7 +241,28 @@ class mbackend extends CI_Model{
 					$data['user_update']=$this->auth['username'];
 				}
 			break;
-			
+			case "tbl_gudang":
+				if($this->input->post('mod')=='kirim_gudang'){
+					$sql="UPDATE tbl_konfirmasi set flag='F' WHERE id=".$data['tbl_konfirmasi_id'];
+					$this->db->query($sql);
+				}else if($this->input->post('mod')=='set_kirim'){
+					$sql="SELECT * FROM tbl_gudang where id=".$id;
+					$id_pemesanan=$this->db->query($sql)->row('tbl_h_pemesanan_id');
+					$data_kirim=array('tbl_h_pemesanan_id'=>$id_pemesanan,
+									  'no_resi'=>$this->input->post('no_resi'),
+									  'status'=>'P',
+									  'create_date'=>date('Y-m-d H:i:s'),
+									  'create_by'=>$this->auth['username']
+					);
+					$this->db->insert('tbl_tracking_pengiriman',$data_kirim);
+				}
+			break;
+			case "tbl_konfirmasi":
+				$sql="SELECT * FROM tbl_konfirmasi WHERE id=".$id;
+				$id_pemesanan=$this->db->query($sql)->row('tbl_h_pemesanan_id');
+				$sql="UPDATE tbl_h_pemesanan SET status='C' WHERE id=".$id_pemesanan;
+				$this->db->query($sql);
+			break;
 		}
 		
 		switch ($sts_crud){

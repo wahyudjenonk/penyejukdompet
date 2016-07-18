@@ -1,6 +1,10 @@
 
-{if $mod eq 'invoice'}
+{if $mod eq 'invoice' || $mod eq 'konfirmasi' || $mod eq 'gudang_konfirmasi' || $mod eq 'gudang_kirim'}
 {include file="backend/template/grid.html" main={$mod} button="false" table={$table|default:''} filter="true" }
+	{if $mod eq 'konfirmasi'}
+	<div class="modol" ></div>
+		
+	{/if}
 {else}
 {include file="backend/template/grid.html" main={$mod} button="true" table={$table|default:''} filter="true"}
 {/if}

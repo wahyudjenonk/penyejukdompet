@@ -30,6 +30,13 @@
 					</span>
 				</a>
 				{/if}
+				{if $general|default:'false' eq 'true'}	
+				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('general', '{$mod}','{$main}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">{$txt_button|default:'-'}</span><span class="l-btn-icon {$icon_button|default:'icon-add'}">&nbsp;</span>
+					</span>
+				</a>
+				{/if}
 				&nbsp;
 				&nbsp;
 				&nbsp;

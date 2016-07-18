@@ -122,6 +122,162 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "gudang_kirim":
+		case "gudang_konfirmasi":
+			judulnya = "Daftar Konfirmasi Order Pelanggan ";
+			urlnya = "tbl_gudang";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="invoice";
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/cost_object.png'></a>";
+					}
+				},
+				{field:'id',title:'Status',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="cetak_bast";
+						//return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+						if(rowData.flag=='P'){
+							return "Proses";
+						}else if(rowData.flag=='PK'){
+							return "Proses Packing";
+						}else{
+							return "Selesai";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(rowData.flag=='P'){return 'background:green;color:#ffffff;'}
+						else if(rowData.flag=='PK'){return 'background:yellow;color:navy;'}
+					}
+					
+				},
+				
+				{field:'flag',title:'Packing',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_packing";
+						if(value=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/logout.png'></a>";
+						}else{
+							return "<img src='"+host+"__assets/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'create_by',title:'Kirim',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_kirim";
+						if(rowData.flag=='PK'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/logout.png'></a>";
+						}else if(rowData.flag=='P'){
+							return "<img src='"+host+"__assets/easyui/themes/icons/edit_remove.png'>";
+						}else{
+							return "<img src='"+host+"__assets/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'no_gudang',title:'No Gudang - TGL',width:180, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
+					}
+				}
+				
+			];
+			kolom[modnya] = [	
+				{field:'konfirmasi_no',title:'No Konfirmasi - TGL',width:180, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.konfirmasi_tgl
+					}
+				},
+				{field:'no_order',title:'No Order - TGL ',width:180, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+					}
+				},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				{field:'konfirmasi',title:'Remark',width:200, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left'},
+				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+			];
+		break;
+		case "konfirmasi":
+			judulnya = "Daftar Konfirmasi Order Pelanggan ";
+			urlnya = "tbl_konfirmasi";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id',title:'Cetak BAST',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="cetak_bast";
+						if(rowData.flag=='F'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+						}else if(rowData.flag=='C'){
+							return "DiCancel";
+						}else{
+							return "Silahkan Kirim Ke Gudang";
+						}
+					}
+				},
+				{field:'flag',title:'Kirim Gudang',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="kirim_gudang";
+						if(value=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/logout.png'></a>";
+						}else if(value=='C'){
+							return "DiCancel";
+						}else{
+							return "<img src='"+host+"__assets/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'create_by',title:'Cancel Pemesanan',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="cancel_pesanan";
+						if(rowData.flag=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/no.png'></a>";
+						}else if(rowData.flag=='F'){
+							return "Status Sudah Finish";
+						}else{
+							return "<img src='"+host+"__assets/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'konfirmasi_no',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.konfirmasi_tgl
+					}
+				},
+				{field:'no_order',title:'No Order - TGL ',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+					}
+				},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				
+			];
+			kolom[modnya] = [	
+				{field:'konfirmasi',title:'Remark',width:200, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left'},
+				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'nama_bank_pengirim',title:'Bank Pengirim',width:200, halign:'center',align:'left'},
+				{field:'nama_bank_penerima',title:'Bank Penerima',width:200, halign:'center',align:'left'},
+				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+			];
+		break;
 		case "invoice":
 			judulnya = "Daftar Invoice Order Pelanggan ";
 			urlnya = "tbl_h_pemesanan";
@@ -138,11 +294,15 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				{field:'status',title:'Status',width:120, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){return 'Proses Pembayaran';}
-						else return 'Sudah Bayar';
+						else if(value=='C'){
+							return 'DiCancel';
+						}else return 'Sudah Bayar';
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:red;color:navy;'}
-						else {return 'background:green;color:navy;'}
+						if(value=='P'){return 'background:yellow;color:navy;'}
+						else if(value=='C'){
+							return 'background:red;color:#ffffff;';
+						}else {return 'background:green;color:#ffffff;'}
 						
 					}
 				},
@@ -322,6 +482,11 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 					iconCls: 'icon-ok'  
 			});
 			
+		},
+		rowStyler: function(index,row){
+			if(modnya=='konfirmasi'){
+				if(row.flag=='P'){return 'background-color:#8EC354;color:#navy;'}
+			}
 		},
 		onClickRow:function(rowIndex,rowData){
 		  if(klik==true){
@@ -614,7 +779,6 @@ function genTab(div,mod,sub_mod,tab_array,div_panel,judul_panel,mod_num, height_
 
 function cariData(acak){
 	var post_search = {};
-	
 	post_search['kat'] = $('#kat_'+acak).val();
 	post_search['key'] = $('#key_'+acak).val();
 	if($('#kat_'+acak).val()!=''){
@@ -1287,9 +1451,38 @@ function simpan_form(id_form,id_cancel,msg){
 	}
 }
 function get_detil(mod,id_data){
-	$('#grid_nya_'+mod).hide();
-	$('#detil_nya_'+mod).html('').show().addClass("loading");
-	$.post(host+'backoffice-GetDetil',{mod:mod,id:id_data},function(r){
-		$('#detil_nya_'+mod).html(r).removeClass("loading");
-	});
+	switch(mod){
+		case "cetak_bast":
+			openWindowWithPost(host+'backoffice-Cetak',{mod:mod,id:id_data});
+			//openWindowWithPost(host+'backoffice-Cetak',{mod:mod,id:id_data});
+		break;
+		case "kirim_gudang":
+			$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
+				windowForm(r,'Pesan Gudang',580,250);
+			});
+		break;
+		case "cancel_pesanan":
+			$.messager.confirm('Cancel Order','Yakin Ingin MengCancel Order Ini? ',function(r){
+				if (r){
+					$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
+						windowForm(r,'Manajemen Order',580,250);
+					});
+				}
+			});
+		break;
+		case "set_packing":
+		case "set_kirim":
+			$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
+				windowForm(r,'Manajemen Order',580,250);
+			});
+		break;
+		default:
+			$('#grid_nya_'+mod).hide();
+			$('#detil_nya_'+mod).html('').show().addClass("loading");
+			$.post(host+'backoffice-GetDetil',{mod:mod,id:id_data},function(r){
+				$('#detil_nya_'+mod).html(r).removeClass("loading");
+			});
+		break;
+	}
+	
 }
