@@ -18,6 +18,50 @@ function kumpulAction(type, p1, p2, p3){
 	}
 }
 
+function fillCombo(url, SelID, value, value2, value3, value4){
+	if (value == undefined) value = "";
+	if (value2 == undefined) value2 = "";
+	if (value3 == undefined) value3 = "";
+	if (value4 == undefined) value4 = "";
+	
+	$('#'+SelID).empty();
+	$.post(url, {"v": value, "v2": value2, "v3": value3, "v4": value4},function(data){
+		$('#'+SelID).append(data);
+	});
+
+}
+
+function submit_form(frm,func){
+	var url = jQuery('#'+frm).attr("url");
+    jQuery('#'+frm).form('submit',{
+            url:url,
+            onSubmit: function(){
+                  return $(this).form('validate');
+            },
+            success:function(data){
+				//$.unblockUI();
+                if (func == undefined ){
+                     if (data == "1"){
+                        pesan('Data Sudah Disimpan ','Sukses');
+                    }else{
+                         pesan(data,'Result');
+                    }
+                }else{
+                    func(data);
+                }
+            },
+            error:function(data){
+				//$.unblockUI();
+                 if (func == undefined ){
+                     pesan(data,'Error');
+                }else{
+                    func(data);
+                }
+            }
+    });
+}
+
+
 (function($) {
     "use strict";
 
