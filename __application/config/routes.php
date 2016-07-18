@@ -44,7 +44,8 @@ $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$
 $route['detil-produk'] = 'frontend/getdisplay/loading_page/detail_produk';
 $route['harga-per-zona'] = 'frontend/getdisplay/loading_page/zona_pengiriman';
 
-//$route['keranjang-belanja'] = 'frontend/getdisplay/main_page/keranjangnya';
+$route['session-zona'] = 'frontend/getdisplay/loading_page/combo_zona';
+$route['pilih-zona'] = 'frontend/cruddata/session_zona';
 
 $route['keranjang-belanja'] = 'frontend/getdisplay/loading_page/keranjangnya';
 $route['banyak-belanja'] = 'frontend/getdisplay/loading_page/total_item';
@@ -52,7 +53,16 @@ $route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add';
 
 $route['selesai-belanja'] = 'frontend/getdisplay/main_page/selesaibelanja';
 $route['loading-selesaibelanja'] = 'frontend/getdisplay/loading_page/checkout_belanja';
+$route['loading-formcheckout'] = 'frontend/getdisplay/loading_page/form_isian_checkout';
+$route['combo-kab-kota'] = 'frontend/getdisplay/loading_page/combo_kab_kota';
+$route['combo-kecamatan'] = 'frontend/getdisplay/loading_page/combo_kecamatan';
+$route['submit-transaksi'] = 'frontend/cruddata/form/checkout';
+$route['finish'] = 'frontend/getdisplay/loading_page/finish_semuanya';
 
+$route['konfirmasi'] = 'frontend/getdisplay/main_page/konfirmasi';
+$route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb';
+$route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
+$route['submit-konfirmasi'] = 'frontend/cruddata/form/konf';
 
 
 

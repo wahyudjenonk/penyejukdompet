@@ -112,22 +112,30 @@ class lib {
 		$html = "";
 		$subject = "";
 		switch($type){
-			case "email_test":
-				
+			case "email_invoice":
+				$ci->nsmarty->assign('data_cart', $p1);
+				$ci->nsmarty->assign('penunjang', $p2);
+				$html = $ci->nsmarty->fetch('frontend/modul/email_invoice.html');
+				$subject = "EMAIL INVOICE - ".$p2['no_order'];
+			break;
+			case "email_konfirmasi":
+				$html = $ci->nsmarty->fetch('frontend/modul/email_konfirmasi.html');
 			break;
 		}
 		
 		$config = array(
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
-			,"smtp_host" => "smtp.gmail.com"
-			,"smtp_user" => "triwahyunugros@gmail.com"
-			,"smtp_pass" => "ms6713saa"
-			,"smtp_port" => 465
+			,"smtp_host" => "ssl://smtp.gmail.com"
+			,"smtp_user" => "jinggasinergiidea@gmail.com"
+			,"smtp_pass" => "7in664it50k"
+			,"smtp_port" => 465,
+			'charset' => 'utf-8',
+            'wordwrap' => TRUE,
 		);
 		
 		$ci->email->initialize($config);
-		$ci->email->from("triwahyunugros@gmail.com");
+		$ci->email->from("invoice@aldeaz.id");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);
@@ -174,7 +182,7 @@ class lib {
 		}
 		
 		
-		$optTemp = '<option value=""> -- Choose -- </option>';
+		$optTemp = '<option value=""> -- Pilih -- </option>';
 		switch($type){
 			case "jenis_pembayaran":
 				$data = array(

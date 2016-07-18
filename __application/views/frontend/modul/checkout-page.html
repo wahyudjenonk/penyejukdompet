@@ -39,77 +39,98 @@
 				<div class="col-md-12">
 					<div class="contact-form-area">
 						<div class="form-wrap">
-							<form action="#">
-								<legend>Form Checkout</legend>
-								<div class="form-inner" style='min-height:300px !important;'>								
-									<div class="single-input">
-										<label>Tipe Belanja<span>*</span></label> 
-										<select>
-											<option value=''>Choose Combo</option>
-										</select>
-									</div>
-									<div id='load-form'>
-										<h3>Form Buat yang pembeli Sekolah</h3>
-										<div class="single-input one-half left">
-											<label>Nama Sekolah <span>*</span></label> 
-											<input type="text" name="email" required="required">
+							<legend>Isi Data Sekolah / Data Pembeli Umum</legend>
+							<ul class="nav nav-tabs">
+								 <li class="active"><a data-toggle="tab" href="#sekolah">Sekolah</a></li>
+								 <li><a data-toggle="tab" href="#umum">Umum</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="sekolah" class="tab-pane fade in active">
+									<br/>
+									<form id='frmskul' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
+										<input type='hidden' name='editstatus' value='edxxxi'>
+										<input type='hidden' name='typ' value='skull'>
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>Jasa Pengiriman<span>*</span></label> 
+												<select id='js_pengiriman_skull' name='jasa_pengiriman'>
+													{$combo_jasa_pengiriman}
+												</select>
+											</div>
+											<div class="single-input one-half right">
+												<label>Metode Pembayaran<span>*</span></label> 
+												<select id='mtd_pembayaran_skull' name='metode_pembayaran'>
+													{$combo_metode_pembayaran}
+												</select>
+											</div>											
+											<div class="single-input one-half left">
+												<label>NPSN <span>*</span></label> 
+												<input name="npsn" id="npsn" type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_sekolah' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_sekolah'></div>
 										</div>
-										<div class="single-input one-half right">
-											<label>NPSN <span>*</span></label> 
-											<input name="subject" type="text" required="required">
-										</div>
-										<div class="single-input one-half left">
-											<label>Nama PIC <span>*</span></label> 
-											<input type="text" name="email" required="required">
-										</div>
-										<div class="single-input one-half right">
-											<label>Email <span>*</span></label> 
-											<input name="subject" type="text" required="required">
-										</div>
-										<div class="single-input one-half left">
-											<label>No. Telp. <span>*</span></label> 
-											<input type="text" name="email" required="required">
-										</div>
-										<div class="single-input one-half right">
-											<label>No. Handphone <span>*</span></label> 
-											<input name="subject" type="text" required="required">
-										</div>
-										<br/>
-										<div class="single-input">
-											<label>Alamat Pengiriman <span>*</span></label> 
-											<textarea name="message" class="textarea"></textarea>
-										</div>
-										
-										<hr/>
-										<h3>Form Buat yang pembeli umum bray</h3>
-										<div class="single-input one-half left">
-											<label>Nama Pemesan <span>*</span></label> 
-											<input type="text" name="email" required="required">
-										</div>
-										<div class="single-input one-half right">
-											<label>Email <span>*</span></label> 
-											<input name="subject" type="text" required="required">
-										</div>
-										<div class="single-input one-half left">
-											<label>No. Telp <span>*</span></label> 
-											<input type="text" name="email" required="required">
-										</div>
-										<div class="single-input one-half right">
-											<label>Handphone <span>*</span></label> 
-											<input name="subject" type="text" required="required">
-										</div>
-										<div class="single-input">
-											<label>Alamat Pengiriman <span>*</span></label> 
-											<textarea name="message" class="textarea"></textarea>
-										</div>
-									</div>
+									</form>		
 								</div>
-							</form>
+								<div id="umum" class="tab-pane fade">
+									<br/>
+									<form id='frmskul' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
+										<input type='hidden' name='editstatus' value='edi'>
+										<input type='hidden' name='typ' value='umu'>
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>Jasa Pengiriman<span>*</span></label> 
+												<select id='js_pengiriman_skull' name='jasa_pengiriman'>
+													{$combo_jasa_pengiriman}
+												</select>
+											</div>
+											<div class="single-input one-half right">
+												<label>Metode Pembayaran<span>*</span></label> 
+												<select id='mtd_pembayaran_skull' name='metode_pembayaran'>
+													{$combo_metode_pembayaran}
+												</select>
+											</div>																						
+											<div class="single-input one-half left">
+												<label>Email Anda<span>*</span></label> 
+												<input name="subject" type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_umum' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_umum'></div>
+										</div>
+									</form>										
+								</div>
+							</div>
 						</div>
-					</div>
+					</div>			
 				</div>
 			</div>
 			
 		</div>
 	</div>
 </div>
+
+<script>
+	$('#cek_data_sekolah').on('click', function(){
+		$.post(host+'loading-formcheckout', { 'tpefrm':'skull', 'npp':$('#npsn').val() }, function(e){
+			parsinganss = $.parseJSON(e)
+			$('#load_form_sekolah').html(parsinganss.page);
+		});
+	});
+	///////////zzzzzzfdfa
+	$('#cek_data_umum').on('click', function(){
+		$.post(host+'loading-formcheckout', { 'tpefrm':'umu' }, function(e){
+			parsinganss = $.parseJSON(e)
+			$('#load_form_umum').html(parsinganss.page);
+		});
+	});
+</script>

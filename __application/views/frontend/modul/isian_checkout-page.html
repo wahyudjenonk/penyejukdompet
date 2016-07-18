@@ -1,0 +1,129 @@
+{if $type_form eq 'skull'}
+<div id='form-utm-skull'>	
+	<input type='hidden' name='ckdt' value="{$status_data|default:'TIDAK ADA'}">
+	<div class="single-input">
+		<label>Nama Sekolah <span>*</span></label> 
+		<input type="text" name="nmseko" value="{$data.nama_sekolah|default:''}" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>Provinsi<span>*</span></label> 
+		<select id='prv_skull' name='prov'>
+			{$combo_prov}
+		</select>
+	</div>
+	<div class="single-input one-half right">
+		<label>Kabupaten<span>*</span></label> 
+		<select id='kab_skull' name='kab'>
+			{$combo_kab}
+		</select>
+	</div>
+	<div class="single-input one-half left">
+		<label>Kecamatan<span>*</span></label> 
+		<select id='kec_skull' name='kec'>
+			{$combo_kec}
+		</select>
+	</div>
+	</div>
+	<div class="single-input one-half right">
+		<label>Kode Pos<span>*</span></label> 
+		<input type="text" name="kdpos" value="{$data.kode_pos|default:''}" />
+	</div>
+	<div class="single-input one-half left">
+		<label>No. Telp. Sekolah<span>*</span></label> 
+		<input type="text" name="notelp" value="{$data.no_telp_sekolah|default:''}" required="required">
+	</div>
+	<div class="single-input one-half right">
+		<label>Email Sekolah<span>*</span></label> 
+		<input type="text" name="email" value="{$data.email|default:''}" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>Nama Kepala Sekolah <span>*</span></label> 
+		<input type="text" name="nmkepsek" value="{$data.nama_kepala_sekolah|default:''}" required="required">
+	</div>	
+	<div class="single-input one-half right">
+		<label>Nama Bendahara<span>*</span></label> 
+		<input type="text" name="nmbend" value="{$data.nama_bendahara|default:''}" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>No. HP Kepala Sekolah <span>*</span></label> 
+		<input type="text" name="nohpkepsek" value="{$data.no_hp_kepsek|default:''}" required="required">
+	</div>	
+	<div class="single-input one-half right">
+		<label>No. HP Bendahara<span>*</span></label> 
+		<input type="text" name="nohpbend" value="{$data.no_hp_bendahara|default:''}" required="required">
+	</div>
+	<div class="single-input">
+		<label>Alamat Pengiriman <span>*</span></label> 
+		<textarea name="almt" class="textarea">{$data.alamat_pengiriman|default:''}</textarea>
+	</div>	
+	<div class="submit-btn-area text-center">
+		<br/>
+		<a id='slesai_belanja' href='javascript:void(0);' class="estut-btn active submit">Selesai Belanja</a>
+	</div>
+</div>
+{elseif $type_form eq 'umu'}
+<div id='form-utm-skull'>	
+	<div class="single-input">
+		<label>Nama Anda <span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>Provinsi<span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half right">
+		<label>Kabupaten<span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>Kecamatan<span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half right">
+		<label>Kode Pos<span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half left">
+		<label>No. Handphone<span>*</span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input one-half right">
+		<label>No. Telp.<span></span></label> 
+		<input type="text" name="email" required="required">
+	</div>
+	<div class="single-input">
+		<label>Alamat Pengiriman <span>*</span></label> 
+		<textarea name="message" class="textarea"></textarea>
+	</div>	
+	<div class="submit-btn-area text-center">
+		<br/>
+		<a id='selanjutnya_sekolah' href='javascript:void(0);' class="estut-btn active submit">Selanjutnya</a>
+	</div>
+</div>	
+{/if}
+
+<script>
+	$('#prov_skull').on('change', function(){
+		fillCombo(host+'combo-kab-kota', 'kab_skull', '', $(this).val() );
+	});
+	$('#kab_skull').on('change', function(){
+		fillCombo(host+'combo-kecamatan', 'kec_skull', '', $(this).val() );
+	});
+	
+	/////testetsetse
+	
+	$('#slesai_belanja').on('click', function(){
+		submit_form('frmskul', function(resp){
+			$.post(host+'finish', { } , function(s){
+				parsinganxs = $.parseJSON(s)
+				$('#modalencuk').html(parsinganxs.page);			
+				$('#productModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				}); 
+				$('#productModal').modal('show'); 
+				$('#button_close').hide();
+			});
+		});
+	});
+</script>

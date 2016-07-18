@@ -57,6 +57,8 @@
 		<!-- responsive CSS
 		============================================ -->
         <link rel="stylesheet" href="{$host}__assets/ef/css/responsive.css">
+		<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/zebradate/css/default.css">
+
 		<!-- modernizr JS
 		============================================ -->			
         <script src="{$host}__assets/ef/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -158,16 +160,8 @@
 										    <ul>
 										        <li class="current"><a href="{$host}beranda">Beranda</a></li>  
 												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>												
-										        <li><a href="{$host}katalog">Katalog</a>
-										            {*
-													<ul class="estut-dropdown">
-														{foreach from=$data_tingkatan item=row}
-															<li><a href="{$host}kategori/{$row.tingkatan|lower}">{$row.tingkatan}</a></li>
-														{/foreach}
-										            </ul>
-													*}
-										        </li>
-												<li><a href="#">Konfirmasi</a></li>      
+										        <li><a href="{$host}katalog">Katalog</a></li>
+												<li><a href="{$host}konfirmasi">Konfirmasi</a></li>      
 												<li><a href="{$host}tracking">Lacak Pesanan</a></li>      
 												<li><a href="{$host}histori">Riwayat</a></li>      
 												<li><a href="{$host}tentangkami">Pembatalan</a></li>      
@@ -347,7 +341,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<button id='button_close' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</div>
 						<div class="modal-body">
 							<div id='modalencuk' class="modal-product">
@@ -448,8 +442,12 @@
 		============================================ -->		
         <script src="{$host}__assets/ef/js/masonry.pkgd.min.js"></script>
 		<!-- plugins JS
-		============================================ -->		
+		============================================ -->	
+		
         <script src="{$host}__assets/ef/js/plugins.js"></script>
+        <script src="{$host}__assets/ef/js/jquery.form.js"></script>
+		<script src="{$host}__assets/ef/zebradate/js/zebra_datepicker.js"></script>
+		
 		<!-- main JS
 		============================================ -->		
         <script src="{$host}__assets/ef/js/main.js"></script>

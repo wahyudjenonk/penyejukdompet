@@ -19,7 +19,7 @@ class Login extends JINGGA_Controller {
 			if(count($cek_user)>0){
 				if(isset($cek_user['status']) && $cek_user['status']==1){
 					if($pass == $this->encrypt->decode($cek_user['password'])){
-						$this->session->set_userdata('4ld33334zzzzzzt', base64_encode(serialize($cek_user)));	
+						$this->session->set_userdata('4ld33334zzzzzzt', base64_encode(serialize($cek_user)));
 					}else{
 						$error=true;
 						$this->session->set_flashdata('error', 'Password Tidak Benar');
