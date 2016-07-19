@@ -5,7 +5,7 @@
 <head>
     <!-- BEGIN META SECTION -->
     <meta charset="utf-8">
-    <title>Aldeaz BackOffice</title>
+    <title>AldeaZ BackOffice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="" name="description" />
     <meta content="themes-lab" name="author" />
@@ -45,10 +45,10 @@
                     <i class="fa fa-outdent"></i>
                 </a>
                 <a class="navbar-brand" href="index.html">
-                   
+                   <img src="{$host}img/logo.png" alt="logo" width="100" height="45">
                 </a>
             </div>
-            <div class="navbar-center">CV. Aldeaz Sejahtera Printing</div>
+            <div class="navbar-center">Aldeaz Sejahtera Printing - Backoffice</div>
             <div class="navbar-collapse collapse">
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <ul class="nav navbar-nav pull-right header-menu">
@@ -135,7 +135,7 @@
                     <li class="dropdown" id="user-header">
                         <a href="#" class="dropdown-toggle c-white" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img src="{$host}__assets/eb/img/avatars/avatar2.png" alt="user avatar" width="30" class="p-r-5">
-                            <span class="username">Bob Nilson</span>
+                            <span class="username">Administrator</span>
                             <i class="fa fa-angle-down p-r-10"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -178,13 +178,13 @@
             <div id="main-menu">
                 <ul class="sidebar-nav">
                     <li class='current'>
-                        <a href="index.html"><i class="fa fa-dashboard"></i><span class="sidebar-text">Beranda</span></a>
+                        <a href="index.html"><i class="fa fa-home"></i><span class="sidebar-text">Beranda</span></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')" ><i class="glyph-icon flaticon-frontend"></i><span class="sidebar-text">Produk</span></a>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')" ><i class="fa fa-book"></i><span class="sidebar-text">Produk</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-check-square-o"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order</span></a>
@@ -198,7 +198,7 @@
                         </ul>
                     </li>					
                     <li>
-                        <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Gudang</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-barcode"></i><span class="sidebar-text">Gudang</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang')"><span class="sidebar-text">Manajemen Order</span></a>
@@ -212,7 +212,7 @@
                         </ul>
                     </li>
 					<li>
-                        <a href="#"><i class="glyph-icon flaticon-pages"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="glyph-icon flaticon-charts2"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
                                 <a href="timeline.html"><span class="sidebar-text">Transaksi Penjualan</span></a>
