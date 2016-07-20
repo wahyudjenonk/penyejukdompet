@@ -75,6 +75,16 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='D.nama_lengkap'>PIC</option>";
 				$opt .="<option value='D.nama_sekolah'>Nama Sekolah</option>";
 			break;
+			case "member_sekolah":
+				$opt .="<option value='A.nama_lengkap'>Nama Lengkap</option>";
+				$opt .="<option value='A.npsn'>NPSN</option>";
+				$opt .="<option value='A.email'>Email</option>";
+			break;
+			case "member_umum":
+				$opt .="<option value='A.nama_lengkap'>Nama Lengkap</option>";
+				$opt .="<option value='A.email'>Email</option>";
+			break;
+			
 		}
 		return $opt;
 	}

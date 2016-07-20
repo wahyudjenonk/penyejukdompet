@@ -12,6 +12,33 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "tbl_monitor":
+				$sql="SELECT A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
+						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi
+						FROM tbl_h_pemesanan A
+						LEFT JOIN (
+							SELECT A.tbl_h_pemesanan_id,A.flag,A.id FROM tbl_konfirmasi A
+						)AS B ON B.tbl_h_pemesanan_id=A.id
+						LEFT JOIN (
+							SELECT A.tbl_h_pemesanan_id,A.tbl_konfirmasi_id,A.flag 
+							FROM tbl_gudang A
+						)AS C ON (C.tbl_h_pemesanan_id=A.id AND C.tbl_konfirmasi_id=B.id)
+						LEFT JOIN (
+							SELECT A.tbl_h_pemesanan_id,A.`status`,A.no_resi 
+							FROM tbl_tracking_pengiriman A
+						)AS D ON D.tbl_h_pemesanan_id=A.id ".$where;
+			break;
+			case "tbl_registrasi":
+			case "tbl_registrasi_umum":
+				if($type=="tbl_registrasi")$where .=" AND A.jenis_pembeli='SEKOLAH'";
+				else $where .=" AND A.jenis_pembeli='UMUM'";
+				$sql="SELECT A.*,CONCAT('PROV. ',B.provinsi,', ',C.kab_kota,', KEC. ',D.kecamatan)as prov_kota
+					FROM tbl_registrasi A
+					LEFT JOIN cl_provinsi B ON A.cl_provinsi_kode=B.kode_prov
+					LEFT JOIN cl_kab_kota C ON A.cl_kab_kota_kode=C.kode_kab_kota
+					LEFT JOIN cl_kecamatan D ON A.cl_kecamatan_kode=D.kode_kecamatan 
+					".$where;
+			break;
 			case "get_no_gudang":
 				$sql=" SELECT *  FROM tbl_gudang ";
 				$res=$this->db->query($sql)->result_array();
@@ -53,7 +80,7 @@ class mbackend extends CI_Model{
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
-						C.nama_lengkap,C.nip,C.jabatan,C.npsn,C.alamat,C.tlp,C.no_hp,C.email
+						C.nama_lengkap,C.nip,C.jabatan,C.npsn,C.alamat_pengiriman,C.no_telp_sekolah,C.email
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id

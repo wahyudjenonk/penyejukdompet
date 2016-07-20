@@ -122,6 +122,133 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "monitor_order":
+			judulnya = "Monitoring Order Pelanggan ";
+			urlnya = "tbl_monitor";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'no_order',title:'No. Order',width:200, halign:'center',align:'center'},
+				{field:'status_order',title:'Status Order',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return "Proses Pembayaran";
+						}else if(value=='F'){
+							return "Sudah DiBayar";
+						}else{
+							return "-";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background:green;color:#ffffff;'}
+						else if(value=='F'){return 'background:white;color:navy;'}
+						else {return 'background:red;color:navy;'}
+					}
+				},
+				{field:'status_konfirmasi',title:'Status Konfirmasi',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return "Tunggu Konfirmasi";
+						}else if(value=='F'){
+							return "Sudah Dikonfirmasi";
+						}else{
+							return "-";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background:green;color:#ffffff;'}
+						else if(value=='F'){return 'background:white;color:navy;'}
+						else {return 'background:red;color:navy;'}
+					}
+				},
+				{field:'status_gudang',title:'Status Gudang',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return "Tunggu Konfirmasi Packing";
+						}else if(value=='PK'){
+							return "Proses Packing";
+						}else if(value=='F'){
+							return "Proses Pengiriman";
+						}else{
+							return "-";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background:green;color:#ffffff;'}
+						else if(value=='PK'){return 'background:yellow;color:navy;'}
+						else if(value=='F'){return 'background:white;color:navy;'}
+						else {return 'background:red;color:navy;'}
+					}
+				},
+				{field:'status_kirim',title:'Status Pengiriman',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return "Proses Pengiriman";
+						}else if(value=='F'){
+							return "Sudah Dikirim";
+						}else{
+							return "-";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background:green;color:#ffffff;'}
+						else if(value=='F'){return 'background:white;color:navy;'}
+						else {return 'background:red;color:navy;'}
+					}
+				},
+				{field:'no_resi',title:'No Resi',width:150, halign:'center',align:'center'}
+				
+			];
+		break;
+		case "member_sekolah":
+		case "member_umum":
+			judulnya = "Daftar Member Sekolah ";
+			urlnya = (modnya=='member_umum' ? "tbl_registrasi_umum" : "tbl_registrasi");
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			if(modnya=='member_sekolah'){
+				frozen[modnya] = [	
+					{field:'nama_lengkap',title:'Nama Lengkap',width:130, halign:'center',align:'left'},
+					{field:'email',title:'Email',width:130, halign:'center',align:'left'},
+					{field:'nama_sekolah',title:'Nama Sekolah',width:150, halign:'center',align:'left'},
+					{field:'npsn',title:'NPSN',width:80, halign:'center',align:'center'},
+					{field:'reg_date',title:'Reg. Date',width:130, halign:'center',align:'center'},
+					
+				];
+				kolom[modnya] = [	
+					{field:'prov_kota',title:'Prov.KabKota',width:200, halign:'center',align:'left'},
+					{field:'alamat_pengiriman',title:'Alamat',width:200, halign:'center',align:'left'},
+					{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+					{field:'no_telp_sekolah',title:'No. Telp Sekolah',width:100, halign:'center',align:'left'},
+					{field:'nama_kepala_sekolah',title:'Nama KEPSEK',width:120, halign:'center',align:'left'},
+					{field:'nama_bendahara',title:'Nama Bendahara',width:120, halign:'center',align:'left'},
+					{field:'no_hp_kepsek',title:'No. KEPSEK',width:100, halign:'center',align:'left'},
+					{field:'no_hp_bendahara',title:'No. Bendahara',width:100, halign:'center',align:'left'}
+					
+				];
+			}else{
+				frozen[modnya] = [	
+					{field:'nama_lengkap',title:'Nama Lengkap',width:130, halign:'center',align:'left'},
+					{field:'email',title:'Email',width:130, halign:'center',align:'left'},
+					{field:'reg_date',title:'Reg. Date',width:130, halign:'center',align:'center'},
+					
+				];
+				kolom[modnya] = [	
+					{field:'prov_kota',title:'Prov.KabKota',width:200, halign:'center',align:'left'},
+					{field:'alamat_pengiriman',title:'Alamat',width:200, halign:'center',align:'left'},
+					{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+					{field:'no_hp_customer',title:'No. HP',width:100, halign:'center',align:'left'},
+					{field:'no_telp_customer',title:'No Telp.',width:120, halign:'center',align:'left'},
+					
+				];
+
+			}
+		break;
 		case "gudang_kirim":
 		case "gudang_konfirmasi":
 			judulnya = "Daftar Konfirmasi Order Pelanggan ";
