@@ -64,6 +64,14 @@ $route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb
 $route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
 $route['submit-konfirmasi'] = 'frontend/cruddata/form/konf';
 
+$route['lacakpesanan'] = 'frontend/getdisplay/main_page/lacakpesanan';
+$route['loading-lacakpesanan'] = 'frontend/getdisplay/loading_page/lacakpesan';
+$route['loading-lacakform'] = 'frontend/getdisplay/loading_page/lacakform';
+
+$route['riwayatpesanan'] = 'frontend/getdisplay/main_page/riwayat';
+$route['loading-riwayat'] = 'frontend/getdisplay/loading_page/pesananriwayat';
+$route['loading-riwayatform'] = 'frontend/getdisplay/loading_page/formriwayat';
+
 
 
 

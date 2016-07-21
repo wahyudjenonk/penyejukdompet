@@ -62,6 +62,73 @@ class mfrontend extends CI_Model{
 					WHERE A.no_order = '".$p1."'
 				";
 			break;
+			
+			case "tracking_pesanan":
+				$sql = "
+					SELECT CASE A.status 
+							WHEN 'P' THEN 'BELUM DIBAYAR'
+							WHEN 'F' THEN 'SUDAH DIBAYAR'
+							END
+						as status_pembayaran,
+						CASE B.flag 
+							WHEN 'P' THEN 'MENUNGGU VERIFIKASI'
+							WHEN 'F' THEN 'PEMBAYARAN TERKONFIRMASI'
+							END
+						as status_konfirmasi,
+						CASE C.status 
+							WHEN 'P' THEN 'PROSES PACKING'
+							WHEN 'F' THEN 'DALAM PENGIRIMAN'
+							END
+						as status_tracking,
+						C.no_resi
+					FROM tbl_h_pemesanan A
+					LEFT JOIN  tbl_konfirmasi B ON B.tbl_h_pemesanan_id = A.id 
+					LEFT JOIN  tbl_tracking_pengiriman C ON C.tbl_h_pemesanan_id = A.id 
+					WHERE A.no_order = '".$p1."'
+				";
+			break;
+			
+			case "riwayat_pesanan":
+				$sql = "
+					SELECT A.*, 
+						CASE A.status 
+							WHEN 'P' THEN 'BELUM DIBAYAR'
+							WHEN 'F' THEN 'SUDAH DIBAYAR'
+							END
+						as status_pembayaran,
+						CASE B.flag 
+							WHEN 'P' THEN 'MENUNGGU VERIFIKASI'
+							WHEN 'F' THEN 'PEMBAYARAN TERKONFIRMASI'
+							END
+						as status_konfirmasi,
+						CASE C.status 
+							WHEN 'P' THEN 'PROSES PACKING'
+							WHEN 'F' THEN 'DALAM PENGIRIMAN'
+							END
+						as status_tracking,
+						C.no_resi
+					FROM tbl_h_pemesanan A
+					LEFT JOIN tbl_konfirmasi B ON B.tbl_h_pemesanan_id = A.id 
+					LEFT JOIN tbl_tracking_pengiriman C ON C.tbl_h_pemesanan_id = A.id 
+					WHERE A.tbl_registrasi_id = '".$p1."'
+				";
+			break;
+			case "datacustomer":
+				if($p2 == 'SEKOLAH'){
+					$where = " AND npsn = '".$p1."' ";
+				}else{
+					$where = " AND email = '".$p1."' ";
+				}
+				$sql = "
+					SELECT A.*,
+						B.provinsi, C.kab_kota, D.kecamatan
+					FROM tbl_registrasi A
+					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
+					WHERE jenis_pembeli = '".$p2."' $where
+				";
+			break;
 		}
 		
 		if($balikan == 'json'){
@@ -265,9 +332,22 @@ class mfrontend extends CI_Model{
 				$sts_crud = 'falseto';
 				$data_inv = $this->db->get_where('tbl_h_pemesanan', array('no_order'=>$data['inv']) )->row_array();
 				if($data_inv){
+					$sql_maxkonf = "
+						SELECT MAX(no_konfirmasi) as konfirmasi_no
+						FROM tbl_konfirmasi
+					";
+					$maxkonf = $this->db->query($sql_maxkonf)->row_array();
+					if($maxord['konfirmasi_no'] != null){
+						$acak_no_konf = ($maxkonf['konfirmasi_no'] + 1); 
+					}else{
+						$acak_no_konf = 1;
+					}
+					
 					$total_pembayaran = trim($data['jml_trf']);
 					$total_pembayaran = str_replace(".", "", $total_pembayaran);
 					$array_insert = array(
+						'no_konfirmasi' => $acak_no_konf,
+						'tgl_konfirmasi' => date('Y-m-d'),
 						'tbl_h_pemesanan_id' => $data_inv['id'],
 						'total_pembayaran' => (int)$total_pembayaran,
 						'nama_bank_pengirim' => $data['bank_pengirim'],

@@ -211,6 +211,54 @@ class frontend extends JINGGA_Controller {
 						}
 						$this->nsmarty->assign('data_inv', $data_invoice);
 					break;
+					
+					case "lacakpesan":
+						$temp = "frontend/modul/lacakpesan-page.html";
+					break;
+					case "lacakform":
+						$temp = "frontend/modul/lacakpesananform-page.html";
+						$invno = $this->input->post('inv');
+						$data_tracking = $this->mfrontend->getdata('tracking_pesanan', 'row_array', $invno);
+						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $invno);
+						if($data_invoice){
+							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
+							$this->nsmarty->assign('data_customer', $data_customer);
+							
+							$data_invoice['sub_total'] = number_format($data_invoice['sub_total'],0,",",".");
+							$data_invoice['pajak'] = number_format($data_invoice['pajak'],0,",",".");
+							$data_invoice['grand_total'] = number_format($data_invoice['grand_total'],0,",",".");
+						}
+						
+						$this->nsmarty->assign('data_inv', $data_invoice);
+						$this->nsmarty->assign('data_tracking', $data_tracking);
+					break;
+					
+					case "pesananriwayat":
+						$temp = "frontend/modul/riwayat-page.html";
+					break;
+					case "formriwayat":
+						$temp = "frontend/modul/formriwayat-page.html";
+						$typ_cust = $this->input->post('typ');
+						if($typ_cust == 'skull'){
+							$npsn = $this->input->post('np');
+							$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $npsn, 'SEKOLAH');
+						}elseif($typ_cust == 'umu'){
+							$email = $this->input->post('em');
+							$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $email, 'UMUM');
+						}
+						
+						if($datacust){
+							$data_pesanan = $this->mfrontend->getdata('riwayat_pesanan', 'result_array', $datacust['id']);
+							foreach($data_pesanan as $k=>$v){
+								$data_pesanan[$k]['sub_total'] = number_format($v['sub_total'],0,",",".");
+								$data_pesanan[$k]['pajak'] = number_format($v['pajak'],0,",",".");
+								$data_pesanan[$k]['grand_total'] = number_format($v['grand_total'],0,",",".");
+							}
+							$this->nsmarty->assign('datapesanan', $data_pesanan);
+							$this->nsmarty->assign('datacust', $datacust);
+						}
+						
+					break;
 				}		
 				
 				if(isset($temp)){
@@ -302,7 +350,7 @@ class frontend extends JINGGA_Controller {
 			echo 1;
 		}else{
 			if(isset($post['editstatus'])){$editstatus = $post['editstatus'];unset($post['editstatus']);}
-			//else $editstatus = null;
+			else $editstatus = null;
 			
 			echo $this->mfrontend->simpansavedata($p1, $post, $editstatus);
 		}
