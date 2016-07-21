@@ -61,6 +61,26 @@ function submit_form(frm,func){
     });
 }
 
+function openWindowWithPost(url,params){
+    var newWindow = window.open(url, 'winpost'); 
+    if (!newWindow) return false;
+    var html = "";
+    html += "<html><head></head><body><form  id='formid' method='post' action='" + url + "'>";
+
+    $.each(params, function(key, value) { 
+		if (value instanceof Array || value instanceof Object) {
+			$.each(value, function(key1, value1) { 
+				html += "<input type='hidden' name='" + key + "["+key1+"]' value='" + value1 + "'/>";
+			});
+		}else{
+			html += "<input type='hidden' name='" + key + "' value='" + value + "'/>";
+		}
+    });
+   
+    html += "</form><script type='text/javascript'>document.getElementById(\"formid\").submit()</script></body></html>";
+    newWindow.document.write(html);
+    return newWindow;
+}
 
 (function($) {
     "use strict";
