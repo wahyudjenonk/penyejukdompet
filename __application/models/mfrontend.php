@@ -54,6 +54,16 @@ class mfrontend extends CI_Model{
 					WHERE A.no_order = '".$p1."'
 				";
 			break;
+			case "detail_pesanan":
+				$sql = "
+					SELECT A.*,
+						B.judul_buku, C.kelas
+					FROM tbl_d_pemesanan A
+					LEFT JOIN tbl_buku B ON B.id = A.tbl_buku_id
+					LEFT JOIN cl_kelas C ON C.id = B.cl_kelas_id
+					WHERE A.tbl_h_pemesanan_id = '".$p1."'
+				";
+			break;
 			case "getemail_cust":
 				$sql = "
 					SELECT B.email
@@ -114,10 +124,16 @@ class mfrontend extends CI_Model{
 				";
 			break;
 			case "datacustomer":
-				if($p2 == 'SEKOLAH'){
-					$where = " AND npsn = '".$p1."' ";
-				}else{
-					$where = " AND email = '".$p1."' ";
+				if($p3 == 'riwayat'){
+					if($p2 == 'SEKOLAH'){
+						$where = " AND npsn = '".$p1."' ";
+					}else{
+						$where = " AND email = '".$p1."' ";
+					}
+					
+					$where .= " AND jenis_pembeli = '".$p2."' ";
+				}elseif($p3 == 'cetak_bast'){
+					$where = " AND A.id = '".$p1."' ";
 				}
 				$sql = "
 					SELECT A.*,
@@ -126,7 +142,7 @@ class mfrontend extends CI_Model{
 					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
 					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
 					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
-					WHERE jenis_pembeli = '".$p2."' $where
+					WHERE 1=1 $where
 				";
 			break;
 		}

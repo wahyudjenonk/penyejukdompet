@@ -83,7 +83,27 @@
 	<hr/>
 	<a id='konfi' href='javascript:void(0);' class="estut-btn active submit">Konfirmasi</a>
 </div>
-{elseif $data_inv.status eq 'F'}
+
+<script>
+	$('#tgl_trf').Zebra_DatePicker();
+	$('#konfi').on('click', function(){
+		submit_form('frmkonf', function(resp){
+			$.post(host+'finish', { } , function(s){
+				parsinganxs = $.parseJSON(s)
+				$('#modalencuk').html(parsinganxs.page);			
+				$('#productModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				}); 
+				$('#productModal').modal('show'); 
+				$('#button_close').hide();
+			});
+		});
+	});
+</script>
+{/if}
+
+{if $data_konfirmasi.flag|default:'' eq 'F'}
 <div class="single-input one-half left" style='width:100% !important;'>	
 	<div class="table-responsive">
 		<table class="table table-bordered">
@@ -141,7 +161,7 @@
 				<tr>
 				  <td>Tanggal Transfer</td>
 				  <td>
-						{$data_konfirmasi.tanggal_transfer|default:''}
+						{$data_konfirmasi.tanggal_transfer|date_format:'%d-%m-%Y'|default:''}
 				  </td>
 				</tr>
 			</tbody>
@@ -153,29 +173,17 @@
 </div>
 <div class="submit-btn-area text-center">
 	<hr/>
-	<a id='konfi' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
-	<a id='konfi' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
+	<a id='ctk_bast' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
+	<a id='ctk_kwt' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
 </div>
-
-{else}	
-	<center>Data Anda Tidak Ditemukan</center>
+{elseif $data_konfirmasi.flag|default:'' eq 'P'}	
+	<center>Data Konfirmasi Pembayaran Anda Masih Dalam Tahap Verifikasi</center>
 {/if}
 
 <script>
-	$('#tgl_trf').Zebra_DatePicker();
-	$('#konfi').on('click', function(){
-		submit_form('frmkonf', function(resp){
-			$.post(host+'finish', { } , function(s){
-				parsinganxs = $.parseJSON(s)
-				$('#modalencuk').html(parsinganxs.page);			
-				$('#productModal').modal({
-					backdrop: 'static',
-					keyboard: false
-				}); 
-				$('#productModal').modal('show'); 
-				$('#button_close').hide();
-			});
-		});
-	});
-
+	$('#ctk_bast').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv').val();
+		openWindowWithPost(host+'cetak-bast', post);
+	});	
 </script>
