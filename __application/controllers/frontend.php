@@ -157,13 +157,14 @@ class frontend extends JINGGA_Controller {
 					break;
 					case "form_isian_checkout":
 						$temp = "frontend/modul/isian_checkout-page.html";
-						$type_form = $this->input->post('tpefrm');
-						if($type_form = 'skull'){
+						$type_form = trim($this->input->post('tpefrm'));
+						
+						if($type_form == 'skull'){
 							$npsn = $this->input->post('npp');
-							$cek_data = $this->db->get_where('tbl_registrasi', array('npsn'=>$npsn) )->row_array();
-						}elseif($type_form = 'umu'){
+							$cek_data = $this->db->get_where('tbl_registrasi', array('npsn'=>$npsn, 'jenis_pembeli'=>'SEKOLAH') )->row_array();
+						}elseif($type_form == 'umu'){
 							$email = $this->input->post('em');
-							$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$email) )->row_array();
+							$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$email, 'jenis_pembeli'=>'UMUM') )->row_array();
 						}
 						
 						if($cek_data){

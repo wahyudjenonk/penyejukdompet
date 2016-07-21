@@ -79,25 +79,25 @@
 								</div>
 								<div id="umum" class="tab-pane fade">
 									<br/>
-									<form id='frmskul' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
+									<form id='frmumu' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
 										<input type='hidden' name='editstatus' value='edi'>
 										<input type='hidden' name='typ' value='umu'>
 										<div class="form-inner" style='min-height:300px !important;'>
 											<div class="single-input one-half left">
 												<label>Jasa Pengiriman<span>*</span></label> 
-												<select id='js_pengiriman_skull' name='jasa_pengiriman'>
+												<select id='js_pengiriman_umu' name='jasa_pengiriman'>
 													{$combo_jasa_pengiriman}
 												</select>
 											</div>
 											<div class="single-input one-half right">
 												<label>Metode Pembayaran<span>*</span></label> 
-												<select id='mtd_pembayaran_skull' name='metode_pembayaran'>
+												<select id='mtd_pembayaran_umu' name='metode_pembayaran'>
 													{$combo_metode_pembayaran}
 												</select>
 											</div>																						
 											<div class="single-input one-half left">
 												<label>Email Anda<span>*</span></label> 
-												<input name="subject" type="text" required="required">
+												<input name="email" id='em' type="text" required="required">
 											</div>
 											<div class="single-input one-half right">
 												<label>&nbsp;</label> 
@@ -128,9 +128,9 @@
 	});
 	///////////zzzzzzfdfa
 	$('#cek_data_umum').on('click', function(){
-		$.post(host+'loading-formcheckout', { 'tpefrm':'umu' }, function(e){
-			parsinganss = $.parseJSON(e)
-			$('#load_form_umum').html(parsinganss.page);
+		$.post(host+'loading-formcheckout', { 'tpefrm':'umu', 'em':$('#em').val() }, function(ex){
+			parsinganssd = $.parseJSON(ex)
+			$('#load_form_umum').html(parsinganssd.page);
 		});
 	});
 </script>

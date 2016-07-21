@@ -131,7 +131,6 @@ class mfrontend extends CI_Model{
 							'jenis_pembeli' => 'SEKOLAH',
 							'email' => $data['email'],
 							'status' => 1,
-							'email' => $data['email'],
 							'npsn' => $data['npsn'],
 							'nama_sekolah' => $data['nmseko'],
 							'nama_kepala_sekolah' => $data['nmkepsek'],
@@ -148,72 +147,118 @@ class mfrontend extends CI_Model{
 						);
 						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
 						if($insert_registrasi){
-							$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn']) )->row_array();
+							$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 							$id = $data_pembeli['id'];
 						}else{
 							$id = null;
 						}
 					}elseif($data['ckdt'] == 'ADA'){
-						$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn']) )->row_array();
+						$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 						$id = $data_pembeli['id'];
 					}
 					
-					if($id != null){
-						$data_cart = $this->cart->contents();
-						$zona_pilihan = $this->session->userdata("zonaxtreme");
-						$tot = 0;
-						foreach($data_cart as $k => $v){
-							$tot += $v['subtotal'];
-						}
-						
-						$acak_no_order = 'ORD-'.$this->lib->randomString(8, 'angkahuruf');
-						$pajak = 0.1 * $tot;
-						$grand_total = ($tot + $pajak);
-						$data_header_pesanan = array(
-							'no_order' => $acak_no_order,
-							'tgl_order' => date('Y-m-d H:i:s'),
-							'cl_jasa_pengiriman_id' => $data['jasa_pengiriman'],
-							'cl_metode_pembayaran_id' => $data['metode_pembayaran'],
-							'tbl_registrasi_id' => $id,
-							'sub_total' => $tot,
-							'pajak' => $pajak,
-							'grand_total' => $grand_total,
-							'status' => "P",
-							'create_date' => date('Y-m-d H:i:s'),
-							'zona' => $zona_pilihan['zona_pilihan'],
+				}elseif($data['typ'] == 'umu'){
+					if($data['ckdt'] == 'TIDAK ADA'){
+						$data_registrasi = array(
+							'jenis_pembeli' => 'UMUM',
+							'email' => $data['email'],
+							'status' => 1,
+							'nama_lengkap' => $data['nm_cust'],
+							'no_hp_customer' => $data['nhp'],
+							'no_telp_customer' => $data['ntlp'],
+							'cl_provinsi_kode' => $data['prov'],
+							'cl_kab_kota_kode' => $data['kab'],
+							'cl_kecamatan_kode' => $data['kec'],
+							'kode_pos' => $data['kdpos'],
+							'alamat_pengiriman' => $data['pngrmn'],
+							'reg_date' => date('Y-m-d H:i:s')
 						);
-						$insert_header = $this->db->insert('tbl_h_pemesanan', $data_header_pesanan);
-						if($insert_header){
-							$cekdt_header = $this->db->get_where('tbl_h_pemesanan', array('no_order'=>$acak_no_order) )->row_array();
-							$array_batch = array();
-							foreach($data_cart as $s => $r){
-								$array_insert = array(
-									'tbl_h_pemesanan_id' => $cekdt_header['id'],
-									'tbl_buku_id' => $r['id'],
-									'harga' => $r['price'],
-									'qty' => $r['qty'],
-									'subtotal' => $r['subtotal'],
-									'create_date' => date('Y-m-d H:i:s'),
-								);
-								array_push($array_batch, $array_insert);	
-								
-								$data_cart[$s]['price'] = number_format($r['price'],0,",",".");
-								$data_cart[$s]['subtotal'] = number_format($r['subtotal'],0,",",".");
-							}
-							$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
-							
-							$array_email = array(
-								'pemesan' => $data['nmseko'],
-								'no_order' => $acak_no_order,
-								'tot' => number_format($tot,0,",","."),
-								'pajak' => number_format($pajak,0,",","."),
-								'grand_total' => number_format($grand_total,0,",","."),
-							);
-							$this->lib->kirimemail('email_invoice', $data['email'], $data_cart, $array_email);
-							
-							$this->cart->destroy();
+						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
+						if($insert_registrasi){
+							$data_pembeli = $this->db->get_where('tbl_registrasi', array('email'=>trim($data['email']), 'jenis_pembeli'=>'UMUM' ) )->row_array();
+							$id = $data_pembeli['id'];
+						}else{
+							$id = null;
+						}
+					}elseif($data['ckdt'] == 'ADA'){
+						$data_pembeli = $this->db->get_where('tbl_registrasi', array('email'=>trim($data['email']), 'jenis_pembeli'=>'UMUM' ) )->row_array();
+						if($data_pembeli){
+							$id = $data_pembeli['id'];
+						}else{
+							$id = null;
 						}
 					}
+					
+				}
+				
+				if($id != null){
+					$data_cart = $this->cart->contents();
+					$zona_pilihan = $this->session->userdata("zonaxtreme");
+					$tot = 0;
+					foreach($data_cart as $k => $v){
+						$tot += $v['subtotal'];
+					}
+					
+					$sql_maxord = "
+						SELECT MAX(no_order) as ordered_no
+						FROM tbl_h_pemesanan
+					";
+					$maxord = $this->db->query($sql_maxord)->row_array();
+					if($maxord['ordered_no'] != null){
+						$acak_no_order = ( $maxord['ordered_no'] + 1 ); 
+					}else{
+						$acak_no_order = 100000;
+					}
+					
+					$pajak = 0.1 * $tot;
+					$grand_total = ($tot + $pajak);
+					$data_header_pesanan = array(
+						'no_order' => $acak_no_order,
+						'tgl_order' => date('Y-m-d H:i:s'),
+						'cl_jasa_pengiriman_id' => $data['jasa_pengiriman'],
+						'cl_metode_pembayaran_id' => $data['metode_pembayaran'],
+						'tbl_registrasi_id' => $id,
+						'sub_total' => $tot,
+						'pajak' => $pajak,
+						'grand_total' => $grand_total,
+						'status' => "P",
+						'create_date' => date('Y-m-d H:i:s'),
+						'zona' => $zona_pilihan['zona_pilihan'],
+					);
+					$insert_header = $this->db->insert('tbl_h_pemesanan', $data_header_pesanan);
+					if($insert_header){
+						$cekdt_header = $this->db->get_where('tbl_h_pemesanan', array('no_order'=>$acak_no_order) )->row_array();
+						$array_batch = array();
+						foreach($data_cart as $s => $r){
+							$array_insert = array(
+								'tbl_h_pemesanan_id' => $cekdt_header['id'],
+								'tbl_buku_id' => $r['id'],
+								'harga' => $r['price'],
+								'qty' => $r['qty'],
+								'subtotal' => $r['subtotal'],
+								'create_date' => date('Y-m-d H:i:s'),
+							);
+							array_push($array_batch, $array_insert);	
+							
+							$data_cart[$s]['price'] = number_format($r['price'],0,",",".");
+							$data_cart[$s]['subtotal'] = number_format($r['subtotal'],0,",",".");
+						}
+						$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
+						
+						$array_email = array(
+							'pemesan' => $data['nmseko'],
+							'no_order' => $acak_no_order,
+							'tot' => number_format($tot,0,",","."),
+							'pajak' => number_format($pajak,0,",","."),
+							'grand_total' => number_format($grand_total,0,",","."),
+						);
+						$this->lib->kirimemail('email_invoice', $data['email'], $data_cart, $array_email);
+						
+						$this->cart->destroy();
+					}
+				}else{
+					
+					
 				}
 			break;
 			case "konf":
