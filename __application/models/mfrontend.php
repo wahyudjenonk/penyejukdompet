@@ -86,7 +86,7 @@ class mfrontend extends CI_Model{
 							END
 						as status_konfirmasi,
 						CASE C.status 
-							WHEN 'P' THEN 'PROSES PACKING'
+							WHEN 'PK' THEN 'PROSES PACKING'
 							WHEN 'F' THEN 'DALAM PENGIRIMAN'
 							END
 						as status_tracking,

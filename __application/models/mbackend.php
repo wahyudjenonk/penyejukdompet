@@ -56,7 +56,7 @@ class mbackend extends CI_Model{
 				return $id_baru;
 			break;
 			case "tbl_gudang":
-				$sql="SELECT A.*,B.konfirmasi_no,B.konfirmasi_tgl,B.total_pembayaran,
+				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
 						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,C.id as id_pemesanan 
 						FROM tbl_gudang A 
 						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
@@ -72,7 +72,7 @@ class mbackend extends CI_Model{
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
 					  ".$where."
-					  ORDER BY A.konfirmasi_tgl DESC";
+					  ORDER BY A.tgl_konfirmasi DESC";
 			
 			break;
 			case "get_bast":
@@ -80,7 +80,7 @@ class mbackend extends CI_Model{
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
-						C.nama_lengkap,C.nip,C.jabatan,C.npsn,C.alamat_pengiriman,C.no_telp_sekolah,C.email
+						C.nama_lengkap,C.nip,C.npsn,C.alamat_pengiriman,C.no_telp_sekolah,C.email
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
@@ -177,10 +177,13 @@ class mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
+				if($balikan=='result_array'){
+					$where .=" AND A.cl_tingkatan_id=".$this->input->post('v2');
+				}
 				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 				}*/
-				$sql="SELECT A.*, B.tingkatan 
+				$sql="SELECT A.*, B.tingkatan,kelas as txt 
 					  FROM cl_kelas A 
 					  LEFT JOIN cl_tingkatan B ON A.cl_tingkatan_id=B.id ".$where;
 			break;
@@ -222,6 +225,12 @@ class mbackend extends CI_Model{
 	function get_combo($type="", $p1="", $p2=""){
 		switch($type){
 			case "cl_kategori":
+			break;
+			case "c_kelas":
+				$sql = "
+					SELECT id, kelas as txt
+					FROM 
+				";
 			break;
 		}
 		
@@ -277,7 +286,7 @@ class mbackend extends CI_Model{
 					$id_pemesanan=$this->db->query($sql)->row('tbl_h_pemesanan_id');
 					$data_kirim=array('tbl_h_pemesanan_id'=>$id_pemesanan,
 									  'no_resi'=>$this->input->post('no_resi'),
-									  'status'=>'P',
+									  'status'=>'F',
 									  'create_date'=>date('Y-m-d H:i:s'),
 									  'create_by'=>$this->auth['username']
 					);
