@@ -36,7 +36,7 @@ function submit_form(frm,func){
     jQuery('#'+frm).form('submit',{
             url:url,
             onSubmit: function(){
-                  return $(this).form('validate');
+				  return $(this).form('validate');
             },
             success:function(data){
 				//$.unblockUI();
