@@ -15,10 +15,11 @@
 						<div class="col-md-1">:</div>
 						<div class="col-md-5">{$data.header.tgl_order|default:'-'}</div>
 					</div>
+					
 					<div class="col-md-6">
-						<div class="col-md-6" style="text-align:right;">Nama Sekolah</div>
+						<div class="col-md-6" style="text-align:right;">{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</div>
 						<div class="col-md-1">:</div>
-						<div class="col-md-5">{$data.header.nama_sekolah|default:'-'}</div>
+						<div class="col-md-5">{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</div>
 					</div>
 					<div class="col-md-6">
 						<div class="col-md-6" style="text-align:right;">Zona</div>

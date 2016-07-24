@@ -325,9 +325,19 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 					}
 				},
 				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
-				{field:'konfirmasi',title:'Remark',width:200, halign:'center',align:'left'},
-				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left'},
-				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:200, halign:'center',align:'left'},
+				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(rowData.jenis_pembeli=='SEKOLAH')
+							return rowData.nama_kepala_sekolah;
+						else 
+							return value
+					}
+				},
+				
+				
+				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
 				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
@@ -343,6 +353,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
+				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						//var modul="invoice";
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/cost_object.png'></a>";
+					}
+				},
 				{field:'id',title:'Cetak BAST',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="cetak_bast";
@@ -379,6 +395,11 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						}
 					}
 				},
+				
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'}
+				
+			];
+			kolom[modnya] = [	
 				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
@@ -389,13 +410,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
 					}
 				},
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
-				
-			];
-			kolom[modnya] = [	
 				{field:'konfirmasi',title:'Remark',width:200, halign:'center',align:'left'},
-				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left'},
-				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(rowData.jenis_pembeli=='SEKOLAH')
+							return rowData.nama_kepala_sekolah;
+						else 
+							return value
+					}
+					
+				},
+				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
 				{field:'nama_bank_pengirim',title:'Bank Pengirim',width:200, halign:'center',align:'left'},
 				{field:'nama_bank_penerima',title:'Bank Penerima',width:200, halign:'center',align:'left'},
 				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
@@ -406,8 +431,9 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			];
 		break;
 		case "invoice":
-			judulnya = "Daftar Invoice Order Pelanggan ";
-			urlnya = "tbl_h_pemesanan";
+		case "invoice_umum":
+			judulnya = (modnya=='invoice' ? "Daftar Invoice Order Pelanggan Sekolah" : "Daftar Invoice Order Pelanggan Umum");
+			urlnya = (modnya=='invoice' ? "tbl_h_pemesanan" : "tbl_h_pemesanan_umum");
 			fitnya = true;
 			nowrap=false;
 			//footer=true;
@@ -439,7 +465,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				
 			];
 			kolom[modnya] = [	
-				{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
 				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);

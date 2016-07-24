@@ -187,22 +187,26 @@
                         <a href="#"><i class="fa fa-check-square-o"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
-                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order</span></a>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order Sekolah</span></a>
+                            </li>
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice_umum','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order Umum</span></a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi','tbl_konfirmasi')"><span class="sidebar-text">Konfirmasi</span></a>
+                            </li>
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang')"><span class="sidebar-text">Manajemen Order</span></a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/monitor_order','tbl')"><span class="sidebar-text">Monitoring Order</span></a>
                             </li>
                         </ul>
                     </li>					
-                    <li>
+                    <!--li>
                         <a href="#"><i class="fa fa-barcode"></i><span class="sidebar-text">Gudang</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
-                            <li>
-                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang')"><span class="sidebar-text">Manajemen Order</span></a>
-                            </li>
+                            
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_masuk','tbl_gudang')"><span class="sidebar-text">Data Masuk Gudang</span></a>
                             </li>
@@ -210,18 +214,15 @@
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/stok','tbl_stok')"><span class="sidebar-text">Stok Barang</span></a>
                             </li>
                         </ul>
-                    </li>
+                    </li-->
 					<li>
                         <a href="#"><i class="glyph-icon flaticon-charts2"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
-                                <a href="timeline.html"><span class="sidebar-text">Transaksi Penjualan</span></a>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','')"><span class="sidebar-text">Laporan Rekap Penjualan</span></a>
                             </li>
                             <li>
-                                <a href="blog-list.html"><span class="sidebar-text">User Pembeli</span></a>
-                            </li>
-                            <li>
-                                <a href="blog-list.html"><span class="sidebar-text">Stok Barang</span></a>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','')"><span class="sidebar-text">Laporan Detil Penjualan</span></a>
                             </li>
                         </ul>
                     </li>

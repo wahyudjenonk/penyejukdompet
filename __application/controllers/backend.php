@@ -61,6 +61,10 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='A.no_order'>No Order</option>";
 				$opt .="<option value='B.nama_sekolah'>Nama Sekolah</option>";
 			break;
+			case "invoice_umum":
+				$opt .="<option value='A.no_order'>No Order</option>";
+				$opt .="<option value='B.nama_lengkap'>Nama Lengkap</option>";
+			break;
 			case "konfirmasi":
 				$opt .="<option value='A.konfirmasi_no'>No Konfirmasi</option>";
 				$opt .="<option value='B.no_order'>No Order</option>";
@@ -98,6 +102,13 @@ class backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "rekap_penjualan":
+				case "detil_penjualan":
+					if($mod=='rekap_penjualan'){$judul="Laporan Rekapitulasi Penjualan";}
+					else{$judul="Laporan Detil Penjualan Per Item";}
+					$this->nsmarty->assign('judul',$judul);
+					$temp=$this->temp.'modul/laporan.html';
+				break;
 				case "produk":
 					$tingkat=$this->mbackend->getdata('cl_tingkatan','result_array');
 					$group=$this->mbackend->getdata('cl_group_sekolah','result_array');
@@ -161,8 +172,11 @@ class backend extends JINGGA_Controller {
 		$temp="backend/modul/".$mod.".html";
 		switch($mod){
 			case "gudang_konfirmasi":
+			case "konfirmasi":
 			case "invoice":
-				if($mod=='gudang_konfirmasi'){$temp="backend/modul/invoice.html";}
+			case "invoice_umum":
+				//if($mod=='gudang_konfirmasi'){}
+				$temp="backend/modul/invoice.html";
 				$data=$this->mbackend->getdata('get_pemesanan','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;

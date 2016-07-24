@@ -17,6 +17,7 @@ $route['backoffice-hapusFile'] = 'backend/hapus_file';
 $route['backoffice-GetDetil'] = 'backend/get_konten';
 $route['backoffice-Cetak'] = 'backend/cetak';
 $route['backoffice-SetFlag'] = 'backend/set_flag';
+$route['backoffice-laporan/(:any)'] = 'backend/get_form/$1';
 
 
 /* Routes Front End Routes */

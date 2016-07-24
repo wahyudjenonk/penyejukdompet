@@ -1,0 +1,25 @@
+ <div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>{$judul}</strong></h3>
+        </div>
+		<div class="panel-body">
+			<div style="padding:10px;font-weight:bold;" >
+				<div class="col-md-12">
+					<div class="col-md-1"></div>
+					<div class="col-md-2" style="text-align:right;">Tgl Transaksi :</div>
+					
+					<div class="col-md-9">
+						<input type="text" name="tgl_mulai" id="tgl_mulai_{$acak}">&nbsp;&nbsp;s/d&nbsp;&nbsp;
+						<input type="text" name="tgl_akhir" id="tgl_akhir_{$acak}">
+					</div>
+				</div>
+			</div>
+			<div id="isi_laporan_{$acak}" style="margin-bottom:50px;"></div>
+		</div>
+	</div>
+</div>
+<script>
+$('#tgl_mulai_{$acak}').datebox();
+$('#tgl_akhir_{$acak}').datebox();
+</script>

@@ -57,17 +57,20 @@ class mbackend extends CI_Model{
 			break;
 			case "tbl_gudang":
 				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
-						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,C.id as id_pemesanan 
+						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
 						FROM tbl_gudang A 
 						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 						LEFT JOIN tbl_h_pemesanan C ON (A.tbl_h_pemesanan_id=C.id AND B.tbl_h_pemesanan_id=C.id)
 						LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
+						LEFT JOIN cl_jasa_pengiriman E ON C.cl_jasa_pengiriman_id=E.id
 						".$where." 
 						 ORDER BY A.tgl_masuk DESC"; 
 			break;
 			case "tbl_konfirmasi":
 				
-				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap 
+				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap,
+						B.id as id_pemesanan,C.jenis_pembeli,C.nama_kepala_sekolah 
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
@@ -101,7 +104,7 @@ class mbackend extends CI_Model{
 				$data=array();
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
-				$sql="SELECT A.*,B.nama_sekolah 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli 
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
 				$data['header']=$this->db->query($sql)->row_array();
@@ -135,8 +138,11 @@ class mbackend extends CI_Model{
 					//echo $sql;
 			break;
 			case "tbl_h_pemesanan":
+			case "tbl_h_pemesanan_umum":
+				if($type=='tbl_h_pemesanan')$where .=" AND B.jenis_pembeli='SEKOLAH'";
+				if($type=='tbl_h_pemesanan_umum')$where .=" AND B.jenis_pembeli='UMUM'";
 				
-				$sql="SELECT A.*,B.nama_sekolah 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
 					  ".$where."
