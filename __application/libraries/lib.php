@@ -127,8 +127,8 @@ class lib {
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
 			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "jinggasinergiidea@gmail.com"
-			,"smtp_pass" => "7in664it50k"
+			,"smtp_user" => "aldeaz.id@gmail.com"
+			,"smtp_pass" => "merdeka18"
 			,"smtp_port" => 465,
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,

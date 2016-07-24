@@ -401,7 +401,20 @@ class frontend extends JINGGA_Controller {
 	}
 	
 	function test(){
-		$this->session->sess_destroy();
+			$sql_maxord = "
+				SELECT no_order as ordered_no
+				FROM tbl_h_pemesanan
+				WHERE id = (select max(id) from tbl_h_pemesanan)			
+			";
+			$maxord = $this->db->query($sql_maxord)->row_array();		
+			
+			$order_urut 	= explode("-", $maxord['ordered_no']);
+			$order_urutnya 	= ( $order_urut[1] + 1 ); 
+			echo $order_urutnya;
+			exit;
+			
+			
+		//$this->session->sess_destroy();
 		//$sess = $this->session->userdata("zonaxtreme");
 		//echo $sess['zona_pilihan'];
 		//$this->session->sess_destroy();
@@ -450,7 +463,7 @@ class frontend extends JINGGA_Controller {
 		}
 		
 		*/
-		$this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		//$this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
 	}
 	
 }

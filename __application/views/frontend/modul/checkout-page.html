@@ -53,19 +53,19 @@
 										<div class="form-inner" style='min-height:300px !important;'>
 											<div class="single-input one-half left">
 												<label>Jasa Pengiriman<span>*</span></label> 
-												<select id='js_pengiriman_skull' name='jasa_pengiriman'>
+												<select id='js_pengiriman_skull' class='validasi' name='jasa_pengiriman'>
 													{$combo_jasa_pengiriman}
 												</select>
 											</div>
 											<div class="single-input one-half right">
 												<label>Metode Pembayaran<span>*</span></label> 
-												<select id='mtd_pembayaran_skull' name='metode_pembayaran'>
+												<select id='mtd_pembayaran_skull' class='validasi' name='metode_pembayaran'>
 													{$combo_metode_pembayaran}
 												</select>
 											</div>											
 											<div class="single-input one-half left">
 												<label>NPSN <span>*</span></label> 
-												<input name="npsn" id="npsn" type="text" required="required">
+												<input name="npsn" id="npsn" class='validasi' type="text" required="required">
 											</div>
 											<div class="single-input one-half right">
 												<label>&nbsp;</label> 
@@ -85,19 +85,19 @@
 										<div class="form-inner" style='min-height:300px !important;'>
 											<div class="single-input one-half left">
 												<label>Jasa Pengiriman<span>*</span></label> 
-												<select id='js_pengiriman_umu' name='jasa_pengiriman'>
+												<select id='js_pengiriman_umu' class='validasi' name='jasa_pengiriman'>
 													{$combo_jasa_pengiriman}
 												</select>
 											</div>
 											<div class="single-input one-half right">
 												<label>Metode Pembayaran<span>*</span></label> 
-												<select id='mtd_pembayaran_umu' name='metode_pembayaran'>
+												<select id='mtd_pembayaran_umu' class='validasi' name='metode_pembayaran'>
 													{$combo_metode_pembayaran}
 												</select>
 											</div>																						
 											<div class="single-input one-half left">
 												<label>Email Anda<span>*</span></label> 
-												<input name="email" id='em' type="text" required="required">
+												<input name="email" id='em' class='validasi' type="text" required="required">
 											</div>
 											<div class="single-input one-half right">
 												<label>&nbsp;</label> 
@@ -121,6 +121,11 @@
 
 <script>
 	$('#cek_data_sekolah').on('click', function(){
+		if($('#npsn').val() == ""){
+			alert('NPSN Tidak Boleh Kosong!');
+			return false;
+		}
+		
 		$.post(host+'loading-formcheckout', { 'tpefrm':'skull', 'npp':$('#npsn').val() }, function(e){
 			parsinganss = $.parseJSON(e)
 			$('#load_form_sekolah').html(parsinganss.page);
@@ -128,6 +133,11 @@
 	});
 	///////////zzzzzzfdfa
 	$('#cek_data_umum').on('click', function(){
+		if($('#em').val() == ""){
+			alert('Email Tidak Boleh Kosong!');
+			return false;
+		}
+	
 		$.post(host+'loading-formcheckout', { 'tpefrm':'umu', 'em':$('#em').val() }, function(ex){
 			parsinganssd = $.parseJSON(ex)
 			$('#load_form_umum').html(parsinganssd.page);

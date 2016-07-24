@@ -216,6 +216,7 @@ class mfrontend extends CI_Model{
 							'status' => 1,
 							'npsn' => $data['npsn'],
 							'nama_sekolah' => $data['nmseko'],
+							'nip' => $data['nipkepsek'],
 							'nama_kepala_sekolah' => $data['nmkepsek'],
 							'nama_bendahara' => $data['nmbend'],
 							'no_hp_kepsek' => $data['nohpkepsek'],
@@ -283,14 +284,20 @@ class mfrontend extends CI_Model{
 					}
 					
 					$sql_maxord = "
-						SELECT MAX(no_order) as ordered_no
+						SELECT no_order as ordered_no
 						FROM tbl_h_pemesanan
+						WHERE id = (select max(id) from tbl_h_pemesanan)			
 					";
 					$maxord = $this->db->query($sql_maxord)->row_array();
 					if($maxord['ordered_no'] != null){
-						$acak_no_order = ( $maxord['ordered_no'] + 1 ); 
+						$order_urut 	= explode("-", $maxord['ordered_no']);
+						$order_urutnya 	= ( $order_urut[1] + 1 ); 
+						$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
+						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
 					}else{
-						$acak_no_order = 100000;
+						$order_urutnya = 100000;
+						$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
+						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
 					}
 					
 					$pajak = 0.1 * $tot;
