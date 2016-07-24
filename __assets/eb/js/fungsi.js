@@ -314,9 +314,9 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				
 			];
 			kolom[modnya] = [	
-				{field:'konfirmasi_no',title:'No Konfirmasi - TGL',width:180, halign:'center',align:'left',
+				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:180, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.konfirmasi_tgl
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
 					}
 				},
 				{field:'no_order',title:'No Order - TGL ',width:180, halign:'center',align:'left',
@@ -379,9 +379,9 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						}
 					}
 				},
-				{field:'konfirmasi_no',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
+				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.konfirmasi_tgl
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
 					}
 				},
 				{field:'no_order',title:'No Order - TGL ',width:200, halign:'center',align:'left',
