@@ -82,6 +82,34 @@ function openWindowWithPost(url,params){
     return newWindow;
 }
 
+function forcart(t, rwd, az){
+	switch(t){
+		case "apdeting":
+			$.post(host+'perbaharui-keranjang', { 'qt':$('#qrt_'+rwd).val(), 'rws':rwd, 'ck':az }, function(resp){
+				parsinganxxx = $.parseJSON(resp)
+				if(az == 'ck'){
+					$('#content-keranjang-checkout').html(parsinganxxx.page);
+				}else{
+					$('#content-keranjang').html(parsinganxxx.page);
+				}
+			});
+		break;
+		case "delting":
+			$.post(host+'hapus-keranjang', { 'rws':rwd, 'ck':az }, function(resp){
+				parsinganxxx = $.parseJSON(resp)
+				if(az == 'ck'){
+					$('#content-keranjang-checkout').html(parsinganxxx.page);
+				}else{
+					$('#content-keranjang').html(parsinganxxx.page);
+				}
+				$.post(host+'banyak-belanja', { } , function(prsp) {
+					$('#tot_item').html(prsp);
+				} );
+			});
+		break;
+	}
+}
+
 (function($) {
     "use strict";
 
