@@ -1069,8 +1069,8 @@
         width: 100%;
     }
     #quickview-wrapper .modal-product .product-info {
-        padding-left: 10px;
-        padding-right: 10px;
+        /*padding-left: 10px;
+        padding-right: 10px;*/
         padding-top: 20px;
         width: 100%;
     }
