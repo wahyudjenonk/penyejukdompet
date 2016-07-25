@@ -283,6 +283,9 @@ class frontend extends JINGGA_Controller {
 					case "laykomplainbro":
 						$temp = "frontend/modul/komplainnya-page.html";
 					break;
+					case "belanjanyacara":
+						$temp = "frontend/modul/carabelonjo-page.html";
+					break;
 				}		
 				
 				if(isset($temp)){

@@ -81,6 +81,10 @@ $route['komplain'] = 'frontend/getdisplay/main_page/komplain';
 $route['loading-komplain'] = 'frontend/getdisplay/loading_page/laykomplainbro';
 $route['submit-komplain'] = 'frontend/cruddata/form/komp';
 
+$route['caraberbelanja'] = 'frontend/getdisplay/main_page/carabelanja';
+$route['loading-carabelanja'] = 'frontend/getdisplay/loading_page/belanjanyacara';
+
+
 
 
 
