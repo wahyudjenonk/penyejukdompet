@@ -67,6 +67,7 @@ $route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb
 $route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
 $route['submit-konfirmasi'] = 'frontend/cruddata/form/konf';
 $route['cetak-bast'] = 'frontend/generatepdf/bastnya';
+$route['cetak-kwitansi'] = 'frontend/generatepdf/kwitansinya';
 
 $route['lacakpesanan'] = 'frontend/getdisplay/main_page/lacakpesanan';
 $route['loading-lacakpesanan'] = 'frontend/getdisplay/loading_page/lacakpesan';

@@ -31,11 +31,10 @@ table.gridtable td {
 
 <table width="100%">
 	<tr>
-		<td style="width: 120px; height: 80px;"><img src='__assets/ef/img/logo/logo.png' width='100px' /></td>
+		<td style="width: 120px; height: 50px;"><img src='__assets/ef/img/logo/logo.png' width='100px' /></td>
 		<td style="height: 80px; color: #00000; text-align: center;" valign="top">
 			<div style="font-family:arial; font-weight:bold;">		
 			<h5>
-				<br/><br/>
 				<h2>BERITA ACARA SERAH TERIMA BUKU</h2>
 				<h3>NO. {$datainvoice.no_order}/ASP/BAST/{$smarty.now|date_format:'%Y'} </h3>
 			</h5>
@@ -145,9 +144,8 @@ table.gridtable td {
 </table>
 
 <p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
-	Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima <br /><b>No. Pemesanan #{$datainvoice.no_order|default:''} <br/>
-	Tanggal Pemesanan {$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''} <br/> 
-	</b>PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima buku yang dimaksud dengan detail pemesanan buku sebagai berikut :
+	Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima nomor #{$datainvoice.no_order|default:''} tanggal {$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''},
+	PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima buku yang dimaksud dengan detail pemesanan buku sebagai berikut :
 </p>
 
 <br/>

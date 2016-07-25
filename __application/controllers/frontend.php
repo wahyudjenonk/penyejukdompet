@@ -347,6 +347,49 @@ class frontend extends JINGGA_Controller {
 				//$spdf->Output($general_path.$subgroup."/".$io_number."/"."PARTIAL-".$partial_no."/LOA/".$filename.'.pdf', 'F'); // save to file because we can
 				$spdf->Output($filename.'.pdf', 'I'); // view file
 			break;
+			case "kwitansinya":
+				$inv = $this->input->post('invo');
+				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
+				if($data_invoice){
+					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
+					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['id']);
+					$totqty = 0;
+					$tottotal = 0;
+					foreach($datadetailpesanan as $k => $v){
+						$totqty += $v['qty'];
+						$tottotal += $v['subtotal'];
+						
+						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
+						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						$datadetailpesanan[$k]['nama_group'] = strtoupper(substr($v['nama_group'], 0,1));
+					}
+					
+					$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
+					
+					$this->nsmarty->assign('datainvoice', $data_invoice);
+					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
+					$this->nsmarty->assign('datacust', $datacust);
+					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
+					$this->nsmarty->assign('totqty', $totqty);
+					$this->nsmarty->assign('tgl', $tgl);
+					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
+				}
+				
+				$filename = "DOCKWITANSI-";
+				$htmlcontent = $this->nsmarty->fetch('frontend/modul/bast_pdf.html');
+				
+				$pdf = $this->mlpdf->load();
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'P');
+				$spdf->ignore_invalid_utf8 = true;
+				$spdf->allow_charset_conversion = true;     // which is already true by default
+				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+				$spdf->SetDisplayMode('fullpage');		
+				$spdf->SetProtection(array('print'));				
+				$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+				//$spdf->Output($general_path.$subgroup."/".$io_number."/"."PARTIAL-".$partial_no."/LOA/".$filename.'.pdf', 'F'); // save to file because we can
+				$spdf->Output($filename.'.pdf', 'I'); // view file
+			break;
 		}
 	}
 	
