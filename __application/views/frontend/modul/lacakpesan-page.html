@@ -39,6 +39,11 @@
 
 <script>
 	$('#cek_data_pesanan').on('click', function(){
+		if($('#inv_lck').val() == ""){
+			alert('No. Invoice Tidak Boleh Kosong!');
+			return false;
+		}
+	
 		$.post(host+'loading-lacakform', { 'inv':$('#inv_lck').val() }, function(ex){
 			parsingansshhd = $.parseJSON(ex)
 			$('#load_form_lacak').html(parsingansshhd.page);

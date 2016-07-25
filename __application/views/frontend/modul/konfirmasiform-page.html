@@ -43,7 +43,7 @@
 </div>		
 <div class="single-input one-half left">
 	<label>Nama Bank Pengirim<span>*</span></label> 
-	<select name='bank_pengirim' id='bank_pengirim' >
+	<select name='bank_pengirim' class='validasi' id='bank_pengirim' >
 		<option value="">-- Pilih --</option>
 		<option value="BRI">BRI</option>
 		<option value="MANDIRI">MANDIRI</option>
@@ -53,11 +53,11 @@
 </div>
 <div class="single-input one-half right">
 	<label>Atas Nama<span>*</span></label> 
-	<input type="text" name="atas_nama" id="atas_nama" required="required">
+	<input type="text" class='validasi' name="atas_nama" id="atas_nama" required="required">
 </div>
 <div class="single-input one-half left">
 	<label>Bank Tujuan<span>*</span></label> 
-	<select name='bank_tujuan' id='bank_tujuan'>
+	<select name='bank_tujuan' class='validasi' id='bank_tujuan'>
 		<option value="">-- Pilih --</option>
 		<option value="BRI">BRI</option>
 		<option value="MANDIRI">MANDIRI</option>
@@ -65,11 +65,11 @@
 </div>
 <div class="single-input one-half right">
 	<label>Jumlah Transfer<span>*</span></label> 
-	<input type="text" name="jml_trf" id="jml_trf" required="required">
+	<input type="text" class='validasi' name="jml_trf" id="jml_trf" required="required">
 </div>
 <div class="single-input one-half left">
 	<label>Tanggal Transfer<span>*</span></label> 
-	<input type="text" id='tgl_trf' name="tgl_trf" required="required">
+	<input type="text" id='tgl_trf' class='validasi' name="tgl_trf" required="required">
 </div>
 <div class="single-input one-half right">
 	<label>&nbsp;<span></span></label> 
@@ -86,9 +86,17 @@
 
 <script>
 	$('#tgl_trf').Zebra_DatePicker();
+	$(".validasi").validatebox({ required:true }); 
 	$('#konfi').on('click', function(){
+		validasi = $('#frmkonf').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
 		submit_form('frmkonf', function(resp){
 			$.post(host+'finish', { } , function(s){
+				if(s){
+					$.unblockUI();
+				}	
 				parsinganxs = $.parseJSON(s)
 				$('#modalencuk').html(parsinganxs.page);			
 				$('#productModal').modal({

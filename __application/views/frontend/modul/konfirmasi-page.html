@@ -17,7 +17,7 @@
 								<div class="form-inner" style='min-height:300px !important;'>
 									<div class="single-input one-half left">
 										<label>No. Invoice <span>*</span></label> 
-										<input name="inv" id="inv" type="text" required="required">
+										<input name="inv" class='validasi' id="inv" type="text" required="required">
 									</div>
 									<div class="single-input one-half right">
 										<label>&nbsp;</label> 
@@ -38,6 +38,11 @@
 
 <script>
 	$('#cek_data_invoice').on('click', function(){
+		if($('#inv').val() == ""){
+			alert('No. Invoice Tidak Boleh Kosong!');
+			return false;
+		}
+		
 		$.post(host+'loading-formkonf', { 'inv':$('#inv').val() }, function(ex){
 			parsingansshh = $.parseJSON(ex)
 			$('#load_form_konf').html(parsingansshh.page);

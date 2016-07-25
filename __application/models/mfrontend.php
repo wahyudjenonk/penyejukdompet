@@ -57,10 +57,11 @@ class mfrontend extends CI_Model{
 			case "detail_pesanan":
 				$sql = "
 					SELECT A.*,
-						B.judul_buku, C.kelas
+						B.judul_buku, C.kelas, D.nama_group
 					FROM tbl_d_pemesanan A
 					LEFT JOIN tbl_buku B ON B.id = A.tbl_buku_id
 					LEFT JOIN cl_kelas C ON C.id = B.cl_kelas_id
+					LEFT JOIN cl_group_sekolah D ON D.id = B.cl_group_sekolah
 					WHERE A.tbl_h_pemesanan_id = '".$p1."'
 				";
 			break;

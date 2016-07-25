@@ -66,15 +66,25 @@
 
 <script>
 	$('#cek_data_sekolah').on('click', function(){
+		if($('#npsn').val() == ""){
+			alert('NPSN Tidak Boleh Kosong!');
+			return false;
+		}
+		
 		$.post(host+'loading-riwayatform', { 'np':$('#npsn').val(), 'typ':'skull' }, function(ex){
 			parsingansshhd = $.parseJSON(ex)
 			$('#load_form_riwayat_sekolah').html(parsingansshhd.page);
 		});
 	});
 	
-	//dascripto doeshdoadajflkdfjlajfdjfadhfiasdh-oasdjflkdsjf
+	//dascripto doeshdoadajflkdfjlajfdjfadhfiasdh-oasdjflkdsjf-adfadfafadfdsf
 	
 	$('#cek_data_umum').on('click', function(){
+		if($('#em').val() == ""){
+			alert('Email Tidak Boleh Kosong!');
+			return false;
+		}
+		
 		$.post(host+'loading-riwayatform', { 'em':$('#em').val(), 'typ':'umu' }, function(edx){
 			parsingansshhdx = $.parseJSON(edx)
 			$('#load_form_riwayat_umum').html(parsingansshhdx.page);

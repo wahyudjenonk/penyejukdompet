@@ -319,13 +319,17 @@ class frontend extends JINGGA_Controller {
 						
 						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
 						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						$datadetailpesanan[$k]['nama_group'] = strtoupper(substr($v['nama_group'], 0,1));
 					}
+					
+					$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
 					
 					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
 					$this->nsmarty->assign('datacust', $datacust);
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('totqty', $totqty);
+					$this->nsmarty->assign('tgl', $tgl);
 					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
 				}
 				

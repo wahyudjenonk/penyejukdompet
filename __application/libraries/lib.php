@@ -169,6 +169,45 @@ class lib {
 	}
 	//End Class Konversi Bulan
 	
+	//Class Konversi Tanggal
+	function konversi_tgl($date){
+		$ci =& get_instance();
+		$ci->load->helper('terbilang');
+		$data=array();
+		$timestamp = strtotime($date);
+		$day = date('D', $timestamp);
+		$day_angka = date('d', $timestamp);
+		$month = date('m', $timestamp);
+		$years = date('Y', $timestamp);
+		switch($day){
+			case "Mon":$data['hari']='Senin';break;
+			case "Tue":$data['hari']='Selasa';break;
+			case "Wed":$data['hari']='Rabu';break;
+			case "Thu":$data['hari']='Kamis';break;
+			case "Fri":$data['hari']='Jumat';break;
+			case "Sat":$data['hari']='Sabtu';break;
+			case "Sun":$data['hari']='Minggu';break;
+		}
+		switch($month){
+			case "01":$data['bulan']='Januari';break;	
+			case "02":$data['bulan']='Februari';break;	
+			case "03":$data['bulan']='Maret';break;	
+			case "04":$data['bulan']='April';break;	
+			case "05":$data['bulan']='Mei';break;	
+			case "06":$data['bulan']='Juni';break;	
+			case "07":$data['bulan']='Juli';break;	
+			case "08":$data['bulan']='Agustus';break;	
+			case "09":$data['bulan']='September';break;	
+			case "10":$data['bulan']='Oktober';break;	
+			case "11":$data['bulan']='November';break;	
+			case "12":$data['bulan']='Desember';break;	
+		}
+		$data['tahun']=ucwords(number_to_words($years));
+		$data['tgl_text']=ucwords(number_to_words($day_angka));
+		return $data;
+	}
+	//End Class Konversi Tanggal
+	
 	//Class Fillcombo
 	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){
 		$ci =& get_instance();
