@@ -1,5 +1,35 @@
 var index_row;
-
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+if(dd<10){dd='0'+dd} 
+if(mm<10){mm='0'+mm}
+today = yyyy+'-'+mm+'-'+dd;
+function formatDate(date) {
+	var bulan=date.getMonth() +1;
+	var tgl=date.getDate();
+	if(bulan < 10){
+		bulan='0'+bulan;
+	}
+	
+	if(tgl < 10){
+		tgl='0'+tgl;
+	}
+	return date.getFullYear() + "-" + bulan + "-" + tgl;
+}
+function myparser(s){
+    if (!s) return new Date();
+    var ss = (s.split('-'));
+    var y = parseInt(ss[0],10);
+    var m = parseInt(ss[1],10);
+    var d = parseInt(ss[2],10);
+    if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+        return new Date(y,m-1,d);
+    } else {
+        return new Date();
+    }
+}		
 function loadUrl(obj, urls,table){
     $("#main-content").html("").addClass("loading");
 	$.post(urls,{table:table},function (html){
@@ -1629,6 +1659,16 @@ function get_detil(mod,id_data){
 				windowForm(r,'Manajemen Order',580,250);
 			});
 		break;
+		
+		case "rekap_penjualan":
+		case "detil_penjualan":
+			$('#isi_laporan_'+id_data).html('').addClass('loading');
+			$.post(host+'backoffice-GetDetil',{mod:mod,tgl_mulai:$('#tgl_mulai_'+id_data).datebox('getValue'),tgl_akhir:$('#tgl_akhir_'+id_data).datebox('getValue')},function(r){
+				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
+			});
+			
+		break;
+		
 		default:
 			$('#grid_nya_'+mod).hide();
 			$('#detil_nya_'+mod).html('').show().addClass("loading");

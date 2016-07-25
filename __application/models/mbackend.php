@@ -12,6 +12,25 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "get_lap_rekap":
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_kepala_sekolah as pic,B.npsn,
+						B.alamat_pengiriman,B.no_telp_sekolah,B.no_hp_kepsek,B.email,E.kab_kota,
+						C.provinsi,F.jml_buku,G.total_pembayaran
+						FROM tbl_h_pemesanan A
+						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
+						LEFT JOIN cl_provinsi C ON B.cl_provinsi_kode=C.kode_prov
+						LEFT JOIN cl_kab_kota E ON B.cl_kab_kota_kode=E.kode_kab_kota
+						LEFT JOIN (
+							SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku 
+							from tbl_d_pemesanan A 
+							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+							WHERE C.jenis_pembeli='SEKOLAH'
+							GROUP BY A.tbl_h_pemesanan_id
+						)AS F ON F.tbl_h_pemesanan_id=A.id
+						LEFT JOIN tbl_konfirmasi G ON G.tbl_h_pemesanan_id=A.id
+						WHERE B.jenis_pembeli='SEKOLAH' ";
+			break;
 			case "tbl_monitor":
 				$sql="SELECT A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
 						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi

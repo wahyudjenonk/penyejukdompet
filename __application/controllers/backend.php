@@ -180,6 +180,11 @@ class backend extends JINGGA_Controller {
 				$data=$this->mbackend->getdata('get_pemesanan','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
+			case "rekap_penjualan":
+			case "detil_penjualan":
+				$data=$this->mbackend->getdata('get_lap_rekap','result_array');
+				$this->nsmarty->assign('data',$data);
+			break;
 		}
 		$this->nsmarty->assign('temp',$temp);
 		if(!file_exists($this->config->item('appl').APPPATH.'views/'.$temp)){$this->nsmarty->display('konstruksi.html');}

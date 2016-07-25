@@ -20,6 +20,9 @@
 	</div>
 </div>
 <script>
-$('#tgl_mulai_{$acak}').datebox();
-$('#tgl_akhir_{$acak}').datebox();
+$('#tgl_mulai_{$acak}').datebox({ formatter: formatDate,parser:myparser });
+$('#tgl_akhir_{$acak}').datebox({ formatter: formatDate,parser:myparser });
+$('#tgl_mulai_{$acak}').datebox('setValue',today);
+$('#tgl_akhir_{$acak}').datebox('setValue',today);
+get_detil('{$mod}','{$acak}');
 </script>
