@@ -279,6 +279,10 @@ class frontend extends JINGGA_Controller {
 							$this->nsmarty->assign('datacust', $datacust);
 						}
 					break;
+					
+					case "laykomplainbro":
+						$temp = "frontend/modul/komplainnya-page.html";
+					break;
 				}		
 				
 				if(isset($temp)){
@@ -348,39 +352,27 @@ class frontend extends JINGGA_Controller {
 				$spdf->Output($filename.'.pdf', 'I'); // view file
 			break;
 			case "kwitansinya":
+				$this->load->helper('terbilang');
 				$inv = $this->input->post('invo');
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
+					$jumlah = number_to_words($data_invoice['grand_total']);
 					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
-					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['id']);
-					$totqty = 0;
-					$tottotal = 0;
-					foreach($datadetailpesanan as $k => $v){
-						$totqty += $v['qty'];
-						$tottotal += $v['subtotal'];
-						
-						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
-						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
-						$datadetailpesanan[$k]['nama_group'] = strtoupper(substr($v['nama_group'], 0,1));
-					}
 					
-					$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
-					
-					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
+					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datacust', $datacust);
-					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
-					$this->nsmarty->assign('totqty', $totqty);
-					$this->nsmarty->assign('tgl', $tgl);
-					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
+					$this->nsmarty->assign('jumlah', $jumlah);
+					$this->nsmarty->assign('grandtotal', number_format($data_invoice['grand_total'],0,",",".") );
 				}
 				
 				$filename = "DOCKWITANSI-";
-				$htmlcontent = $this->nsmarty->fetch('frontend/modul/bast_pdf.html');
+				$htmlcontent = $this->nsmarty->fetch('frontend/modul/kwitansi_pdf.html');
 				
 				$pdf = $this->mlpdf->load();
-				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'P');
+				//$spdf = new mPDF('', 'A5', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'L');
+				$spdf = new mPDF('', 'A5-L', 0, '', 5, 5, 5, 5, 0, 0);
 				$spdf->ignore_invalid_utf8 = true;
 				$spdf->allow_charset_conversion = true;     // which is already true by default
 				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso

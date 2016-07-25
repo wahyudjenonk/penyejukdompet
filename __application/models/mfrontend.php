@@ -390,6 +390,30 @@ class mfrontend extends CI_Model{
 					}
 				}
 			break;
+			case "komp":
+				$table = 'tbl_komplain';
+				$sts_crud = 'add';
+				$datainv = $this->db->get_where('tbl_h_pemesanan', array('no_order'=>$data['noinv']) )->row_array();
+				
+				$data['tbl_h_pemesanan_id'] = $datainv['id'];
+				$data['no_komplain'] = "KMP-".strtoupper($this->lib->randomString(4,"angkahuruf"));
+				$data['komplain'] = $data['komp'];
+				
+				$cek_dir = "__repository/komplain/";
+				if(!is_dir($cek_dir)) {
+					mkdir($cek_dir, 0777);         
+				}			
+				
+				if(!empty($_FILES['filepend']['name'])){					
+					$upload_path = "./__repository/komplain/";
+					$file = "FILEKOMPLAIN-".$data['no_komplain'];
+					$filename =  $this->lib->uploadnong($upload_path, 'filepend', $file); //$file.'.'.$extension;
+					$post_bnr['file_foto'] = $filename;
+				}
+				
+				unset($data['komp']);
+				unset($data['noinv']);
+			break;
 		}
 		
 		switch ($sts_crud){

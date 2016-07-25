@@ -77,6 +77,10 @@ $route['riwayatpesanan'] = 'frontend/getdisplay/main_page/riwayat';
 $route['loading-riwayat'] = 'frontend/getdisplay/loading_page/pesananriwayat';
 $route['loading-riwayatform'] = 'frontend/getdisplay/loading_page/formriwayat';
 
+$route['komplain'] = 'frontend/getdisplay/main_page/komplain';
+$route['loading-komplain'] = 'frontend/getdisplay/loading_page/laykomplainbro';
+$route['submit-komplain'] = 'frontend/cruddata/form/komp';
+
 
 
 
