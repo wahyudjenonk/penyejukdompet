@@ -51,6 +51,8 @@ $route['pilih-zona'] = 'frontend/cruddata/session_zona';
 $route['keranjang-belanja'] = 'frontend/getdisplay/loading_page/keranjangnya';
 $route['banyak-belanja'] = 'frontend/getdisplay/loading_page/total_item';
 $route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add';
+$route['perbaharui-keranjang'] = 'frontend/getdisplay/loading_page/update_keranjang';
+$route['hapus-keranjang'] = 'frontend/getdisplay/loading_page/hapusitem_keranjang';
 
 $route['selesai-belanja'] = 'frontend/getdisplay/main_page/selesaibelanja';
 $route['loading-selesaibelanja'] = 'frontend/getdisplay/loading_page/checkout_belanja';

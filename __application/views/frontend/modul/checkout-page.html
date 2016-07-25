@@ -8,25 +8,27 @@
 							<div class="" style='display:inline !important;'>
 								<legend>Keranjang Belanja Anda</legend>
 								{if $data_cart}
+									<div id='content-keranjang-checkout'>
 									{foreach from=$data_cart item=rows}
 										<div class="cart-single-product">
 											<div class="cart-single-product-img">
 												<img src="{$host}img/cart/2.jpg">
 											</div>
 											<div class="cart-single-product-title">
-												<a href="#">{$rows.name}</a>
-												<input type='text' style='width:80px !important;' value='{$rows.qty}' /> 
+												<a href="javascript:void(0);">{$rows.name}</a>
+												<input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> 
 												x
 												Rp. {$rows.price}
 												=
 												Rp. {$rows.subtotal}
 											</div>
 											<div class="cart-single-product-del">
-												<a href="#"><i class="fa fa-refresh"></i></a>
-												<a href="#"><i class="fa fa-times"></i></a>
+												<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}', 'ck');"><i class="fa fa-refresh"></i></a>
+												<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}', 'ck');"><i class="fa fa-times"></i></a>
 											</div>
 										</div>
 									{/foreach}
+									</div>
 								{else}
 									<center>-- Anda Belum Belanja --</center>
 								{/if}

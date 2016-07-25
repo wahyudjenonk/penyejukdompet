@@ -138,6 +138,27 @@ class frontend extends JINGGA_Controller {
 						}
 						$this->nsmarty->assign('data_cart', $data_cart);
 					break;
+					case "update_keranjang":
+					case "hapusitem_keranjang":
+						$temp = "frontend/modul/keranjangbelanjaupdate-page.html";						
+						$ck = $this->input->post('ck');
+						if($p1 == "update_keranjang"){
+							$qty = $this->input->post('qt');
+							$rowid = $this->input->post('rws');					
+							$this->keranjang_belanja('update', $qty, $rowid);
+						}elseif($p1 == "hapusitem_keranjang"){
+							$rowid = $this->input->post('rws');
+							$this->keranjang_belanja('delete', $rowid);
+						}
+						
+						$data_cart = $this->cart->contents();
+						foreach($data_cart as $key => $v){
+							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
+							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						}
+						$this->nsmarty->assign('ck', $ck);
+						$this->nsmarty->assign('data_cart', $data_cart);
+					break;
 					case "total_item";
 						$data_cart = $this->cart->contents();
 						$jumlah_item = count($data_cart);
@@ -325,7 +346,7 @@ class frontend extends JINGGA_Controller {
 		}
 	}
 	
-	function keranjang_belanja($type){
+	function keranjang_belanja($type, $p1="", $p2=""){
 		//$zona_pilihan = $this->session->userdata("zonaxtreme");
 		switch($type){
 			case "add":
@@ -362,6 +383,16 @@ class frontend extends JINGGA_Controller {
 					);
 					echo $this->cart->insert($data_cart);
 				}
+			break;
+			case "update":
+				$data = array(
+					'rowid' => $p2,
+					'qty'   => $p1
+				);
+				$this->cart->update($data);
+			break;
+			case "delete":
+				$this->cart->remove($p1);
 			break;
 			case "view":
 				$kontent = $this->cart->contents();
@@ -400,20 +431,7 @@ class frontend extends JINGGA_Controller {
 		}
 	}
 	
-	function test(){
-			$sql_maxord = "
-				SELECT no_order as ordered_no
-				FROM tbl_h_pemesanan
-				WHERE id = (select max(id) from tbl_h_pemesanan)			
-			";
-			$maxord = $this->db->query($sql_maxord)->row_array();		
-			
-			$order_urut 	= explode("-", $maxord['ordered_no']);
-			$order_urutnya 	= ( $order_urut[1] + 1 ); 
-			echo $order_urutnya;
-			exit;
-			
-			
+	function test(){			
 		//$this->session->sess_destroy();
 		//$sess = $this->session->userdata("zonaxtreme");
 		//echo $sess['zona_pilihan'];
@@ -463,7 +481,7 @@ class frontend extends JINGGA_Controller {
 		}
 		
 		*/
-		//$this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
 	}
 	
 }

@@ -6,25 +6,27 @@
 	</div>
 	<div class="" style='display:inline !important;'>
 		{if $data_cart}
-			{foreach from=$data_cart item=rows}
-				<div class="cart-single-product">
-					<div class="cart-single-product-img">
-						<img src="{$host}img/cart/2.jpg">
+			<div id='content-keranjang'>
+				{foreach from=$data_cart item=rows}
+					<div class="cart-single-product" id='xx_{$rows.rowid}'>
+						<div class="cart-single-product-img">
+							<img src="{$host}img/cart/2.jpg">
+						</div>
+						<div class="cart-single-product-title">
+							<a href="javascript:void(0);">{$rows.name}</a>
+							<input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> 
+							x
+							Rp. {$rows.price}
+							=
+							Rp. {$rows.subtotal}
+						</div>
+						<div class="cart-single-product-del">
+							<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}')"><i class="fa fa-refresh"></i></a>
+							<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}')"><i class="fa fa-times"></i></a>
+						</div>
 					</div>
-					<div class="cart-single-product-title">
-						<a href="#">{$rows.name}</a>
-						<input type='text' style='width:80px !important;' value='{$rows.qty}' /> 
-						x
-						Rp. {$rows.price}
-						=
-						Rp. {$rows.subtotal}
-					</div>
-					<div class="cart-single-product-del">
-						<a href="#"><i class="fa fa-refresh"></i></a>
-						<a href="#"><i class="fa fa-times"></i></a>
-					</div>
-				</div>
-			{/foreach}
+				{/foreach}
+			</div>
 			<div class="action-cart">
 				<a class="checkout" href="{$host}selesai-belanja">Selesai Belanja</a>
 			</div>

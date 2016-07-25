@@ -129,13 +129,13 @@ class lib {
 			,"smtp_host" => "ssl://smtp.gmail.com"
 			,"smtp_user" => "aldeaz.id@gmail.com"
 			,"smtp_pass" => "merdeka18"
-			,"smtp_port" => 465,
+			,"smtp_port" => "465",
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,
 		);
 		
 		$ci->email->initialize($config);
-		$ci->email->from("invoice@aldeaz.id");
+		$ci->email->from("aldeaz.id@gmail.com", "Aldeaz Notifikasi");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);
