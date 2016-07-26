@@ -2309,18 +2309,18 @@ body {} .padding100 {
     margin-bottom: 0;
 }
 .page-numbers li {
-    border-radius: 3px;
+    border-radius: 1px;
     display: inline-block;
-    height: 42px;
-    line-height: 42px;
-    margin: auto 3px;
+    height: 30px;
+    line-height: 30px;
+    /*margin: auto 3px;*/
     text-align: center;
-    width: 42px;
+    width: 30px;
 }
 .page-numbers li a {
     border-radius: 3px;
 }
-.page-numbers li.current,
+.page-numbers .current,
 .page-numbers li a:hover {
     background: #03a9f4 none repeat scroll 0 0;
     box-shadow: 0 0 6px 0 #bdc3ca;
@@ -2340,7 +2340,7 @@ body {} .padding100 {
     margin-right: 0;
 }
 .pagination-area-v1 {
-    margin-top: 50px;
+    margin-top: 10px;
 }
 /*--------------------------------------  
 	16. Large Image
