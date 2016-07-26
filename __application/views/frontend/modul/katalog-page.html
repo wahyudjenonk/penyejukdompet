@@ -20,22 +20,26 @@
 									<!--start List & Grid  -->
 									<ul role="tablist" class="view-mode-tab-btn clear">
 										<li class="active" role="presentation"><a data-toggle="tab" role="tab" aria-controls="grid" title="Grid" href="#grid" aria-expanded="true"><i class="fa fa-th"></i></a></li>
-										<li role="presentation" class=""><a data-toggle="tab" role="tab" aria-controls="list" title="List" href="#list" aria-expanded="false"><i class="fa fa-th-list"></i></a></li>
+										{* 
+											<li role="presentation" class=""><a data-toggle="tab" role="tab" aria-controls="list" title="List" href="#list" aria-expanded="false"><i class="fa fa-th-list"></i></a></li>
+										*}	
 									</ul>
 									<!--End List & Grid  -->
 								</div>
 							</div>
 						</div>
 						
+						<div id='konten-utama-buku'>
 						<div class="row">
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active" id="grid">
 									{if $data_buku}
+										<div id='konten-buku'>
 										{foreach from=$data_buku item=row}
 											<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
 												<div class="single-product text-center">
 													<div class="pro-thumb overlay-bg">
-														<img src="{$host}img/product/full/1.jpg" alt="product img" />
+														<img src="{$row.foto_buku}" alt="{$row.judul_buku}" style='height:200px !important;' />
 														<div class="hover-btn">
 															<ul class="action-buttons">
 																<li class="quickview"><a href="javascript:void(0);" onClick="productwindow('{$row.id}');" ><i class="fa fa-eye"></i></a></li>
@@ -50,37 +54,31 @@
 												</div>
 											</div>
 										{/foreach}
+										</div>
 									{else}
 									<center>-- Tidak Ada Data Tersedia -- </center>
 									{/if}
-								</div>
-								
-								<div role="tabpanel" class="tab-pane fade" id="list">
-									<div class="product-list-view-area clear">
-										{if $data_buku}									
-											{foreach from=$data_buku item=row}
-												<div class="col-md-12">
-													<div class="single-product text-left fix">
-														<div class="pro-thumb">
-															<img src="{$host}img/product/list/full/1.jpg" alt="product img" />
-														</div>
-														<div class="pro-info">
-															<p class="pro-category">{$row.nama_kategori}</p>
-															<h3 class="pro-title"><a href="#">{$row.judul_buku}</a></h3>
-															<div class="product-action">
-																<a href="#" class="estut-btn">ADD TO CART</a>
-															</div>
-														</div>
-													</div>
-												</div>
-											{/foreach}
-										{else}
-											<center>-- Tidak Ada Data Tersedia -- </center>
-										{/if}
-									</div>
+								</div>						
+							</div>
+						</div>
+						<div class="row">
+							<div class="pagination-area-v1">
+								<div class="col-md-12 text-left">
+									{if $array_paging}
+										<ul class="page-numbers">
+										{foreach from=$array_paging item=pag}
+											<li><a id='{$pag.angka}' href="javascript:void(0);" class="page-number" onClick="pagjs('{$pag.angka}', '{$pag.limitnya}')" >{$pag.angka}</a></li>
+										{/foreach}
+										</ul>
+									{else}
+										<li class="page-number current">-</li>
+									{/if}
 								</div>
 							</div>
 						</div>
+						</div>
+						
+						
 					</div>
 				</div>
 			
@@ -165,6 +163,24 @@
 			parsingan = $.parseJSON(resp)
 			$('#modalencuk').html(parsingan.page);
 			$('#productModal').modal('show'); 
+		});
+	}
+	
+	function pagjs(idx, delimeter){
+		$('#konten-buku').html('');
+		$('#konten-buku-lebar').html('');
+		$(".page-number").each(function () {
+			$(this).removeClass('current');
+		});
+		$('#'+idx).addClass('current');
+		
+		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter }, function(rp){
+			parspro = $.parseJSON(rp);
+			$('#konten-buku').html(parspro.page);
+		});
+		$.post(host+'paginationdata', { 'dtype':'two', 'lmt':delimeter }, function(rps){
+			parspros = $.parseJSON(rps);
+			$('#konten-buku-lebar').html(parspros.page);
 		});
 	}
 	

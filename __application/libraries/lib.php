@@ -98,7 +98,7 @@ class lib {
 	function cutstring($text, $length) {
 		$isi_teks = htmlentities(strip_tags($text));
 		$isi = substr($isi_teks, 0,$length);
-		$isi = substr($isi_teks, 0,strrpos($isi," "));
+		//$isi = substr($isi_teks, 0,strrpos($isi," "));
 		$isi = $isi.' ...';
 		return $isi;
 	}

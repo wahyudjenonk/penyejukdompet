@@ -12,24 +12,35 @@ class mfrontend extends CI_Model{
 	
 	function getdata($type="", $balikan="", $p1="", $p2="",$p3="",$p4=""){
 		$where = " WHERE 1=1 ";
+		$join = "";
+		$select = "";
 		
 		switch($type){
 			case "data_buku":
 			case "data_buku_tingkatan":
 				if($type == 'data_buku'){
+					$select .= " ,E.foto_buku"; 
 					$where .= "";
+					$join .= " LEFT JOIN (SELECT tbl_buku_id, foto_buku FROM tbl_foto_buku GROUP BY tbl_buku_id) E ON E.tbl_buku_id = A.id ";					
 				}elseif($type == 'data_buku_tingkatan'){
 					$where .= " AND C.id = '".$p1."' ";
 				}
 				
 				$sql = "
-					SELECT A.*, D.nama_kategori
+					SELECT A.*, D.nama_kategori, C.tingkatan, B.kelas, F.nama_group 
+						$select
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON B.id = A.cl_kelas_id
 					LEFT JOIN cl_tingkatan C ON C.id = B.cl_tingkatan_id
 					LEFT JOIN cl_kategori D ON D.id = A.cl_kategori_id
+					LEFT JOIN cl_group_sekolah F ON F.id = A.cl_group_sekolah
+					$join
 					$where 
+					ORDER BY A.id ASC
+					LIMIT $p2, $p3
 				";
+				
+				//echo $sql;exit;
 			break;
 			case "cl_tingkatan":
 				$sql = "

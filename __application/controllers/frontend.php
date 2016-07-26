@@ -53,9 +53,14 @@ class frontend extends JINGGA_Controller {
 						
 						$temp = "frontend/modul/katalog-page.html";
 						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
-						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id']);
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 1, 9);
 						foreach($data_buku as $k=>$v){
 							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							if($data_buku[$k]['foto_buku'] != null){
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+							}else{
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}
 						}
 						$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
 						$array_tingkatan = array();
@@ -70,11 +75,49 @@ class frontend extends JINGGA_Controller {
 						$data_pengguna = $this->db->get('cl_group_sekolah')->result_array();
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						
+						$total_data = $this->db->count_all("tbl_buku");
+						$limit = 9;
+						$total_paging = $total_data / $limit;
+						$total_paging = floor($total_paging);
+						$array_paging = array();
+						for($i=0; $i <= $total_paging; $i++){
+							$j = ($i + 1);
+							if(isset($mulai)){
+								$mulai = $mulai + $limit;
+							}else{
+								$mulai = 1;
+							}
+							
+							$array_paging[$i]['angka'] = $j;
+							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
+						}
+						
+						$this->nsmarty->assign('array_paging', $array_paging);
 						$this->nsmarty->assign('data_tingkatan', $array_tingkatan);
 						$this->nsmarty->assign('data_pengguna', $data_pengguna);
 						$this->nsmarty->assign('data_kategori', $data_kategori);
 						$this->nsmarty->assign('data_buku', $data_buku);
 						$this->nsmarty->assign('flag_window', $flag_window);
+					break;
+					case "datapaging":
+						$temp = "frontend/modul/katalogpaging-page.html";
+						$type = $this->input->post('dtype');
+						$limit = $this->input->post('lmt');
+						$explim = explode("-",$limit);
+						
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", $explim[0], $explim[1]);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							if($data_buku[$k]['foto_buku'] != null){
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+							}else{
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}
+							
+						}
+						
+						$this->nsmarty->assign('type', $type);
+						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
 					case "combo_zona":
 						$temp = "frontend/modul/combozona-page.html";
@@ -85,8 +128,9 @@ class frontend extends JINGGA_Controller {
 						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
 						$data_buku = $this->mfrontend->getdata('data_buku_tingkatan', 'result_array', $id_tingkatan['id']);
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 50);
 						}
+						
 						$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						$data_pengguna = $this->db->get('cl_group_sekolah')->result_array();
@@ -523,7 +567,11 @@ class frontend extends JINGGA_Controller {
 		}
 		
 		*/
-		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		//echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		
+		$string = "T1 Diriku";
+		$isi = substr($string, 0, 20);
+		echo $isi;
 	}
 	
 }

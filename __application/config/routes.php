@@ -35,6 +35,7 @@ $route['loading-histori'] = 'frontend/getdisplay/loading_page/histori';
 
 $route['kontak'] = 'frontend/getdisplay/main_page/kontak';
 $route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak';
+$route['paginationdata'] = 'frontend/getdisplay/loading_page/datapaging';
 
 $route['katalog'] = 'frontend/getdisplay/main_page/katalog';
 $route['loading-katalog'] = 'frontend/getdisplay/loading_page/katalog';
