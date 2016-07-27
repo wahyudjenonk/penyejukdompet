@@ -90,11 +90,11 @@
 								<div id='categorymenu'>
 									<ul class="widget-menu widget-menu widget-submenu">   
 										{foreach from=$data_tingkatan item=row}
-											 <li {if $row.detil}class='has-sub'{/if}><a href='#'>{$row.tingkatan}</a>
+											 <li {if $row.detil}class='has-sub'{/if}><a href='javascript:void(0);' >{$row.tingkatan}</a>
 											 {if $row.detil}
 												<ul>
 													{foreach from=$row.detil item=riw}
-														<li><a href='#'>{$riw.nama_kelas}</a></li>
+														<li><a href='javascript:void(0);' onClick="loaddatabook('tingk','{$riw.id}');">{$riw.nama_kelas}</a></li>
 													{/foreach}
 												</ul>
 											 {/if}
@@ -110,7 +110,7 @@
 								<div id='categorymenu'>
 									<ul class="widget-menu widget-submenu">   
 										{foreach from=$data_kategori item=rows}
-											<li><a href="#">{$rows.nama_kategori}</a></li>
+											<li><a href='javascript:void(0);' onClick="loaddatabook('kate','{$rows.id}');">{$rows.nama_kategori}</a></li>
 										{/foreach}
 									</ul>
 								</div>
@@ -122,7 +122,7 @@
 								<div id='categorymenu'>
 									<ul class="widget-menu widget-submenu">   
 										{foreach from=$data_pengguna item=rowss}
-											<li><a href="#">{$rowss.nama_group}</a></li>
+											<li><a href='javascript:void(0);' onClick="loaddatabook('grp','{$rowss.id}');" >{$rowss.nama_group}</a></li>
 										{/foreach}
 									</ul>
 								</div>							
@@ -181,6 +181,14 @@
 		$.post(host+'paginationdata', { 'dtype':'two', 'lmt':delimeter }, function(rps){
 			parspros = $.parseJSON(rps);
 			$('#konten-buku-lebar').html(parspros.page);
+		});
+	}
+	
+	function loaddatabook(typ, ixd){
+		$('#konten-utama-buku').html('');
+		$.post(host+'filtering-data', { 'ty':typ, 'isd':ixd }, function(rpload){
+			parsload = $.parseJSON(rpload);
+			$('#konten-utama-buku').html(parsload.page);
 		});
 	}
 	

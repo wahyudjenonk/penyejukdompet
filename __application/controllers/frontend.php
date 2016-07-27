@@ -69,6 +69,7 @@ class frontend extends JINGGA_Controller {
 							$array_tingkatan[$k]['detil'] = array();
 							$getkelas = $this->db->get_where('cl_kelas', array('cl_tingkatan_id'=>$v['id']))->result_array();
 							foreach($getkelas as $t => $p){
+								$array_tingkatan[$k]['detil'][$t]['id'] = $p['id'];
 								$array_tingkatan[$k]['detil'][$t]['nama_kelas'] = "Kelas ".$p['kelas'];
 							}
 						}
@@ -117,6 +118,38 @@ class frontend extends JINGGA_Controller {
 						}
 						
 						$this->nsmarty->assign('type', $type);
+						$this->nsmarty->assign('data_buku', $data_buku);
+					break;
+					case "filterdt":
+						$temp = "frontend/modul/katalogfilterdata-page.html";
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 1, 9);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							if($data_buku[$k]['foto_buku'] != null){
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+							}else{
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}
+						}
+						
+						$total_data = count($data_buku);
+						$limit = 9;
+						$total_paging = $total_data / $limit;
+						$total_paging = floor($total_paging);
+						$array_paging = array();
+						for($i=0; $i <= $total_paging; $i++){
+							$j = ($i + 1);
+							if(isset($mulai)){
+								$mulai = $mulai + $limit;
+							}else{
+								$mulai = 1;
+							}
+							
+							$array_paging[$i]['angka'] = $j;
+							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
+						}
+						
+						$this->nsmarty->assign('array_paging', $array_paging);						
 						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
 					case "combo_zona":

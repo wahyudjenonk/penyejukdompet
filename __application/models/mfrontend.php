@@ -22,6 +22,20 @@ class mfrontend extends CI_Model{
 					$select .= " ,E.foto_buku"; 
 					$where .= "";
 					$join .= " LEFT JOIN (SELECT tbl_buku_id, foto_buku FROM tbl_foto_buku GROUP BY tbl_buku_id) E ON E.tbl_buku_id = A.id ";					
+					
+					$typefilter = $this->input->post('ty');
+					$idfilter = $this->input->post('isd');
+					
+					if($typefilter){
+						if($typefilter == 'tingk'){
+							$where .= " AND cl_kelas_id = '".$idfilter."' ";
+						}elseif($typefilter == 'kate'){
+							$where .= " AND cl_kategori_id = '".$idfilter."' ";
+						}elseif($typefilter == 'grp'){
+							$where .= " AND cl_group_sekolah = '".$idfilter."' ";
+						}
+					}
+					
 				}elseif($type == 'data_buku_tingkatan'){
 					$where .= " AND C.id = '".$p1."' ";
 				}
