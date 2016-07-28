@@ -7,7 +7,7 @@ $.post(host+'loading-'+cont+'/'+cont2, {}, function(respons){
 function kumpulAction(type, p1, p2, p3){
 	switch(type){
 		case "krj":
-			$('.modal-dialog').css({'width':'500px'});
+			//$('.modal-dialog').css({'width':'00px'});
 			$('#modalencuk').html('');
 			$.post(host+'keranjang-belanja', { }, function(resp){
 				parsingan = $.parseJSON(resp)
