@@ -35,7 +35,7 @@
 			{if $array_paging}
 				<ul class="page-numbers">
 				{foreach from=$array_paging item=pag}
-					<li><a id='{$pag.angka}' href="javascript:void(0);" class="page-number" onClick="pagjs('{$pag.angka}', '{$pag.limitnya}')" >{$pag.angka}</a></li>
+					<li><a id='{$pag.angka}' href="javascript:void(0);" class="page-number" onClick="pagjs('{$pag.angka}', '{$pag.limitnya}', '{$typefilter}', '{$idfilter}')" >{$pag.angka}</a></li>
 				{/foreach}
 				</ul>
 			{else}

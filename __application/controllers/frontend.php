@@ -37,6 +37,16 @@ class frontend extends JINGGA_Controller {
 				switch($p1){
 					case "beranda":
 						$temp = "frontend/modul/beranda-page.html";
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', '', 1, 16);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							if($data_buku[$k]['foto_buku'] != null){
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+							}else{
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}
+						}
+						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
 					case "tentangkami":
 						$temp = "frontend/modul/tentangkami-page.html";
@@ -148,9 +158,13 @@ class frontend extends JINGGA_Controller {
 							$array_paging[$i]['angka'] = $j;
 							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
 						}
+						$typefilter = $this->input->post('ty');
+						$idfilter = $this->input->post('isd');
 						
 						$this->nsmarty->assign('array_paging', $array_paging);						
 						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('typefilter', $typefilter);
+						$this->nsmarty->assign('idfilter', $idfilter);
 					break;
 					case "combo_zona":
 						$temp = "frontend/modul/combozona-page.html";

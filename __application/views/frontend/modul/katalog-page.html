@@ -166,7 +166,7 @@
 		});
 	}
 	
-	function pagjs(idx, delimeter){
+	function pagjs(idx, delimeter, typp, ixds){
 		$('#konten-buku').html('');
 		$('#konten-buku-lebar').html('');
 		$(".page-number").each(function () {
@@ -174,14 +174,16 @@
 		});
 		$('#'+idx).addClass('current');
 		
-		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter }, function(rp){
+		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter, 'ty':typp, 'isd':ixds }, function(rp){
 			parspro = $.parseJSON(rp);
 			$('#konten-buku').html(parspro.page);
 		});
+		/*
 		$.post(host+'paginationdata', { 'dtype':'two', 'lmt':delimeter }, function(rps){
 			parspros = $.parseJSON(rps);
 			$('#konten-buku-lebar').html(parspros.page);
 		});
+		*/
 	}
 	
 	function loaddatabook(typ, ixd){
