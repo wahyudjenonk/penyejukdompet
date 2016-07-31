@@ -564,7 +564,7 @@ body {} .padding100 {
     background: #fff none repeat scroll 0 0;
     left: 0;
     overflow: hidden;
-    padding: 20px;
+    padding: 10px;
     top: 100%;
     transition: all 0.3s ease 0s;
     width: 100%;
@@ -572,7 +572,7 @@ body {} .padding100 {
 .pro-category {
     color: #aaa;
     font-size: 13px;
-    margin-bottom: 15px;
+  /*  margin-bottom: 15px; */
     text-transform: capitalize;
 }
 .pro-title {
