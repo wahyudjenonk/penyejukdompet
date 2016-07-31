@@ -12,6 +12,11 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "tbl_komplain":
+				$sql="SELECT A.*,B.no_order 
+					  FROM tbl_komplain A 
+					  LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id ".$where;
+			break;
 			case "buku_laris":
 				$sql="SELECT B.judul_buku,sum(A.qty)as jml 
 						FROM tbl_d_pemesanan A

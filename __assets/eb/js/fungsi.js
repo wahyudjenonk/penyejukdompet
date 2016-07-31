@@ -176,6 +176,20 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				}
 			];
 		break;
+		case "komplain":
+			judulnya = "Daftar Komplain Pelnggan ";
+			urlnya = "tbl_komplain";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			kolom[modnya] = [	
+				{field:'no_order',title:'No Order',width:200, halign:'center',align:'left'},
+				{field:'no_komplain',title:'No Komplain',width:200, halign:'center',align:'left'},
+				{field:'komplain',title:'Komplain',width:400, halign:'center',align:'left'},
+				{field:'create_date',title:'Tgl. komplain',width:150, halign:'center',align:'center'}
+			];
+		break;
 		case "monitor_order":
 			judulnya = "Monitoring Order Pelanggan ";
 			urlnya = "tbl_monitor";
