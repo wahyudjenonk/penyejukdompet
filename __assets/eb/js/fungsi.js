@@ -152,6 +152,30 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "pengguna":
+			judulnya = "Daftar Produk Aldeaz ";
+			urlnya = "admin";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			kolom[modnya] = [	
+				{field:'username',title:'UserName',width:200, halign:'center',align:'left'},
+				{field:'status',title:'Status',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value==1){return 'Aktif';}
+						else{return 'Tidak Aktif';}
+					}
+				},
+				{field:'flag_group',title:'Group',width:300, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='A'){return 'Administrator';}
+						else if(value=='G'){return 'Gudang';}
+						else{return 'LKPP';}
+					}
+				}
+			];
+		break;
 		case "monitor_order":
 			judulnya = "Monitoring Order Pelanggan ";
 			urlnya = "tbl_monitor";
@@ -592,6 +616,20 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			kolom[modnya] = [	
 				{field:'tingkatan',title:'Tingkatan',width:300, halign:'center',align:'left'},
 				{field:'kelas',title:'Kelas',width:400, halign:'center',align:'left'},
+				{field:'create_date',title:'DiBuat Oleh',width:150, halign:'center',align:'center'},
+				{field:'create_by',title:'Dibuat Tgl',width:100, halign:'center',align:'left'}
+			];
+		break;
+		case "edisi":
+			judulnya = "Daftar Edisi Pelajaran ";
+			urlnya = "cl_edisi";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			
+			kolom[modnya] = [	
+				{field:'nama_edisi',title:'Edisi',width:400, halign:'center',align:'left'},
 				{field:'create_date',title:'DiBuat Oleh',width:150, halign:'center',align:'center'},
 				{field:'create_by',title:'Dibuat Tgl',width:100, halign:'center',align:'left'}
 			];
@@ -1678,4 +1716,79 @@ function get_detil(mod,id_data){
 		break;
 	}
 	
+}
+function chart_na(id_selector,type,title,subtitle,title_y,data_x,data_y,satuan){
+	switch(type){
+	case "column":
+	case "line" :
+	$('#'+id_selector).highcharts({
+			chart: {
+				type: type
+			},
+			title: {
+				text: title
+			},
+			subtitle: {
+				text: subtitle
+			},
+			xAxis: {
+				type: 'category'
+			},
+			yAxis: {
+				title: {
+					text: title_y
+				}
+
+			},
+			legend: {
+				enabled: false
+			},
+			plotOptions: {
+				series: {
+					borderWidth: 0,
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.1f}'
+					}
+				}
+			},
+
+			tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> of total<br/>'
+			},
+
+			series: data_x
+			
+			
+			
+        });
+		break;
+		case "pie":
+			 $('#'+id_selector).highcharts({
+				chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false
+				},
+				title: {
+					text: title
+				},
+				tooltip: {
+					pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				},
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+							enabled: false
+						},
+						showInLegend: true
+					}
+				},
+				series: data_y
+			});
+		break;
+	}
 }

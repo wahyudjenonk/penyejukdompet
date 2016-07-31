@@ -11,6 +11,8 @@ class backend extends JINGGA_Controller {
 		$this->nsmarty->assign('acak', md5(date('H:i:s')) );
 		$this->temp="backend/";
 		$this->load->model('mbackend');
+		$this->load->library(array('encrypt','lib'));
+		//print_r($this->auth);
 	}
 	
 	function index(){
@@ -91,6 +93,12 @@ class backend extends JINGGA_Controller {
 			case "monitor_order":
 				$opt .="<option value='A.no_order'>No Order</option>";
 			break;
+			case "pengguna":
+				$opt .="<option value='username'>UserName</option>";
+			break;
+			case "edisi":
+				$opt .="<option value='A.nama_edisi'>Nama Edisi</option>";
+			break;
 		}
 		return $opt;
 	}
@@ -102,6 +110,12 @@ class backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "pengguna":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('admin','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
 				case "rekap_penjualan":
 				case "detil_penjualan":
 					if($mod=='rekap_penjualan'){$judul="Laporan Rekapitulasi Penjualan";}
@@ -113,7 +127,9 @@ class backend extends JINGGA_Controller {
 					$tingkat=$this->mbackend->getdata('cl_tingkatan','result_array');
 					$group=$this->mbackend->getdata('cl_group_sekolah','result_array');
 					$kat=$this->mbackend->getdata('cl_kategori','result_array');
+					$edisi=$this->mbackend->getdata('cl_edisi','result_array');
 					//$kelas=$this->mbackend->getdata('cl_kelas','get');
+					$this->nsmarty->assign('edisi',$edisi);
 					$this->nsmarty->assign('tingkat',$tingkat);
 					$this->nsmarty->assign('group',$group);
 					$this->nsmarty->assign('kat',$kat);
@@ -128,6 +144,12 @@ class backend extends JINGGA_Controller {
 				case "tingkatan":
 					if($sts=='edit'){
 						$data=$this->mbackend->getdata('cl_tingkatan','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
+				case "edisi":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('cl_edisi','row_array');
 						$this->nsmarty->assign('data',$data);
 					}
 				break;
@@ -168,6 +190,8 @@ class backend extends JINGGA_Controller {
 	}
 	function get_konten(){
 		$mod=$this->input->post('mod');
+		if($this->input->post('table'))$mod=$this->input->post('table');
+		//echo $mod;
 		$this->nsmarty->assign('mod',$mod);
 		$temp="backend/modul/".$mod.".html";
 		switch($mod){
@@ -432,5 +456,36 @@ class backend extends JINGGA_Controller {
 		}
 		
 		echo $this->mbackend->simpandata('tbl_gudang',$data,$sts);
+	}
+	function get_chart(){
+		$chart=array();
+		$x=array();
+		$y=array();
+		$data_y2=array();
+		//echo $sql;
+		$json['bar']=array();
+		//$x[]=array(2010,2011,2012,2013,2014,2015);
+		$x['name']='Buku';
+		$x['colorByPoint']='true';
+		$x['data']=array();
+		$a=array(100,200,210,500,250,150);
+		$data=$this->mbackend->getdata('buku_laris','result_array');
+		//print_r($data);exit;
+		$idx=0;
+		//$a=array();
+		foreach($data as $v=>$z){
+			//$x['data']=array();
+			//$a[]=$x
+			$x['data'][$idx]=array('name'=>$z['judul_buku'],'y'=>(float)$z['jml']);
+			$idx++;
+		}
+		//$y[]=array('name'=>'Pertumbuhan Jumlah Penduduk','data'=>$a);
+		//print_r($x);exit;
+		
+		
+		$chart['x']=array($x);
+		//$chart['y']=$y;
+		//$chart['table']=$table;
+		echo json_encode($chart);
 	}
 }

@@ -13,8 +13,12 @@
 							{include file="backend/template/text.html" label="Kelas" type="select" name="cl_kelas_id" id_na="cl_kelas_id" class="validasi"}
 							{include file="backend/template/text.html" label="Group Sekolah" type="select" name="cl_group_sekolah" id_na="cl_group_sekolah" data_combo=$group class="validasi" id_combo=$data.cl_group_sekolah|default:''}
 							{include file="backend/template/text.html" label="Kategori" type="select" name="cl_kategori_id" id_na="cl_kategori_id" data_combo=$kat class="validasi" id_combo=$data.cl_kategori_id|default:''}
+							{include file="backend/template/text.html" label="Edisi" type="select" name="cl_edisi_id" id_na="cl_edisi_id" data_combo=$edisi class="validasi" id_combo=$data.cl_edisi_id|default:''}
+							{include file="backend/template/text.html" label="Kode Buku" type="text" name="kode_buku" id_na="kode_buku" class="validasi" value=$data.kode_buku|default:''}
+							{include file="backend/template/text.html" label="ISBN" type="text" name="isbn" id_na="isbn" class="validasi" value=$data.isbn|default:''}
 							{include file="backend/template/text.html" label="Judul Buku" type="text" name="judul_buku" id_na="judul_buku" class="validasi" value=$data.judul_buku|default:''}
 							{include file="backend/template/text.html" label="Desc. Buku" type="textarea" name="deskripsi_buku" id_na="deskripsi_buku" value=$data.deskripsi_buku|default:''}
+							{include file="backend/template/text.html" label="Penerbit" type="text" name="penerbit" id_na="penerbit" class="validasi" value=$data.penerbit|default:''}
 							{include file="backend/template/text.html" label="Jml. Halaman" type="text" name="jml_hal" id_na="jml_hal" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;text-align:right" value=$data.jml_hal|default:''}
 							{include file="backend/template/text.html" label="Ukuran Buku" type="text" name="ukuran_buku" id_na="ukuran_buku" class="validasi" value=$data.ukuran_buku|default:''}
 							{include file="backend/template/text.html" label="Harga Zona 1" type="text" name="harga_zona_1" id_na="harga_zona_1" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_1|default:''}
@@ -22,6 +26,11 @@
 							{include file="backend/template/text.html" label="Harga Zona 3" type="text" name="harga_zona_3" id_na="harga_zona_3" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_3|default:''}
 							{include file="backend/template/text.html" label="Harga Zona 4" type="text" name="harga_zona_4" id_na="harga_zona_4" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_4|default:''}
 							{include file="backend/template/text.html" label="Harga Zona 5" type="text" name="harga_zona_5" id_na="harga_zona_5" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_zona_5|default:''}
+							{include file="backend/template/text.html" label="Harga Pemerintah Zona 1" type="text" name="harga_pemerintah_zona_1" id_na="harga_pemerintah_zona_1" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_pemerintah_zona_1|default:''}
+							{include file="backend/template/text.html" label="Harga Pemerintah Zona 2" type="text" name="harga_pemerintah_zona_2" id_na="harga_pemerintah_zona_2" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_pemerintah_zona_2|default:''}
+							{include file="backend/template/text.html" label="Harga Pemerintah Zona 3" type="text" name="harga_pemerintah_zona_3" id_na="harga_pemerintah_zona_3" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_pemerintah_zona_3|default:''}
+							{include file="backend/template/text.html" label="Harga Pemerintah Zona 4" type="text" name="harga_pemerintah_zona_4" id_na="harga_pemerintah_zona_4" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_pemerintah_zona_4|default:''}
+							{include file="backend/template/text.html" label="Harga Pemerintah Zona 5" type="text" name="harga_pemerintah_zona_5" id_na="harga_pemerintah_zona_5" class='angka validasi' style="height:34px;font-size: 13px;padding: 8px 12px;" value=$data.harga_pemerintah_zona_5|default:''}
 							{include file="backend/template/upload.html" label="Upload Gambar" name="foto_buku" id_na="foto_buku" mod="buku" id_batal="batal_buku_{$acak}" msg="Data Input Buku Sudah Tersimpan"}
 							{if $sts eq 'edit'}
 							<div class="form-group" >

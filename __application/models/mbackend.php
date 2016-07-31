@@ -12,24 +12,86 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "buku_laris":
+				$sql="SELECT B.judul_buku,sum(A.qty)as jml 
+						FROM tbl_d_pemesanan A
+						LEFT JOIN tbl_buku B ON A.tbl_buku_id=B.id
+						GROUP BY B.judul_buku
+						ORDER BY sum(A.qty) DESC
+						limit 0,10";
+			break;
+			case "admin":
+				if($balikan=='row_array'){
+					$where .=" AND id=".$this->input->post('id');
+				}
+				$sql = "
+					SELECT *
+					FROM admin ".$where;				
+			break;
 			case "get_lap_rekap":
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_kepala_sekolah as pic,B.npsn,
-						B.alamat_pengiriman,B.no_telp_sekolah,B.no_hp_kepsek,B.email,E.kab_kota,
-						C.provinsi,F.jml_buku,G.total_pembayaran
-						FROM tbl_h_pemesanan A
-						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
-						LEFT JOIN cl_provinsi C ON B.cl_provinsi_kode=C.kode_prov
-						LEFT JOIN cl_kab_kota E ON B.cl_kab_kota_kode=E.kode_kab_kota
-						LEFT JOIN (
-							SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku 
+				$tgl_mulai=$this->input->post('tgl_mulai');
+				$tgl_akhir=$this->input->post('tgl_akhir');
+				$mod=$this->input->post('mod');
+				if($mod!=='detil_penjualan'){
+					$sql="SELECT A.*,B.nama_sekolah,B.nama_kepala_sekolah as pic,B.npsn,
+							B.alamat_pengiriman,B.no_telp_sekolah,B.no_hp_kepsek,B.email,E.kab_kota,
+							C.provinsi,F.jml_buku,G.total_pembayaran
+							FROM tbl_h_pemesanan A
+							LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
+							LEFT JOIN cl_provinsi C ON B.cl_provinsi_kode=C.kode_prov
+							LEFT JOIN cl_kab_kota E ON B.cl_kab_kota_kode=E.kode_kab_kota
+							LEFT JOIN (
+								SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku 
+								from tbl_d_pemesanan A 
+								LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+								LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+								WHERE C.jenis_pembeli='SEKOLAH' AND B.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
+								GROUP BY A.tbl_h_pemesanan_id
+							)AS F ON F.tbl_h_pemesanan_id=A.id
+							LEFT JOIN tbl_konfirmasi G ON G.tbl_h_pemesanan_id=A.id
+							WHERE B.jenis_pembeli='SEKOLAH' AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
+				}else{
+					$sql="SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku,
+							CONCAT(C.nama_sekolah,' [',C.npsn,']')as sekolah,B.no_order,B.sub_total,B.pajak,B.grand_total,B.id as id_header  
 							from tbl_d_pemesanan A 
-							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
-							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-							WHERE C.jenis_pembeli='SEKOLAH'
-							GROUP BY A.tbl_h_pemesanan_id
-						)AS F ON F.tbl_h_pemesanan_id=A.id
-						LEFT JOIN tbl_konfirmasi G ON G.tbl_h_pemesanan_id=A.id
-						WHERE B.jenis_pembeli='SEKOLAH' ";
+							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id 
+							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id 
+							WHERE C.jenis_pembeli='SEKOLAH' 
+							AND B.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
+							GROUP BY A.tbl_h_pemesanan_id ";
+							
+					$data=array();
+					$res=$this->db->query($sql)->result_array();
+					if(count($res)>0){
+						foreach($res as $x=>$v){
+							$data[$x]=array();
+							$data[$x]['no_order']=$v['no_order'];
+							$data[$x]['sekolah']=$v['sekolah'];
+							$data[$x]['sub_total']=$v['sub_total'];
+							$data[$x]['pajak']=$v['pajak'];
+							$data[$x]['grand_total']=$v['grand_total'];
+							$data[$x]['jml_buku']=$v['jml_buku'];
+							$sql="SELECT A.*,B.no_order,CONCAT(D.nama_sekolah,' (',D.npsn,')')as sekolah,C.judul_buku
+									FROM tbl_d_pemesanan A
+									LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+									LEFT JOIN tbl_buku C ON A.tbl_buku_id=C.id
+									LEFT JOIN tbl_registrasi D ON B.tbl_registrasi_id=D.id
+									WHERE D.jenis_pembeli='SEKOLAH' AND A.tbl_h_pemesanan_id=".$v['id_header'];
+							$det=$this->db->query($sql)->result_array();
+							//print_r($det);exit;
+							if(count($det)>0){
+								$data[$x]['detil']=$det;
+								/*foreach($det as $y=>$z){
+									$data[$x][$v['no_order']]=array();
+									$data[$x][$v['no_order']][$y]=array('qty'=>$z['qty'],'harga'=>$z['harga'],'subtotal'=>$z['subtotal']);
+								}*/
+							}
+							
+						}
+					}
+					//echo "<pre>";print_r($data);exit;
+					return $data;
+				}
 			break;
 			case "tbl_monitor":
 				$sql="SELECT A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
@@ -198,6 +260,16 @@ class mbackend extends CI_Model{
 				$sql="SELECT A.*,A.nama_kategori as text
 					  FROM cl_kategori A ".$where;
 			break;
+			case "cl_edisi":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				/*if($this->input->post('key')){
+					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
+				}*/
+				$sql="SELECT A.*,A.nama_edisi as text
+					  FROM cl_edisi A ".$where;
+			break;
 			case "cl_kelas":
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
@@ -270,6 +342,11 @@ class mbackend extends CI_Model{
 		}
 		
 		switch($table){
+			case "admin":
+				//print_r($data);exit;
+				if($sts_crud=='add')$data['password']=$this->encrypt->encode($data['password']);
+				if(!isset($data['status'])){$data['status']=0;}
+			break;
 			case "tbl_buku":
 				//print_r($data);exit;
 				unset($data['tingkatan']);
@@ -289,6 +366,7 @@ class mbackend extends CI_Model{
 			break;
 			case "cl_group_sekolah":
 			case "cl_kelas":
+			case "cl_edisi":
 			
 				$data['create_date']=date('Y-m-d H:i:s');
 				$data['create_by']=$this->auth['username'];

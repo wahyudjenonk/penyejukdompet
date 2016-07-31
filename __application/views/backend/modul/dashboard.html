@@ -1,0 +1,9 @@
+<div id='charttable'></div>
+<script>
+	$.post(host+'backoffice-GetDataChart',{ mod:'produk_laris' },function(r){
+		console.log(r);
+		var x=JSON.parse(r);
+		console.log(x);
+		chart_na('charttable',"column","Jumlah Buku Terlaris",'',"",x.x,x.y,"");
+	});
+</script>

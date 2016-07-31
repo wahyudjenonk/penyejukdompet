@@ -53,7 +53,7 @@
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <ul class="nav navbar-nav pull-right header-menu">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <li class="dropdown" id="notifications-header">
+                    <!--li class="dropdown" id="notifications-header">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="glyph-icon flaticon-notifications"></i>
                             <span class="badge badge-danger badge-header">6</span>
@@ -129,17 +129,17 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li-->
                     <!-- END NOTIFICATION DROPDOWN -->
                     <!-- BEGIN USER DROPDOWN -->
                     <li class="dropdown" id="user-header">
                         <a href="#" class="dropdown-toggle c-white" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img src="{$host}__assets/eb/img/avatars/avatar2.png" alt="user avatar" width="30" class="p-r-5">
-                            <span class="username">Administrator</span>
+                            <span class="username">{$auth.username|upper}</span>
                             <i class="fa fa-angle-down p-r-10"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>
+                            <!--li>
                                 <a href="extra_profile.html">
                                     <i class="glyph-icon flaticon-account"></i> My Profile
                                 </a>
@@ -153,13 +153,16 @@
                                 <a href="calendar.html">
                                     <i class="glyph-icon flaticon-settings21"></i> Account Settings
                                 </a>
-                            </li>
+                            </li-->
                             <li class="dropdown-footer clearfix">
 							<a href="javascript:;" class="toggle_fullscreen" title="Fullscreen">
-								<i class="glyph-icon flaticon-fullscreen3"></i>
+								
 							</a>
 							<a href="{$host}backoffice-keluar" title="Logout">
 								<i class="fa fa-power-off"></i>
+							</a>
+							<a href="javascript:;" class="toggle_fullscreen" title="Fullscreen">
+								
 							</a>
 						</li>
                         </ul>
@@ -178,8 +181,9 @@
             <div id="main-menu">
                 <ul class="sidebar-nav">
                     <li class='current'>
-                        <a href="index.html"><i class="fa fa-home"></i><span class="sidebar-text">Beranda</span></a>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-Dashboard','dashboard')"><i class="fa fa-home"></i><span class="sidebar-text">Beranda</span></a>
                     </li>
+					{if $auth.flag_group neq 'L'}
                     <li>
                         <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')" ><i class="fa fa-book"></i><span class="sidebar-text">Produk</span></a>
                     </li>
@@ -226,6 +230,20 @@
                             </li>
                         </ul>
                     </li>
+					{else}
+					<li>
+                        <a href="#"><i class="glyph-icon flaticon-charts2"></i><span class="sidebar-text">Laporan</span><span class="fa arrow"></span></a>
+                        <ul class="submenu collapse">
+                            <li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','')"><span class="sidebar-text">Laporan Rekap Penjualan</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','')"><span class="sidebar-text">Laporan Detil Penjualan</span></a>
+                            </li>
+                        </ul>
+                    </li>
+					{/if}
+					{if $auth.flag_group neq 'L'}
                     <li>
                         <a href="#"><i class="glyph-icon flaticon-panels"></i><span class="sidebar-text">Master</span><span class="fa arrow"></span></a>
                           <ul class="submenu collapse">
@@ -254,17 +272,24 @@
 									<span class="sidebar-text">Group Sekolah</span>
 								</a>
                             </li>
+							
 							<li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/kategori','cl_kategori')" >									
 									<span class="sidebar-text">Kategori</span>
 								</a>
                             </li>
-							
+							<li>
+                                <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/edisi','cl_edisi')" >
+									<span class="sidebar-text">Edisi</span>
+								</a>
+                            </li>
                         </ul>
                     </li>
+					{/if}
+					{if $auth.flag_group eq 'A'}
                     <li>
-                        <a href="#"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Manajemen User</span><span class="fa arrow"></span></a>
-                          <ul class="submenu collapse">
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin')"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Manajemen User</span></a>
+                          <!--ul class="submenu collapse">
                             <li>
                                 <a href="profil.html"><span class="sidebar-text">User Profile</span></a>
                             </li>
@@ -274,8 +299,9 @@
                             <li>
                                 <a href="signup.html"><span class="sidebar-text">Hak Akses</span></a>
                             </li>
-                        </ul>
+                        </ul-->
                     </li>
+					{/if}
                 </ul>
             </div>
         </nav>
@@ -324,7 +350,11 @@
 	<script src="{$host}__assets/easyui/jquery.easyui.min.js"></script>
 	<script src="{$host}__assets/eb/js/jquery.uploadfile.js"></script>
 	<script src="{$host}__assets/eb/js/fungsi.js"></script>
+	<script src="{$host}__assets/eb/js/highcharts.js"></script>
 	<script src="{$host}__assets/tinymce/tinymce.min.js"></script>
+	<script>
+		loadUrl(this, '{$host}backoffice-Dashboard','dashboard')
+	</script>
 </body>
 
 </html>
