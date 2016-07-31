@@ -59,7 +59,7 @@
 		============================================ -->
         <link rel="stylesheet" href="{$host}__assets/ef/css/responsive.css">
 		<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/zebradate/css/default.css">
-
+		<link rel="stylesheet" href="{$host}__assets/ef/responsiveslide/responsiveslides.css" type="text/css" media="screen" />
 		<!-- modernizr JS
 		============================================ -->			
         <script src="{$host}__assets/ef/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -89,12 +89,7 @@
 									<div class="header-top-right pull-right">
 										<ul>
 											<li class="search-bar">
-												<div class="search-form">
-													<form method="get" action="#">
-														<button type="submit"><i class="fa fa-search"></i></button>
-														<input type="text" placeholder="Cari Buku" id="search" name="search">
-													</form>
-												</div>
+												<p style='color:#BBDEFB !important;'>{$zona_pilihan|default:'Tidak Ada Zona Pilihan'}</p>
 											</li>
 											<li class="cart-active">
 												<div class="cart-btn">
@@ -173,7 +168,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-							<h1>Judul Halaman <small> -  Deskripsi singkat</small></h1>
+							<h1>{$judulbesar|default:''} <small> -  {$judulkecil|default:''}</small></h1>
 						</div>
 					</div>
 				</div>
@@ -411,7 +406,8 @@
 		<script src="{$host}__assets/ef/zebradate/js/zebra_datepicker.js"></script>
 		<script src="{$host}__assets/easyui/jquery.easyui.min.js"></script>
 		<script src="{$host}__assets/ef/js/blockui.js"></script>
-		
+		<script src="{$host}__assets/ef/responsiveslide/responsiveslides.js"></script>
+
 		<!-- main JS
 		============================================ -->		
         <script src="{$host}__assets/ef/js/main.js"></script>

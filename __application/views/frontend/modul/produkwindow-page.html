@@ -1,6 +1,22 @@
+<link rel="stylesheet" href="{$host}__assets/ef/responsiveslide/demo.css" type="text/css" media="screen" />
 <div class="product-images">
 	<div class="main-image images">
-		<img alt="" src="{$host}__assets/ef/img/product/quickview.jpg">
+		{if $data_fotobuku}
+			<ul class="rslides" id='slider3'>
+			{foreach from=$data_fotobuku item=rw}
+				<li>
+					<img src="{$rw.foto_buku}" />
+				</li>
+			{/foreach}
+			</ul>
+			<ul id="slider3-pager">
+			{foreach from=$data_fotobuku item=rws}
+				<li><a href="#"><img src="{$rws.foto_buku}" style='width:30px;height:30px;' alt=""></a></li>
+			{/foreach}
+			</ul>
+		{else}
+			<img src="{$host}__repository/no-image.jpeg" />
+		{/if}
 	</div>
 </div>
 <div class="product-info">
@@ -96,6 +112,13 @@
 </div>
 
 <script>
+	$(document).ready(function(){
+		$("#slider3").responsiveSlides({
+			manualControls: '#slider3-pager',
+			maxwidth: 540
+		});
+	});
+	
 	$('#combo_zona_{$data_buku.id}').on('change', function(){
 		$('#zon_{$data_buku.id}').html('');
 		$.post(host+'harga-per-zona', { 'znpn':$(this).val(), 'iix':'{$data_buku.id}' }, function(responze){

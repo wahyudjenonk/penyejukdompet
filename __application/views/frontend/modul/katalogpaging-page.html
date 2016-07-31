@@ -11,9 +11,10 @@
 					</div>
 				</div>
 			
-				<div class="pro-info">
-					<p class="pro-category">{$row.nama_kategori}</p>
-					<font style='font-size:15px !important;'><a href="#">{$row.judul_buku}</a></font>
+				<div class="pro-info" style='min-height:120px !important;'>
+					<p class="pro-category" style='margin-bottom:5px !important;'>{$row.nama_kategori}</p>
+					<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.judul_buku}</font></div>
+					<div><font style='font-size:18px !important;'>Rp. {$row.harga_buku_bener|default:''}</font></div>
 				</div>
 			</div>
 		</div>

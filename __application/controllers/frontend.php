@@ -17,14 +17,35 @@ class frontend extends JINGGA_Controller {
 	}
 	
 	function getdisplay($type="", $p1="", $p2="", $p3=""){
+		$zona_pilihan = $this->session->userdata('zonaxtreme');
 		switch($type){
-			case "main_page":
-				//$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
-				//$this->nsmarty->assign('data_tingkatan', $data_tingkatan);		
-				
+			case "main_page":				
 				$data_cart = $this->cart->contents();
 				$jumlah_item = count($data_cart);
 				
+				if($p1 == "beranda"){
+					$this->nsmarty->assign( 'judulbesar', "Halaman Beranda" );
+					$this->nsmarty->assign( 'judulkecil', "(www.aldeaz.id) Penyedia Buku Luar Biasa" );
+				}elseif($p1 == "carabelanja"){
+					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
+					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
+				}elseif($p1 == "katalog"){
+					$this->nsmarty->assign( 'judulbesar', "Katalog Buku" );
+					$this->nsmarty->assign( 'judulkecil', "Temukan Buku Yang Anda Butuhkan" );
+				}elseif($p1 == "lacakpesanan"){
+					$this->nsmarty->assign( 'judulbesar', "Lacak Pesanan" );
+					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Pesanan Anda" );
+				}elseif($p1 == "riwayat"){
+					$this->nsmarty->assign( 'judulbesar', "Riwayat Pesanan" );
+					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Riwayat Pesanan Anda di www.aldeaz.id" );
+				}elseif($p1 == "komplain"){
+					$this->nsmarty->assign( 'judulbesar', "Layanan Komplain" );
+					$this->nsmarty->assign( 'judulkecil', "Tuliskan Komplain Anda." );
+				}
+				
+				if($zona_pilihan){
+					$this->nsmarty->assign('zona_pilihan', "Anda Berada Dalam Zona Harga ".$zona_pilihan['zona_pilihan']);
+				}
 				$this->nsmarty->assign( 'tot_item', $jumlah_item );
 				$this->nsmarty->assign( 'konten', $p1);
 				if(isset($p2)){
@@ -33,7 +54,6 @@ class frontend extends JINGGA_Controller {
 				$this->nsmarty->display( 'frontend/main-index.html');	
 			break;
 			case "loading_page":
-				$zona_pilihan = $this->session->userdata('zonaxtreme');
 				switch($p1){
 					case "beranda":
 						$temp = "frontend/modul/beranda-page.html";
@@ -64,8 +84,9 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/katalog-page.html";
 						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 1, 9);
+
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
 							}else{
@@ -118,7 +139,7 @@ class frontend extends JINGGA_Controller {
 						
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", $explim[0], $explim[1]);
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
 							}else{
@@ -134,7 +155,7 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/katalogfilterdata-page.html";
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 1, 9);
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
 							}else{
@@ -191,7 +212,8 @@ class frontend extends JINGGA_Controller {
 					case "detail_produk":
 						$id = $this->input->post('isds');
 						$temp = "frontend/modul/produkwindow-page.html";
-						$data_buku = $this->db->get_where('tbl_buku', array('id'=>$id))->row_array();
+						$data_buku = $this->mfrontend->getdata('data_buku_detail', 'row_array', $id);
+						$data_fotobuku = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$id))->result_array();
 						$estimasi = $this->db->get_where('cl_provinsi', array('kode_prov'=>$zona_pilihan['kode_provinsi']))->row_array();
 						$harga_buku = number_format($data_buku['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 						
@@ -199,12 +221,20 @@ class frontend extends JINGGA_Controller {
 							$data_buku['harga_zona_'.$i] = "Rp. ".number_format($data_buku['harga_zona_'.$i],0,",",".");
 							$data_buku['harga_pemerintah_zona_'.$i] = "Rp. ".number_format($data_buku['harga_pemerintah_zona_'.$i],0,",",".");
 						}
+						foreach($data_fotobuku as $k=>$v){
+							if($data_fotobuku[$k]['foto_buku'] != null){
+								$data_fotobuku[$k]['foto_buku'] = $this->host."__repository/produk/".$data_buku['tingkatan']."/".$data_buku['kelas']."/".$data_buku['nama_group']."/".$data_buku['nama_kategori']."/".$v['foto_buku'];
+							}
+						}
+						
+						//print_r($data_buku);exit;
 						
 						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
 						$this->nsmarty->assign('estimasi', $estimasi['estimasi_lama_pengiriman']);
 						$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);
 						$this->nsmarty->assign('harga_buku', $harga_buku);
 						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('data_fotobuku', $data_fotobuku);
 					break;
 					case "zona_pengiriman":
 						$zona = $this->input->post('znpn');

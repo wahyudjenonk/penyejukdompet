@@ -14,15 +14,16 @@ class mfrontend extends CI_Model{
 		$where = " WHERE 1=1 ";
 		$join = "";
 		$select = "";
+		$order = "";
 		
 		switch($type){
 			case "data_buku":
 			case "data_buku_tingkatan":
+			case "data_buku_detail":
 				if($type == 'data_buku'){
 					$select .= " ,E.foto_buku"; 
 					$where .= "";
 					$join .= " LEFT JOIN (SELECT tbl_buku_id, foto_buku FROM tbl_foto_buku GROUP BY tbl_buku_id) E ON E.tbl_buku_id = A.id ";					
-					
 					$typefilter = $this->input->post('ty');
 					$idfilter = $this->input->post('isd');
 					
@@ -36,8 +37,14 @@ class mfrontend extends CI_Model{
 						}
 					}
 					
+					$order = "
+						ORDER BY A.id ASC
+						LIMIT $p2, $p3
+					";
 				}elseif($type == 'data_buku_tingkatan'){
 					$where .= " AND C.id = '".$p1."' ";
+				}elseif($type == 'data_buku_detail'){
+					$where .= " AND A.id = '".$p1."' ";
 				}
 				
 				$sql = "
@@ -50,8 +57,7 @@ class mfrontend extends CI_Model{
 					LEFT JOIN cl_group_sekolah F ON F.id = A.cl_group_sekolah
 					$join
 					$where 
-					ORDER BY A.id ASC
-					LIMIT $p2, $p3
+					$order
 				";
 				
 				//echo $sql;exit;

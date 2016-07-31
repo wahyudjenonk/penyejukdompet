@@ -47,9 +47,10 @@
 														</div>
 													</div>
 												
-													<div class="pro-info">
-														<p class="pro-category">{$row.nama_kategori}</p>
-														<font style='font-size:15px !important;'><a href="#">{$row.judul_buku}</a></font>
+													<div class="pro-info" style='min-height:120px !important;'>
+														<p class="pro-category" style='margin-bottom:5px !important;'>{$row.nama_kategori}</p>
+														<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.judul_buku}</font></div>
+														<div><font style='font-size:18px !important;'>Rp. {$row.harga_buku_bener|default:''}</font></div>
 													</div>
 												</div>
 											</div>
@@ -64,6 +65,14 @@
 						<div class="row">
 							<div class="pagination-area-v1">
 								<div class="col-md-12 text-left">
+									Halaman :
+									<select id='pag' onChange='pagjs();' style='width:70px !important;'>
+										{foreach from=$array_paging item=pag}
+											<option value='{$pag.limitnya}'>{$pag.angka}</option>
+										{/foreach}
+									</select>
+									
+									{*
 									{if $array_paging}
 										<ul class="page-numbers">
 										{foreach from=$array_paging item=pag}
@@ -73,6 +82,7 @@
 									{else}
 										<li class="page-number current">-</li>
 									{/if}
+									*}
 								</div>
 							</div>
 						</div>
@@ -166,18 +176,21 @@
 		});
 	}
 	
-	function pagjs(idx, delimeter, typp, ixds){
+	//function pagjs(idx, delimeter, typp, ixds){
+	function pagjs(typp, ixds){
+		var delimeter = $('#pag').val();
 		$('#konten-buku').html('');
 		$('#konten-buku-lebar').html('');
-		$(".page-number").each(function () {
-			$(this).removeClass('current');
-		});
-		$('#'+idx).addClass('current');
+		//$(".page-number").each(function () {
+		//	$(this).removeClass('current');
+		//});
+		//$('#'+idx).addClass('current');
 		
 		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter, 'ty':typp, 'isd':ixds }, function(rp){
 			parspro = $.parseJSON(rp);
 			$('#konten-buku').html(parspro.page);
 		});
+		
 		/*
 		$.post(host+'paginationdata', { 'dtype':'two', 'lmt':delimeter }, function(rps){
 			parspros = $.parseJSON(rps);

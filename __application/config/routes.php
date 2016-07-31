@@ -24,9 +24,6 @@ $route['backoffice-laporan/(:any)'] = 'backend/get_form/$1';
 $route['beranda'] = 'frontend/getdisplay/main_page/beranda';
 $route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda';
 
-$route['tentangkami'] = 'frontend/getdisplay/main_page/tentangkami';
-$route['loading-tentangkami'] = 'frontend/getdisplay/loading_page/tentangkami';
-
 $route['tracking'] = 'frontend/getdisplay/main_page/tracking';
 $route['loading-tracking'] = 'frontend/getdisplay/loading_page/tracking';
 
