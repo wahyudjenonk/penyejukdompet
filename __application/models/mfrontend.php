@@ -48,13 +48,14 @@ class mfrontend extends CI_Model{
 				}
 				
 				$sql = "
-					SELECT A.*, D.nama_kategori, C.tingkatan, B.kelas, F.nama_group 
+					SELECT A.*, D.nama_kategori, C.tingkatan, B.kelas, F.nama_group, G.nama_edisi 
 						$select
 					FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON B.id = A.cl_kelas_id
 					LEFT JOIN cl_tingkatan C ON C.id = B.cl_tingkatan_id
 					LEFT JOIN cl_kategori D ON D.id = A.cl_kategori_id
 					LEFT JOIN cl_group_sekolah F ON F.id = A.cl_group_sekolah
+					LEFT JOIN cl_edisi G ON G.id = A.cl_edisi_id
 					$join
 					$where 
 					$order

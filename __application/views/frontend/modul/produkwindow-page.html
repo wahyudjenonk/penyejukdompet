@@ -15,8 +15,13 @@
 			{/foreach}
 			</ul>
 		{else}
-			<img src="{$host}__repository/no-image.jpeg" />
-		{/if}
+			<img src="{$host}__repository/no-image.jpeg"  style='margin-bottom:20px !important;'/>
+		{/if}		
+	</div>
+	<div class="quick-desc">
+		<h3>Deskripsi Buku</h3>
+		<hr />
+		{$data_buku.deskripsi_buku}
 	</div>
 </div>
 <div class="product-info">
@@ -77,6 +82,18 @@
 					  <td>{$estimasi|default:'-'}</td>
 					</tr>				
 					<tr>
+					  <td>Edisi</td>
+					  <td>{$data_buku.nama_edisi}</td>
+					</tr>
+					<tr>
+					  <td>Kelas</td>
+					  <td>{$data_buku.kelas}</td>
+					</tr>
+					<tr>
+					  <td>Kategori</td>
+					  <td>{$data_buku.nama_kategori}</td>
+					</tr>
+					<tr>
 					  <td>ISBN</td>
 					  <td>{$data_buku.isbn}</td>
 					</tr>
@@ -103,11 +120,7 @@
 			<input type="number" style='width:80px !important;' id="french-hens_{$data_buku.id}" value="1">
 		</div>
 		<button id='sbm-cart_{$data_buku.id}' class="single_add_to_cart_button" >Beli</button>
-	</div>
-	<div class="quick-desc">
-		{*
-		{$data_buku.deskripsi_buku}
-		*}
+		
 	</div>
 </div>
 
