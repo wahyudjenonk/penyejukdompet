@@ -83,10 +83,14 @@ class frontend extends JINGGA_Controller {
 						
 						$temp = "frontend/modul/katalog-page.html";
 						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
-						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 1, 9);
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 0, 9);
 
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							if(isset($zona_pilihan)){
+								$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							}else{
+								$data_buku[$k]['harga_buku_bener'] = "-";
+							}
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
 							}else{
@@ -108,7 +112,7 @@ class frontend extends JINGGA_Controller {
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						
 						$total_data = $this->db->count_all("tbl_buku");
-						$limit = 9;
+						$limit = 8;
 						$total_paging = $total_data / $limit;
 						$total_paging = floor($total_paging);
 						$array_paging = array();
@@ -117,7 +121,7 @@ class frontend extends JINGGA_Controller {
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
 							}else{
-								$mulai = 1;
+								$mulai = 0;
 							}
 							
 							$array_paging[$i]['angka'] = $j;
@@ -153,7 +157,7 @@ class frontend extends JINGGA_Controller {
 					break;
 					case "filterdt":
 						$temp = "frontend/modul/katalogfilterdata-page.html";
-						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 1, 9);
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 0, 9);
 						foreach($data_buku as $k=>$v){
 							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
@@ -163,7 +167,7 @@ class frontend extends JINGGA_Controller {
 							}
 						}
 						
-						$total_data = count($data_buku);
+						$total_data = $this->mfrontend->getdata('hitung_data_filter', 'num_rows');
 						$limit = 9;
 						$total_paging = $total_data / $limit;
 						$total_paging = floor($total_paging);
@@ -173,7 +177,7 @@ class frontend extends JINGGA_Controller {
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
 							}else{
-								$mulai = 1;
+								$mulai = 0;
 							}
 							
 							$array_paging[$i]['angka'] = $j;

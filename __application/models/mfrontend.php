@@ -29,11 +29,11 @@ class mfrontend extends CI_Model{
 					
 					if($typefilter){
 						if($typefilter == 'tingk'){
-							$where .= " AND cl_kelas_id = '".$idfilter."' ";
+							$where .= " AND A.cl_kelas_id = ".$idfilter." ";
 						}elseif($typefilter == 'kate'){
-							$where .= " AND cl_kategori_id = '".$idfilter."' ";
+							$where .= " AND A.cl_kategori_id = ".$idfilter." ";
 						}elseif($typefilter == 'grp'){
-							$where .= " AND cl_group_sekolah = '".$idfilter."' ";
+							$where .= " AND A.cl_group_sekolah = ".$idfilter." ";
 						}
 					}
 					
@@ -61,6 +61,28 @@ class mfrontend extends CI_Model{
 				";
 				
 				//echo $sql;exit;
+			break;
+			case 'hitung_data_filter':
+				$typefilter = $this->input->post('ty');
+				$idfilter = $this->input->post('isd');
+				if($typefilter){
+					if($typefilter == 'tingk'){
+						$where .= " AND A.cl_kelas_id = ".$idfilter." ";
+					}elseif($typefilter == 'kate'){
+						$where .= " AND A.cl_kategori_id = ".$idfilter." ";
+					}elseif($typefilter == 'grp'){
+						$where .= " AND A.cl_group_sekolah = ".$idfilter." ";
+					}
+				}
+				$sql = "
+					SELECT A.*
+					FROM tbl_buku A
+					$where 
+				";
+				
+				$query = $this->db->query($sql);
+				return $query->num_rows();
+				exit;
 			break;
 			case "cl_tingkatan":
 				$sql = "
