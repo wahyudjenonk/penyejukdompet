@@ -299,7 +299,7 @@ class mbackend extends CI_Model{
 					FROM tbl_foto_buku A 
 					LEFT JOIN tbl_buku B ON A.tbl_buku_id=B.id
 					LEFT JOIN cl_kelas C ON B.cl_kelas_id=C.id
-					LEFT JOIN cl_group_sekolah D ON B.cl_group_sekolah=d.id
+					LEFT JOIN cl_group_sekolah D ON B.cl_group_sekolah = D.id
 					LEFT JOIN cl_kategori E ON B.cl_kategori_id=E.id 
 					LEFT JOIN cl_tingkatan F ON C.cl_tingkatan_id=F.id ".$where;
 			break;
