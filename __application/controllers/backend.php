@@ -302,7 +302,7 @@ class backend extends JINGGA_Controller {
 				case "foto_buku":
 					$data=$this->mbackend->getdata('tbl_foto_buku','row_array');
 					if(isset($data['foto_buku'])){
-						$path='__repository/produk/'.$data['tingkatan'].'/'.$data['kelas'].'/'.$data['nama_group'].'/'.$data['nama_kategori'].'/';
+						$path='__repository/produk/';
 						chmod($path.$data['foto_buku'],0777);
 						unlink($path.$data['foto_buku']);
 						echo $this->mbackend->simpandata('tbl_foto_buku',$data,'delete');
