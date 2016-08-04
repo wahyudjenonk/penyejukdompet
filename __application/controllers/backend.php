@@ -266,7 +266,7 @@ class backend extends JINGGA_Controller {
 				$tbl="tbl_foto_buku";
 				
 				$object='file_nya';
-				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				/*if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
 				$upload_path .=$this->input->post('tingkat')."/";
 				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
 				$upload_path .=$this->input->post('kelas')."/";
@@ -275,6 +275,7 @@ class backend extends JINGGA_Controller {
 				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
 				$upload_path .=$this->input->post('kat')."/";
 				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
+				*/
 				if(isset($_FILES['file_nya'])){
 					$file=$_FILES['file_nya']['name'];
 					$nameFile =$d->format("YmdHisu");// $this->string_sanitize(pathinfo($file, PATHINFO_FILENAME));
