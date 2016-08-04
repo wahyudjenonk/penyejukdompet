@@ -11,7 +11,9 @@ class frontend extends JINGGA_Controller {
 	function index(){
 		//$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
 		//$this->nsmarty->assign('data_tingkatan', $data_tingkatan);
-		
+		$this->nsmarty->assign( 'judulbesar', "Halaman Beranda" );
+		$this->nsmarty->assign( 'judulkecil', "(www.aldeaz.id) Penyedia Buku Luar Biasa" );
+				
 		$this->nsmarty->assign('konten', 'beranda');		
 		$this->nsmarty->display( 'frontend/main-index.html');		
 	}
@@ -35,12 +37,18 @@ class frontend extends JINGGA_Controller {
 				}elseif($p1 == "lacakpesanan"){
 					$this->nsmarty->assign( 'judulbesar', "Lacak Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Pesanan Anda" );
+				}elseif($p1 == "konfirmasi"){
+					$this->nsmarty->assign( 'judulbesar', "Konfirmasi Pembayaran" );
+					$this->nsmarty->assign( 'judulkecil', "Konfirmasikan Pembayaran Yang Sudah Anda Lakukan." );
 				}elseif($p1 == "riwayat"){
 					$this->nsmarty->assign( 'judulbesar', "Riwayat Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Riwayat Pesanan Anda di www.aldeaz.id" );
 				}elseif($p1 == "komplain"){
 					$this->nsmarty->assign( 'judulbesar', "Layanan Komplain" );
 					$this->nsmarty->assign( 'judulkecil', "Tuliskan Komplain Anda." );
+				}elseif($p1 == "pembatalan"){
+					$this->nsmarty->assign( 'judulbesar', "Pembatalan Pesanan" );
+					$this->nsmarty->assign( 'judulkecil', "Layanan Pembatalan Pesanan Anda." );
 				}
 				
 				if($zona_pilihan){
@@ -59,7 +67,7 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/beranda-page.html";
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', '', 1, 16);
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
+							//$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
 							}else{
@@ -112,7 +120,7 @@ class frontend extends JINGGA_Controller {
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						
 						$total_data = $this->db->count_all("tbl_buku");
-						$limit = 8;
+						$limit = 9;
 						$total_paging = $total_data / $limit;
 						$total_paging = floor($total_paging);
 						$array_paging = array();
@@ -156,6 +164,7 @@ class frontend extends JINGGA_Controller {
 						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
 					case "filterdt":
+					case "crdt":					
 						$temp = "frontend/modul/katalogfilterdata-page.html";
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 0, 9);
 						foreach($data_buku as $k=>$v){
@@ -185,12 +194,14 @@ class frontend extends JINGGA_Controller {
 						}
 						$typefilter = $this->input->post('ty');
 						$idfilter = $this->input->post('isd');
+						$crfilter = $this->input->post('cr');
 						
 						$this->nsmarty->assign('array_paging', $array_paging);						
 						$this->nsmarty->assign('data_buku', $data_buku);
 						$this->nsmarty->assign('typefilter', $typefilter);
 						$this->nsmarty->assign('idfilter', $idfilter);
-					break;
+						$this->nsmarty->assign('crfilter', $crfilter);
+					break;						
 					case "combo_zona":
 						$temp = "frontend/modul/combozona-page.html";
 						$this->nsmarty->assign('combo_zona', $this->lib->fillcombo('cl_provinsi', 'return'));
@@ -410,6 +421,20 @@ class frontend extends JINGGA_Controller {
 					break;
 					case "belanjanyacara":
 						$temp = "frontend/modul/carabelonjo-page.html";
+					break;
+					
+					case "pembatalanpesan":
+						$temp = "frontend/modul/pembpesan-page.html";
+					break;
+					case "formpembatalancuy":
+						$temp = "frontend/modul/formpembatalancuy-page.html";
+						$invno = $this->input->post('inv');
+						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $invno);
+						if($data_invoice){
+							$kodepemb = $this->lib->randomString(8, 'angkahuruf');
+							$this->db->update('tbl_h_pemesanan', array('kode_pembatalan'=>$kodepemb) ,array('no_order'=>$invno));
+							$this->lib->kirimemail('email_pembatalan', $data_invoice['email'], $kodepemb, $invno);
+						}
 					break;
 				}		
 				
@@ -648,11 +673,12 @@ class frontend extends JINGGA_Controller {
 		}
 		
 		*/
-		//echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
 		
-		$string = "T1 Diriku";
-		$isi = substr($string, 0, 20);
-		echo $isi;
+		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		
+		//$string = "T1 Diriku";
+		//$isi = substr($string, 0, 20);
+		//echo $isi;
 	}
 	
 }

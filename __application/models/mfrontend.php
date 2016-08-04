@@ -26,6 +26,7 @@ class mfrontend extends CI_Model{
 					$join .= " LEFT JOIN (SELECT tbl_buku_id, foto_buku FROM tbl_foto_buku GROUP BY tbl_buku_id) E ON E.tbl_buku_id = A.id ";					
 					$typefilter = $this->input->post('ty');
 					$idfilter = $this->input->post('isd');
+					$crfilter = $this->input->post('cr');
 					
 					if($typefilter){
 						if($typefilter == 'tingk'){
@@ -35,6 +36,10 @@ class mfrontend extends CI_Model{
 						}elseif($typefilter == 'grp'){
 							$where .= " AND A.cl_group_sekolah = ".$idfilter." ";
 						}
+					}
+					
+					if($crfilter){
+						$where .= " AND A.judul_buku like '%".$crfilter."%' ";
 					}
 					
 					$order = "
@@ -66,6 +71,8 @@ class mfrontend extends CI_Model{
 			case 'hitung_data_filter':
 				$typefilter = $this->input->post('ty');
 				$idfilter = $this->input->post('isd');
+				$crfilter = $this->input->post('cr');
+				
 				if($typefilter){
 					if($typefilter == 'tingk'){
 						$where .= " AND A.cl_kelas_id = ".$idfilter." ";
@@ -75,6 +82,11 @@ class mfrontend extends CI_Model{
 						$where .= " AND A.cl_group_sekolah = ".$idfilter." ";
 					}
 				}
+				
+				if($crfilter){
+					$where .= " AND A.judul_buku like '%".$crfilter."%' ";
+				}
+				
 				$sql = "
 					SELECT A.*
 					FROM tbl_buku A
@@ -101,10 +113,11 @@ class mfrontend extends CI_Model{
 			case "header_pesanan":
 				$sql = "
 					SELECT A.*,
-						B.jasa_pengiriman, C.metode_pembayaran
+						B.jasa_pengiriman, C.metode_pembayaran, D.email
 					FROM tbl_h_pemesanan A
 					LEFT JOIN cl_jasa_pengiriman B ON B.id = A.cl_jasa_pengiriman_id
 					LEFT JOIN cl_metode_pembayaran C ON C.id = A.cl_metode_pembayaran_id
+					LEFT JOIN tbl_registrasi D ON D.id = A.tbl_registrasi_id
 					WHERE A.no_order = '".$p1."'
 				";
 			break;
@@ -467,6 +480,19 @@ class mfrontend extends CI_Model{
 				
 				unset($data['komp']);
 				unset($data['noinv']);
+			break;
+			case "pembss":
+				$cek_data = $this->db->get_where('tbl_h_pemesanan', array('no_order'=>$data['inv'], 'kode_pembatalan'=>$data['kdpemb']) )->row_array();
+				if($cek_data){
+					$arraypemb = array(
+						"status" => 'C',
+						'tanggal_pembatalan' => date('Y-m-d H:i:s'),
+					);
+					$this->db->update('tbl_h_pemesanan', $arraypemb, array('no_order'=>$data['inv']) );
+				}else{
+					return 0;
+					exit;
+				}
 			break;
 		}
 		

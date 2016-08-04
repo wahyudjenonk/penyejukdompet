@@ -16,16 +16,19 @@
 					<div class="shop-content-area">
 						<div class="row">
 							<div class="product-toolbar clear">
-								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
-									<!--start List & Grid  -->
-									<ul role="tablist" class="view-mode-tab-btn clear">
-										<li class="active" role="presentation"><a data-toggle="tab" role="tab" aria-controls="grid" title="Grid" href="#grid" aria-expanded="true"><i class="fa fa-th"></i></a></li>
-										{* 
-											<li role="presentation" class=""><a data-toggle="tab" role="tab" aria-controls="list" title="List" href="#list" aria-expanded="false"><i class="fa fa-th-list"></i></a></li>
-										*}	
-									</ul>
-									<!--End List & Grid  -->
+								<div class="form-inner" >
+									<div class="single-input one-half left">
+										<label>&nbsp;</label> 
+										<input id="cari" type="text" placeholder='Cari Judul Buku Pilihan Anda' />
+									</div>
+									<div class="single-input one-half right">
+										<label>&nbsp;</label> 
+										<div class="submit-btn-area">
+											<a  href='javascript:void(0);' onClick="searchdt();" class="estut-btn active submit">Cari</a>
+										</div>
+									</div>
 								</div>
+
 							</div>
 						</div>
 						
@@ -177,26 +180,28 @@
 	}
 	
 	//function pagjs(idx, delimeter, typp, ixds){
-	function pagjs(typp, ixds){
+	function pagjs(typp, ixds, srch){
 		var delimeter = $('#pag').val();
 		$('#konten-buku').html('');
 		$('#konten-buku-lebar').html('');
-		//$(".page-number").each(function () {
-		//	$(this).removeClass('current');
-		//});
-		//$('#'+idx).addClass('current');
-		
-		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter, 'ty':typp, 'isd':ixds }, function(rp){
+		$.post(host+'paginationdata', { 'dtype':'one', 'lmt':delimeter, 'ty':typp, 'isd':ixds, 'cr':srch }, function(rp){
 			parspro = $.parseJSON(rp);
 			$('#konten-buku').html(parspro.page);
-		});
-		
-		/*
-		$.post(host+'paginationdata', { 'dtype':'two', 'lmt':delimeter }, function(rps){
-			parspros = $.parseJSON(rps);
-			$('#konten-buku-lebar').html(parspros.page);
-		});
-		*/
+		});	
+	}
+	
+	function searchdt(){
+		var vlcr = $('#cari').val();
+		if(vlcr == ""){
+			$('#modalencuk').html('Masukkan Inputan Judul Yang Anda Cari!');
+			$('#productModal').modal('show'); 
+		}else{
+			$('#konten-utama-buku').html('');
+			$.post(host+'filtering-data', { 'cr':vlcr }, function(rpload){
+				parsload = $.parseJSON(rpload);
+				$('#konten-utama-buku').html(parsload.page);
+			});
+		}
 	}
 	
 	function loaddatabook(typ, ixd){

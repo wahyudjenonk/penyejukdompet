@@ -34,7 +34,7 @@
 	<div class="pagination-area-v1">
 		<div class="col-md-12 text-left">
 			Halaman :
-			<select id='pag' onChange='pagjs();' style='width:70px !important;'>
+			<select id='pag' onChange="pagjs('{$typefilter}', '{$idfilter}', '{$crfilter}');" style='width:70px !important;'>
 				{foreach from=$array_paging item=pag}
 					<option value='{$pag.limitnya}'>{$pag.angka}</option>
 				{/foreach}

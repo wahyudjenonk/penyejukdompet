@@ -39,6 +39,7 @@ $route['katalog'] = 'frontend/getdisplay/main_page/katalog';
 $route['loading-katalog'] = 'frontend/getdisplay/loading_page/katalog';
 $route['paginationdata'] = 'frontend/getdisplay/loading_page/datapaging';
 $route['filtering-data'] = 'frontend/getdisplay/loading_page/filterdt';
+$route['cari-data'] = 'frontend/getdisplay/loading_page/crdt';
 
 $route['kategori/(:any)'] = 'frontend/getdisplay/main_page/kategori/$1';
 $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$1';
@@ -84,6 +85,12 @@ $route['submit-komplain'] = 'frontend/cruddata/form/komp';
 
 $route['caraberbelanja'] = 'frontend/getdisplay/main_page/carabelanja';
 $route['loading-carabelanja'] = 'frontend/getdisplay/loading_page/belanjanyacara';
+
+$route['pembatalan'] = 'frontend/getdisplay/main_page/pembatalan';
+$route['loading-pembatalan'] = 'frontend/getdisplay/loading_page/pembatalanpesan';
+$route['loading-formpemb'] = 'frontend/getdisplay/loading_page/formpembatalancuy';
+$route['submit-pembatalan'] = 'frontend/cruddata/form/pembss';
+
 
 
 
