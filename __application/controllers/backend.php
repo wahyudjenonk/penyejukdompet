@@ -427,6 +427,20 @@ class backend extends JINGGA_Controller {
 							'create_date'=>date('Y-m-d H:i:s'),
 							'create_by'=>$this->auth['username']
 				);
+				$data_bast=array('tbl_konfirmasi_id'=>$data_konfirmasi['header']['id'],
+								 'no_bast'=>$data_konfirmasi['header']['no_order'].'/ASP/BAST/'.date('Y'),
+								 'status'=>'F',
+								 'create_date'=>date('Y-m-d H:i:s'),
+								 'create_by'=>$this->auth['username']
+				);
+				$data_kwitansi=array('tbl_konfirmasi_id'=>$data_konfirmasi['header']['id'],
+								 'no_kwitansi'=>$data_konfirmasi['header']['no_order'].'/ASP/K/'.date('Y'),
+								 'status'=>'F',
+								 'create_date'=>date('Y-m-d H:i:s'),
+								 'create_by'=>$this->auth['username']
+				);
+				$this->mbackend->simpandata('tbl_bast',$data_bast,$sts);
+				$this->mbackend->simpandata('tbl_kwitansi',$data_kwitansi,$sts);
 			break;
 			case "set_packing":
 				$sts='edit';
