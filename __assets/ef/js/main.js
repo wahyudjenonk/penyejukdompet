@@ -104,6 +104,9 @@ function forcart(t, rwd, az){
 				}
 				$.post(host+'banyak-belanja', { } , function(prsp) {
 					$('#tot_item').html(prsp);
+					if(prsp == 0){
+						$('#selesai_bel').remove();
+					}
 				} );
 			});
 		break;
@@ -132,24 +135,7 @@ function forcart(t, rwd, az){
         nextText: ["<i class='fa fa-angle-right'></i>"],
         pager: false,
     });
-
-
-
-    /*------------------------------
-     price-slider active
-    ------------------------------ */
-    $("#slider-range").slider({
-        range: true,
-        min: 40,
-        max: 600,
-        values: [60, 570],
-        slide: function(event, ui) {
-            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-        }
-    });
-    $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-        " - $" + $("#slider-range").slider("values", 1));
-
+	
     /*--------------------------
      scrollUp
     ---------------------------- */
@@ -223,4 +209,5 @@ function forcart(t, rwd, az){
     	Mobile menu
     --------------------- */
     $('nav#mobile-menu').meanmenu();
+	
 })(jQuery);
