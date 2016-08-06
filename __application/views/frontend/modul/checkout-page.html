@@ -23,7 +23,7 @@
 										{if $data_cart}
 											{foreach from=$data_cart item=rows}
 												<tr>
-													<td><img src="{$host}img/cart/2.jpg"></td>
+													<td style='text-align:center !important;'><img src="{$rows.foto_buku}" style='width:55px;height:65px;'></td>
 													<td>{$rows.name}</td>
 													<td>{$rows.price}</td>
 													<td><input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> </td>
@@ -47,6 +47,7 @@
 					</div>
 				</div>
 			</div>
+			{if $data_cart}
 			<div class='row'>
 				<div class="col-md-12">
 					<div class="contact-form-area">
@@ -126,7 +127,7 @@
 					</div>			
 				</div>
 			</div>
-			
+			{/if}
 		</div>
 	</div>
 </div>

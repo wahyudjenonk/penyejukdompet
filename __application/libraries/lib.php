@@ -118,7 +118,8 @@ class lib {
 				$html = $ci->nsmarty->fetch('frontend/modul/email_invoice.html');
 				$subject = "EMAIL INVOICE - ".$p2['no_order'];
 			break;
-			case "email_konfirmasi":
+			case "email_konfirmasi":	
+				$ci->nsmarty->assign('no_order', $p1);
 				$subject = "EMAIL KONFIRMASI PEMBAYARAN";
 				$html = $ci->nsmarty->fetch('frontend/modul/email_konfirmasi.html');
 			break;

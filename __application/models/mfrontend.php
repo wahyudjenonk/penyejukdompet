@@ -368,7 +368,7 @@ class mfrontend extends CI_Model{
 						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
 					}
 					
-					$pajak = 0.1 * $tot;
+					$pajak = 0 * $tot;
 					$grand_total = ($tot + $pajak);
 					$data_header_pesanan = array(
 						'no_order' => $acak_no_order,
@@ -453,7 +453,7 @@ class mfrontend extends CI_Model{
 						$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
 						
 						$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
-						$this->lib->kirimemail('email_konfirmasi', $email['email']);
+						$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
 					}
 				}
 			break;

@@ -69,7 +69,7 @@ class frontend extends JINGGA_Controller {
 						foreach($data_buku as $k=>$v){
 							//$data_buku[$k]['judul_buku'] = $this->lib->cutstring($v['judul_buku'], 20);
 							if($data_buku[$k]['foto_buku'] != null){
-								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
@@ -100,7 +100,7 @@ class frontend extends JINGGA_Controller {
 								$data_buku[$k]['harga_buku_bener'] = "-";
 							}
 							if($data_buku[$k]['foto_buku'] != null){
-								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
@@ -153,7 +153,7 @@ class frontend extends JINGGA_Controller {
 						foreach($data_buku as $k=>$v){
 							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
-								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
@@ -170,7 +170,7 @@ class frontend extends JINGGA_Controller {
 						foreach($data_buku as $k=>$v){
 							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 							if($data_buku[$k]['foto_buku'] != null){
-								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['tingkatan']."/".$v['kelas']."/".$v['nama_group']."/".$v['nama_kategori']."/".$v['foto_buku'];
+								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
@@ -238,7 +238,7 @@ class frontend extends JINGGA_Controller {
 						}
 						foreach($data_fotobuku as $k=>$v){
 							if($data_fotobuku[$k]['foto_buku'] != null){
-								$data_fotobuku[$k]['foto_buku'] = $this->host."__repository/produk/".$data_buku['tingkatan']."/".$data_buku['kelas']."/".$data_buku['nama_group']."/".$data_buku['nama_kategori']."/".$v['foto_buku'];
+								$data_fotobuku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}
 						}
 						
@@ -269,6 +269,12 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/keranjangbelanja-page.html";
 						$data_cart = $this->cart->contents();
 						foreach($data_cart as $key => $v){
+							$datafoto = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$v['id']) )->row_array();
+							if($datafoto['foto_buku'] != null){
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/produk/".$datafoto['foto_buku'];
+							}else{
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
 						}
@@ -289,6 +295,12 @@ class frontend extends JINGGA_Controller {
 						
 						$data_cart = $this->cart->contents();
 						foreach($data_cart as $key => $v){
+							$datafoto = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$v['id']) )->row_array();
+							if($datafoto['foto_buku'] != null){
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/produk/".$datafoto['foto_buku'];
+							}else{
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}						
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
 						}
@@ -305,6 +317,12 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/checkout-page.html";
 						$data_cart = $this->cart->contents();
 						foreach($data_cart as $key => $v){
+							$datafoto = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$v['id']) )->row_array();
+							if($datafoto['foto_buku'] != null){
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/produk/".$datafoto['foto_buku'];
+							}else{
+								$data_cart[$key]['foto_buku'] = $this->host."__repository/no-image.jpeg";
+							}						
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
 						}
@@ -427,13 +445,35 @@ class frontend extends JINGGA_Controller {
 						$temp = "frontend/modul/pembpesan-page.html";
 					break;
 					case "formpembatalancuy":
-						$temp = "frontend/modul/formpembatalancuy-page.html";
 						$invno = $this->input->post('inv');
 						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $invno);
 						if($data_invoice){
-							$kodepemb = $this->lib->randomString(8, 'angkahuruf');
-							$this->db->update('tbl_h_pemesanan', array('kode_pembatalan'=>$kodepemb) ,array('no_order'=>$invno));
-							$this->lib->kirimemail('email_pembatalan', $data_invoice['email'], $kodepemb, $invno);
+							if($data_invoice['status'] == 'F'){
+								$array_page = array(
+									'loadbalancedt' => md5('Ymd'),
+									'loadbalancetm' => md5('H:i:s'),
+									'loadtmr' => md5('YmdHis'),
+									'page' => "<center>Pesanan Sudah Diproses, Tidak Bisa Dibatalkan</center>"
+								);
+								
+								echo json_encode($array_page);
+								exit;
+							}else{
+								$temp = "frontend/modul/formpembatalancuy-page.html";
+								$kodepemb = $this->lib->randomString(8, 'angkahuruf');
+								$this->db->update('tbl_h_pemesanan', array('kode_pembatalan'=>$kodepemb) ,array('no_order'=>$invno));
+								$this->lib->kirimemail('email_pembatalan', $data_invoice['email'], $kodepemb, $invno);
+							}
+						}else{
+							$array_page = array(
+								'loadbalancedt' => md5('Ymd'),
+								'loadbalancetm' => md5('H:i:s'),
+								'loadtmr' => md5('YmdHis'),
+								'page' => "<center>Data Invoice Tidak Ditemukan</center>"
+							);
+							
+							echo json_encode($array_page);
+							exit;
 						}
 					break;
 				}		
