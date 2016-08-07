@@ -11,8 +11,8 @@ class frontend extends JINGGA_Controller {
 	function index(){
 		//$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
 		//$this->nsmarty->assign('data_tingkatan', $data_tingkatan);
-		$this->nsmarty->assign( 'judulbesar', "Halaman Beranda" );
-		$this->nsmarty->assign( 'judulkecil', "(www.aldeaz.id) Penyedia Buku Luar Biasa" );
+		$this->nsmarty->assign( 'judulbesar', "www.aldeaz.id" );
+		$this->nsmarty->assign( 'judulkecil', "Klik -->katalog -->pilih zona -->cari buku -->beli" );
 				
 		$this->nsmarty->assign('konten', 'beranda');		
 		$this->nsmarty->display( 'frontend/main-index.html');		
@@ -26,8 +26,8 @@ class frontend extends JINGGA_Controller {
 				$jumlah_item = count($data_cart);
 				
 				if($p1 == "beranda"){
-					$this->nsmarty->assign( 'judulbesar', "Halaman Beranda" );
-					$this->nsmarty->assign( 'judulkecil', "(www.aldeaz.id) Penyedia Buku Luar Biasa" );
+					$this->nsmarty->assign( 'judulbesar', "www.aldeaz.id" );
+					$this->nsmarty->assign( 'judulkecil', "Klik -->katalog -->pilih zona -->cari buku -->beli" );
 				}elseif($p1 == "carabelanja"){
 					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
