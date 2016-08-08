@@ -503,8 +503,13 @@ class frontend extends JINGGA_Controller {
 		switch($type){
 			case "bastnya":
 				$inv = $this->input->post('invo');
+				if(!$inv){
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					exit;
+				}
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
+					$no_bast = $data_invoice['no_order']."/ASP/BAST/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['id']);
@@ -519,6 +524,16 @@ class frontend extends JINGGA_Controller {
 						$datadetailpesanan[$k]['nama_group'] = strtoupper(substr($v['nama_group'], 0,1));
 					}
 					
+					$cekdatabast = $this->db->get_where('tbl_bast', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
+					if(!$cekdatabast){
+						$array_insert_bast = array(
+							'tbl_konfirmasi_id' => $datakonfirmasi['id'],
+							'no_bast' => $no_bast,
+							'create_date' => date('Y-m-d H:i:s')
+						);
+						$this->db->insert('tbl_bast', $array_insert_bast);
+					}
+					
 					$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
 					
 					$this->nsmarty->assign('datainvoice', $data_invoice);
@@ -527,6 +542,7 @@ class frontend extends JINGGA_Controller {
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('totqty', $totqty);
 					$this->nsmarty->assign('tgl', $tgl);
+					$this->nsmarty->assign('no_bast', $no_bast);
 					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
 				}
 				
@@ -547,16 +563,32 @@ class frontend extends JINGGA_Controller {
 			case "kwitansinya":
 				$this->load->helper('terbilang');
 				$inv = $this->input->post('invo');
+				if(!$inv){
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					exit;
+				}				
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
+					$no_kwitansi = $data_invoice['no_order']."/ASP/K/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$jumlah = number_to_words($data_invoice['grand_total']);
 					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					
+					$cekdatakwitansi = $this->db->get_where('tbl_kwitansi', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
+					if(!$cekdatakwitansi){
+						$array_insert_kwitansi = array(
+							'tbl_konfirmasi_id' => $datakonfirmasi['id'],
+							'no_kwitansi' => $no_kwitansi,
+							'create_date' => date('Y-m-d H:i:s')
+						);
+						$this->db->insert('tbl_kwitansi', $array_insert_kwitansi);
+					}
 					
 					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
 					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datacust', $datacust);
 					$this->nsmarty->assign('jumlah', $jumlah);
+					$this->nsmarty->assign('no_kwitansi', $no_kwitansi);
 					$this->nsmarty->assign('grandtotal', number_format($data_invoice['grand_total'],0,",",".") );
 				}
 				

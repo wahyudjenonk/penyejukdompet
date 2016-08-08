@@ -200,7 +200,7 @@ class lib {
 		$data=array();
 		$timestamp = strtotime($date);
 		$day = date('D', $timestamp);
-		$day_angka = date('d', $timestamp);
+		$day_angka = (int)date('d', $timestamp);
 		$month = date('m', $timestamp);
 		$years = date('Y', $timestamp);
 		switch($day){

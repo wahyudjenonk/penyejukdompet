@@ -11,12 +11,12 @@
 				<tr>
 					<td width='20%'>No</td>
 					<td width='5%'>:</td>
-					<td width='75%'>{$datainvoice.no_order}/ASP/K/{$smarty.now|date_format:'%Y'}</td>
+					<td width='75%'>{$no_kwitansi}</td>
 				</tr>
 				<tr>
 					<td>Tanggal</td>
 					<td>:</td>
-					<td>{$datakonfirmasi.tgl_konfirmasi|date_format:'%d-%m-%Y'}</td>
+					<td>{$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''}</td>
 				</tr>
 			</table>
 		</td>
