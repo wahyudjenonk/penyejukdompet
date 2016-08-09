@@ -15,7 +15,13 @@
 </div>
 
 <script>
+
 	$('#selesai_pilih_zona').on('click', function(){
+		if($('#combo_zona_sess').val() == ""){
+			alert('Provinsi Tidak Boleh Kosong!');
+			return false;
+		}
+		
 		$.post(host+'pilih-zona', { 'kdprv':$('#combo_zona_sess').val() }, function(rpo) {
 			if(rpo == 1){
 				$('#button_close').show();
