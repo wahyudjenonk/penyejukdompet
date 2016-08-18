@@ -122,8 +122,13 @@ class backend extends JINGGA_Controller {
 				break;
 				case "rekap_penjualan":
 				case "detil_penjualan":
+				case "lap_bast":
+				case "lap_kwitansi":
+					//switch()
 					if($mod=='rekap_penjualan'){$judul="Laporan Rekapitulasi Penjualan";}
-					else{$judul="Laporan Detil Penjualan Per Item";}
+					else if($mod=='detil_penjualan'){$judul="Laporan Detil Penjualan Per Item";}
+					else if($mod=='lap_bast'){$judul="Laporan Penjualan Per BAST";}
+					else if($mod=='lap_kwitansi'){$judul="Laporan Penjualan Per Kwitansi";}
 					$this->nsmarty->assign('judul',$judul);
 					$temp=$this->temp.'modul/laporan.html';
 				break;
@@ -210,7 +215,20 @@ class backend extends JINGGA_Controller {
 			break;
 			case "rekap_penjualan":
 			case "detil_penjualan":
-				$data=$this->mbackend->getdata('get_lap_rekap','result_array');
+			case "lap_bast":
+			case "lap_kwitansi":
+			case "dashboard_penjualan":
+			case "dashboard_penjualan_umum":
+			case "dashboard_penjualan_zona":
+				if($mod=='dashboard_penjualan_zona'){
+					$z_1=$this->mbackend->getdata('get_lap_rekap','row_array',1);
+					$z_2=$this->mbackend->getdata('get_lap_rekap','row_array',2);
+					$z_3=$this->mbackend->getdata('get_lap_rekap','row_array',3);
+					$z_4=$this->mbackend->getdata('get_lap_rekap','row_array',4);
+					$z_5=$this->mbackend->getdata('get_lap_rekap','row_array',5);
+					$data=array('zona_1'=>$z_1['total'],'zona_2'=>$z_2['total'],'zona_3'=>$z_3['total'],'zona_4'=>$z_4['total'],'zona_5'=>$z_5['total']);
+				}
+				else $data=$this->mbackend->getdata('get_lap_rekap','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
 		}
@@ -266,16 +284,7 @@ class backend extends JINGGA_Controller {
 				$tbl="tbl_foto_buku";
 				
 				$object='file_nya';
-				/*if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
-				$upload_path .=$this->input->post('tingkat')."/";
-				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
-				$upload_path .=$this->input->post('kelas')."/";
-				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
-				$upload_path .=$this->input->post('group')."/";
-				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
-				$upload_path .=$this->input->post('kat')."/";
-				if(!file_exists($upload_path))mkdir($upload_path, 0777, true);
-				*/
+				
 				if(isset($_FILES['file_nya'])){
 					$file=$_FILES['file_nya']['name'];
 					$nameFile =$d->format("YmdHisu");// $this->string_sanitize(pathinfo($file, PATHINFO_FILENAME));
@@ -480,31 +489,24 @@ class backend extends JINGGA_Controller {
 		$chart=array();
 		$x=array();
 		$y=array();
-		$data_y2=array();
-		//echo $sql;
-		$json['bar']=array();
-		//$x[]=array(2010,2011,2012,2013,2014,2015);
-		$x['name']='Buku';
-		$x['colorByPoint']='true';
-		$x['data']=array();
-		$a=array(100,200,210,500,250,150);
-		$data=$this->mbackend->getdata('buku_laris','result_array');
-		//print_r($data);exit;
-		$idx=0;
-		//$a=array();
-		foreach($data as $v=>$z){
-			//$x['data']=array();
-			//$a[]=$x
-			$x['data'][$idx]=array('name'=>$z['judul_buku'],'y'=>(float)$z['jml']);
-			$idx++;
+		$mod=$this->input->post('mod');
+		switch($mod){
+			case "produk_laris":
+				$x['name']='Buku';
+				$x['colorByPoint']='true';
+				$x['data']=array();
+				$data=$this->mbackend->getdata('buku_laris','result_array');
+				$idx=0;
+				foreach($data as $v=>$z){
+					$x['data'][$idx]=array('name'=>$z['judul_buku'],'y'=>(float)$z['jml']);
+					$idx++;
+				}
+				$chart['x']=array($x);
+			break;
+			case "produk_kat":
+				
+			break;
 		}
-		//$y[]=array('name'=>'Pertumbuhan Jumlah Penduduk','data'=>$a);
-		//print_r($x);exit;
-		
-		
-		$chart['x']=array($x);
-		//$chart['y']=$y;
-		//$chart['table']=$table;
 		echo json_encode($chart);
 	}
 }
