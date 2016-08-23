@@ -177,7 +177,7 @@ body {} .padding100 {
     padding: 50px 0
 }
 .padding-t50 {
-    padding-top: 50px
+    padding-top: 50px;
 }
 .padding-b50 {
     padding-bottom: 50px
@@ -201,7 +201,8 @@ body {} .padding100 {
     padding: 130px 0;
 }
 .padding30 {
-    padding: 30px
+    padding: 30px;
+	text-align: justify;
 }
 .one {
     width: 100%;
@@ -1173,7 +1174,7 @@ body {} .padding100 {
     border-radius: 3px;
 }
 .populer-courses-area-v2 .populer-courses-list .col-md-6:nth-child(1) .single-course .course-thumb .price-sticker {
-    background: #9d87c3 none repeat scroll 0 0;
+    background: red none repeat scroll 0 0;
 }
 .populer-courses-area-v2 .populer-courses-list .col-md-6:nth-child(1) .single-course .course-thumb .price-sticker::after {
     border-left: 14px solid #9d87c3;
