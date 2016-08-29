@@ -430,12 +430,16 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				{field:'id',title:'Cetak BAST',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="cetak_bast";
-						if(rowData.flag=='F'){
-							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
-						}else if(rowData.flag=='C'){
-							return "DiCancel";
+						if(rowData.jenis_pembeli=='SEKOLAH'){
+							if(rowData.flag=='F'){
+								return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+							}else if(rowData.flag=='C'){
+								return "DiCancel";
+							}else{
+								return "Silahkan Kirim Ke Gudang";
+							}
 						}else{
-							return "Silahkan Kirim Ke Gudang";
+							return "<a href='javascript:void(0);' class='btn btn-small' ><img src='"+host+"__assets/easyui/themes/icons/edit_remove.png'></a>";
 						}
 					}
 				},

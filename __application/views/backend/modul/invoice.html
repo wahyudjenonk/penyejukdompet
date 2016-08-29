@@ -29,7 +29,8 @@
 					<div class="col-md-6">
 						<div class="col-md-6" style="text-align:right;">SubTotal & Pajak</div>
 						<div class="col-md-1">:</div>
-						<div class="col-md-5">({$data.header.sub_total|number_format:2:',':'.'|default:'-'})&nbsp;-&nbsp;({$data.header.pajak|number_format:2:',':'.'|default:'-'})</div>
+						<!--div class="col-md-5">({$data.header.sub_total|number_format:2:',':'.'|default:'-'})&nbsp;-&nbsp;({$data.header.pajak|number_format:2:',':'.'|default:'-'})</div-->
+						<div class="col-md-5">({$data.header.sub_total|number_format:2:',':'.'|default:'-'})&nbsp;-&nbsp;(0,00)</div>
 					</div>
 					<div class="col-md-6">
 						<div class="col-md-6" style="text-align:right;">GrandTotal</div>
@@ -74,14 +75,16 @@
 						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
 					</tr>
 					<tr style="font-weight:bold;">
-						<td colspan="3" align="center">PAJAK (10%)</td>
+						<td colspan="3" align="center">PAJAK</td>
 						<td align="center">&nbsp;</td>
-						<td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td>
+						<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
+						<td align="right">Rp. 0,00</td>
 					</tr>
 					<tr style="font-weight:bold;">
 						<td colspan="3" align="center">GRAND TOTAL</td>
 						<td align="center">&nbsp;</td>
-						<td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td>
+						<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
+						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
 					</tr>
 					</tfoot>
 					</table>

@@ -205,7 +205,8 @@ class mbackend extends CI_Model{
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
-						C.nama_lengkap,C.nip,C.npsn,C.alamat_pengiriman,C.no_telp_sekolah,C.email
+						C.nama_kepala_sekolah,C.nip,C.npsn,C.alamat_pengiriman,
+						C.no_telp_sekolah,C.email,C.no_hp_kepsek
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id

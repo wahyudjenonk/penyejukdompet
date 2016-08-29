@@ -66,7 +66,7 @@ table.gridtable td {
 		<td>2.</td>
 		<td>Nama</td>
 		<td>:</td>
-		<td>{$data.header.nama_lengkap|default:'-'}</td>
+		<td>{$data.header.nama_kepala_sekolah|default:'-'}</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -78,7 +78,7 @@ table.gridtable td {
 		<td></td>
 		<td>Jabatan</td>
 		<td>:</td>
-		<td>{$data.header.jabatan|default:'-'}</td>
+		<td>{$data.header.jabatan|default:'Kepala Sekolah'}</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -96,19 +96,19 @@ table.gridtable td {
 		<td></td>
 		<td>Alamat</td>
 		<td>:</td>
-		<td>{$data.header.alamat|default:'-'}</td>
+		<td>{$data.header.alamat_pengiriman|default:'-'}</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>Telepon</td>
 		<td>:</td>
-		<td>{$data.header.tlp|default:'-'}</td>
+		<td>{$data.header.no_telp_sekolah|default:'-'}</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>Handphone</td>
 		<td>:</td>
-		<td>{$data.header.no_hp|default:'-'}</td>
+		<td>{$data.header.no_hp_kepsek|default:'-'}</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -197,11 +197,11 @@ table.gridtable td {
 		<td width="50%">&nbsp;</td>
 	</tr>
 	<tr>
-		<td width="50%" align="center"><i><u>{$data.header.nama_lengkap|default:'-'}</u></i></td>
+		<td width="50%" align="center"><i><u>{$data.header.nama_kepala_sekolah|default:'-'}</u></i></td>
 		<td width="50%" align="center"><i><u>HADI GUNOWO</u></i></td>
 	</tr>
 	<tr>
-		<td width="50%" align="center"><i>({$data.header.jabatan|default:'-'})</i></td>
+		<td width="50%" align="center"><i>({$data.header.jabatan|default:'Kepala Sekolah'})</i></td>
 		<td width="50%" align="center"><i>(DIREKTUR)</i></td>
 	</tr>
 </table>
