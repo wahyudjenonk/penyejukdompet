@@ -1721,7 +1721,7 @@ function get_detil(mod,id_data){
 		case "lap_bast":
 		case "lap_kwitansi":
 			$('#isi_laporan_'+id_data).html('').addClass('loading');
-			$.post(host+'backoffice-GetDetil',{mod:mod,tgl_mulai:$('#tgl_mulai_'+id_data).datebox('getValue'),tgl_akhir:$('#tgl_akhir_'+id_data).datebox('getValue')},function(r){
+			$.post(host+'backoffice-GetDetil',{mod:mod+'_'+$('#kat_'+id_data).val(),tgl_mulai:$('#tgl_mulai_'+id_data).datebox('getValue'),tgl_akhir:$('#tgl_akhir_'+id_data).datebox('getValue'),'kat':$('#kat_'+id_data).val()},function(r){
 				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
 			});
 			

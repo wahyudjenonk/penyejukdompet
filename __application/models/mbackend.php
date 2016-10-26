@@ -37,9 +37,10 @@ class mbackend extends CI_Model{
 			case "get_lap_rekap":
 				$tgl_mulai=$this->input->post('tgl_mulai');
 				$tgl_akhir=$this->input->post('tgl_akhir');
+				$kat=$this->input->post('kat');
 				$mod=$this->input->post('mod');
-				if($mod=='rekap_penjualan'){
-					$sql="SELECT A.*,B.nama_sekolah,B.nama_kepala_sekolah as pic,B.npsn,
+				if($mod=='rekap_penjualan_SEKOLAH' || $mod=='rekap_penjualan_UMUM'){
+					$sql="SELECT A.*,B.nama_sekolah,B.nama_kepala_sekolah as pic,B.npsn,B.nama_lengkap,
 							B.alamat_pengiriman,B.no_telp_sekolah,B.no_hp_kepsek,B.email,E.kab_kota,
 							C.provinsi,F.jml_buku,G.total_pembayaran
 							FROM tbl_h_pemesanan A
@@ -51,18 +52,22 @@ class mbackend extends CI_Model{
 								from tbl_d_pemesanan A 
 								LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 								LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-								WHERE C.jenis_pembeli='SEKOLAH' AND B.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
+								WHERE C.jenis_pembeli='".$kat."' 
+								AND B.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
 								GROUP BY A.tbl_h_pemesanan_id
 							)AS F ON F.tbl_h_pemesanan_id=A.id
 							LEFT JOIN tbl_konfirmasi G ON G.tbl_h_pemesanan_id=A.id
-							WHERE B.jenis_pembeli='SEKOLAH' AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
-				}else if($mod=='detil_penjualan'){
+							WHERE B.jenis_pembeli='".$kat."' 
+							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
+					//echo $sql;
+				}else if($mod=='detil_penjualan_SEKOLAH' || $mod=='detil_penjualan_UMUM'){
 					$sql="SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku,
-							CONCAT(C.nama_sekolah,' [',C.npsn,']')as sekolah,B.no_order,B.sub_total,B.pajak,B.grand_total,B.id as id_header  
+							CONCAT(C.nama_sekolah,' [',C.npsn,']')as sekolah,C.nama_lengkap,
+							B.no_order,B.sub_total,B.pajak,B.grand_total,B.id as id_header  
 							from tbl_d_pemesanan A 
 							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id 
 							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id 
-							WHERE C.jenis_pembeli='SEKOLAH' 
+							WHERE C.jenis_pembeli='".$kat."' 
 							AND B.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
 							GROUP BY A.tbl_h_pemesanan_id ";
 							
@@ -73,16 +78,17 @@ class mbackend extends CI_Model{
 							$data[$x]=array();
 							$data[$x]['no_order']=$v['no_order'];
 							$data[$x]['sekolah']=$v['sekolah'];
+							$data[$x]['nama_lengkap']=$v['nama_lengkap'];
 							$data[$x]['sub_total']=$v['sub_total'];
 							$data[$x]['pajak']=$v['pajak'];
 							$data[$x]['grand_total']=$v['grand_total'];
 							$data[$x]['jml_buku']=$v['jml_buku'];
-							$sql="SELECT A.*,B.no_order,CONCAT(D.nama_sekolah,' (',D.npsn,')')as sekolah,C.judul_buku
+							$sql="SELECT A.*,B.no_order,CONCAT(D.nama_sekolah,' (',D.npsn,')')as sekolah,D.nama_lengkap,C.judul_buku
 									FROM tbl_d_pemesanan A
 									LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 									LEFT JOIN tbl_buku C ON A.tbl_buku_id=C.id
 									LEFT JOIN tbl_registrasi D ON B.tbl_registrasi_id=D.id
-									WHERE D.jenis_pembeli='SEKOLAH' AND A.tbl_h_pemesanan_id=".$v['id_header'];
+									WHERE D.jenis_pembeli='".$kat."' AND A.tbl_h_pemesanan_id=".$v['id_header'];
 							$det=$this->db->query($sql)->result_array();
 							//print_r($det);exit;
 							if(count($det)>0){
@@ -93,22 +99,22 @@ class mbackend extends CI_Model{
 					}
 					//echo "<pre>";print_r($data);exit;
 					return $data;
-				}else if($mod=='lap_bast'){
-					$sql="SELECT A.*,D.nama_sekolah,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
+				}else if($mod=='lap_bast_SEKOLAH' || $mod=='lap_bast_UMUM'){
+					$sql="SELECT A.*,D.nama_sekolah,D.nama_lengkap,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
 							FROM tbl_bast A
 							LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 							LEFT JOIN tbl_h_pemesanan C ON B.tbl_h_pemesanan_id=C.id
 							LEFT JOIN tbl_registrasi D ON c.tbl_registrasi_id=D.id
-							WHERE D.jenis_pembeli='SEKOLAH' 
+							WHERE D.jenis_pembeli='".$kat."' 
 							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
 					
-				}else if($mod=='lap_kwitansi'){
-					$sql="SELECT A.*,D.nama_sekolah,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
+				}else if($mod=='lap_kwitansi_SEKOLAH' || $mod=='lap_kwitansi_UMUM'){
+					$sql="SELECT A.*,D.nama_sekolah,D.nama_lengkap,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
 							FROM tbl_kwitansi A
 							LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 							LEFT JOIN tbl_h_pemesanan C ON B.tbl_h_pemesanan_id=C.id
 							LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
-							WHERE D.jenis_pembeli='SEKOLAH' 
+							WHERE D.jenis_pembeli='".$kat."' 
 							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
 				}else if($mod=='dashboard_penjualan'){
 					$sql="SELECT A.*,B.nama_sekolah 
@@ -206,10 +212,11 @@ class mbackend extends CI_Model{
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
 						C.nama_kepala_sekolah,C.nip,C.npsn,C.alamat_pengiriman,
-						C.no_telp_sekolah,C.email,C.no_hp_kepsek
+						C.no_telp_sekolah,C.email,C.no_hp_kepsek,D.no_bast
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+						LEFT JOIN tbl_bast D ON D.tbl_konfirmasi_id=A.id
 					  ".$where;
 				$data['header']=$this->db->query($sql)->row_array();
 				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total,E.kelas,F.nama_group

@@ -209,14 +209,19 @@ class backend extends JINGGA_Controller {
 			case "invoice":
 			case "invoice_umum":
 				//if($mod=='gudang_konfirmasi'){}
+				$cetak=$this->input->post('flag_cetak');
 				$temp="backend/modul/invoice.html";
 				$data=$this->mbackend->getdata('get_pemesanan','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
-			case "rekap_penjualan":
-			case "detil_penjualan":
-			case "lap_bast":
-			case "lap_kwitansi":
+			case "rekap_penjualan_SEKOLAH":
+			case "rekap_penjualan_UMUM":
+			case "detil_penjualan_SEKOLAH":
+			case "detil_penjualan_UMUM":
+			case "lap_bast_SEKOLAH":
+			case "lap_bast_UMUM":
+			case "lap_kwitansi_SEKOLAH":
+			case "lap_kwitansi_UMUM":
 			case "dashboard_penjualan":
 			case "dashboard_penjualan_umum":
 			case "dashboard_penjualan_zona":
@@ -323,14 +328,39 @@ class backend extends JINGGA_Controller {
 	
 	function cetak(){
 		$mod=$this->input->post('mod');
+		$param="";
 			switch($mod){
+				case "rekap_penjualan_SEKOLAH":
+				case "rekap_penjualan_UMUM":
+				case "detil_penjualan_SEKOLAH":
+				case "detil_penjualan_UMUM":
+				case "lap_bast_SEKOLAH":
+				case "lap_bast_UMUM":
+				case "lap_kwitansi_SEKOLAH":
+				case "lap_kwitansi_UMUM":
+					$judul=strtoupper(str_replace('_',' ',$mod));
+					$data=$this->mbackend->getdata('get_lap_rekap','result_array');
+					$file_name="Laporan";
+				break;
+				
+				case "invoice":
+				case "invoice_umum":
+				case "konfirmasi":
+				case "gudang_konfirmasi":
+					$judul="INVOICE";
+					$data=$this->mbackend->getdata('get_pemesanan','result_array');
+					$file_name=$data['header']['no_order'];
+				break;
 				case "cetak_bast":
 					$data=$this->mbackend->getdata('get_bast');
-					$tgl=$this->konversi_tgl(date('Y-m-d'));
-					$file_name=$data['header']['konfirmasi_no'];
-					$this->hasil_output('pdf',$mod,$data,$file_name,'BERITA ACARA SERAH TERIMA BUKU',$data['header']['konfirmasi_no'],$tgl);
+					$param=$this->konversi_tgl(date('Y-m-d'));
+					$file_name=$data['header']['no_bast'];
+					$judul="BERITA ACARA SERAH TERIMA BUKU";
+					$nomor=$data['header']['konfirmasi_no'];
+					//$file_name=$nomor;
 				break;
 			}
+			$this->hasil_output('pdf',$mod,$data,$file_name,$judul,$nomor,$param);
 	}
 	function hasil_output($p1,$mod,$data,$file_name,$judul_header,$nomor="",$param=""){
 		switch($p1){

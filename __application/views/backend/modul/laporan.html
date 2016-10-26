@@ -13,7 +13,12 @@
 						<input type="text" name="tgl_mulai" id="tgl_mulai_{$acak}">&nbsp;&nbsp;s/d&nbsp;&nbsp;
 						<input type="text" name="tgl_akhir" id="tgl_akhir_{$acak}">
 						&nbsp;&nbsp;
+						<select id="kat_{$acak}" style="width:100px;height:22px;">
+							<option value="SEKOLAH">Sekolah</option>
+							<option value="UMUM">Umum</option>
+						</select>&nbsp;&nbsp;
 						<a href="javascript:void(0);" id="go_{$acak}">Cari</a>
+						<a href="javascript:void(0);" id="cetak_{$acak}">Cetak</a>
 					</div>
 				</div>
 			</div>
@@ -27,8 +32,20 @@ $('#tgl_akhir_{$acak}').datebox({ formatter: formatDate,parser:myparser });
 $('#tgl_mulai_{$acak}').datebox('setValue',today);
 $('#tgl_akhir_{$acak}').datebox('setValue',today);
 $('#go_{$acak}').linkbutton();
+$('#cetak_{$acak}').linkbutton();
+
+
+
 get_detil('{$mod}','{$acak}');
 $('#go_{$acak}').bind('click',function(){
 	get_detil('{$mod}','{$acak}');
 })
+$('#cetak_{$acak}').bind('click',function(){
+	var param_na={};
+	param_na['mod']='{$mod}_'+$('#kat_{$acak}').val();
+	param_na['tgl_mulai']=$('#tgl_mulai_{$acak}').datebox('getValue');
+	param_na['tgl_akhir']=$('#tgl_akhir_{$acak}').datebox('getValue');;
+	param_na['kat']=$('#kat_{$acak}').val();
+	openWindowWithPost(host+'backoffice-Cetak',param_na);
+});
 </script>

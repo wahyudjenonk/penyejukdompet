@@ -92,6 +92,7 @@
 			</div>
 		<div class="col-sm-8 col-sm-offset-3" style="margin-top:10px;">
 			<div class="pull-right">
+				{include file="backend/template/button.html" text="Cetak" style_btn="btn-default" id_na="cetak" }
 				{include file="backend/template/button.html" text="Kembali Ke Grid" style_btn="btn-default" id_na="batal" }
 			</div>
 		</div>
@@ -99,6 +100,12 @@
 	
 </div>
 <script>
+$('#cetak_{$acak}').bind('click',function(){
+	var param_na={};
+	param_na['mod']='{$mod}';
+	param_na['id']={$data.header.id|default:0};
+	openWindowWithPost(host+'backoffice-Cetak',param_na);
+});
 $('#batal_{$acak}').bind('click',function(){
 	$('#grid_nya_{$mod}').show();
 	$('#detil_nya_{$mod}').hide();
