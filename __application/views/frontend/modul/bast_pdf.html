@@ -133,7 +133,31 @@ table.gridtable td {
 		<td>{$datacust.email|default:''}</td>
 	</tr>
 	{elseif $datacust.jenis_pembeli eq 'UMUM'}
-	
+	<tr>
+		<td width='20%'>Nama</td>
+		<td width='5%'>:</td>
+		<td width='75%'>{$datacust.nama_lengkap|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Alamat</td>
+		<td>:</td>
+		<td>{$datacust.alamat_pengiriman|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>No. Telp.</td>
+		<td>:</td>
+		<td>{$datacust.no_telp_customer|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Handphone</td>
+		<td>:</td>
+		<td>{$datacust.no_hp_customer|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>:</td>
+		<td>{$datacust.email|default:'-'}</td>
+	</tr>
 	{/if}
 	<tr>
 		<td colspan='3'>

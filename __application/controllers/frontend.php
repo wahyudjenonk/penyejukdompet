@@ -546,7 +546,7 @@ class frontend extends JINGGA_Controller {
 					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
 				}
 				
-				$filename = "DOCBAST-";
+				$filename = str_replace('/', '_', $no_bast);
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/bast_pdf.html');
 				
 				$pdf = $this->mlpdf->load();
@@ -592,7 +592,7 @@ class frontend extends JINGGA_Controller {
 					$this->nsmarty->assign('grandtotal', number_format($data_invoice['grand_total'],0,",",".") );
 				}
 				
-				$filename = "DOCKWITANSI-";
+				$filename = str_replace('/', '_', $no_kwitansi);
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/kwitansi_pdf.html');
 				
 				$pdf = $this->mlpdf->load();

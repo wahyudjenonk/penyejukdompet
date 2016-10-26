@@ -38,7 +38,11 @@
 	<tr>
 		<td width='20%' >Sudah Terima Dari</td>
 		<td width='5%' >:</td>
-		<td width='75%'>{$datacust.nama_sekolah|default:''}</td>
+		{if $datacust.jenis_pembeli eq 'SEKOLAH'}
+			<td width='75%'>{$datacust.nama_sekolah|default:''}</td>
+		{elseif $datacust.jenis_pembeli eq 'UMUM'}
+			<td width='75%'>{$datacust.nama_lengkap|default:''}</td>
+		{/if}
 	</tr>
 	<tr>
 		<td>Banyaknya Uang</td>

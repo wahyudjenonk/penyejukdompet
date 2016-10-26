@@ -475,8 +475,9 @@ class mfrontend extends CI_Model{
 					$upload_path = "./__repository/komplain/";
 					$file = "FILEKOMPLAIN-".$data['no_komplain'];
 					$filename =  $this->lib->uploadnong($upload_path, 'filepend', $file); //$file.'.'.$extension;
-					$post_bnr['file_foto'] = $filename;
+					$data['file_foto'] = $filename;
 				}
+				$data['create_date'] = date("Y-m-d H:i:s");
 				
 				unset($data['komp']);
 				unset($data['noinv']);
