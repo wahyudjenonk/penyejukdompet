@@ -104,7 +104,7 @@ class mbackend extends CI_Model{
 							FROM tbl_bast A
 							LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 							LEFT JOIN tbl_h_pemesanan C ON B.tbl_h_pemesanan_id=C.id
-							LEFT JOIN tbl_registrasi D ON c.tbl_registrasi_id=D.id
+							LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
 							WHERE D.jenis_pembeli='".$kat."' 
 							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
 					

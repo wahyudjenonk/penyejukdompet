@@ -44,11 +44,15 @@
 					<table class="table table-hover">
 					<thead>
 					<tr>
+						
 						<th style="text-align:left;">No.</th>
 						<th>Judul Buku</th>
 						<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
 						<th style="text-align:right;">Jumlah/Qty</th>
 						<th style="text-align:right;">Total</th>
+						{if $data.header.flag_ver|default:'P' eq 'P'}
+							<th style="text-align:center;">Editing</th>
+						{/if}
 					</tr>
 					</thead>
 					<tbody>
@@ -60,11 +64,22 @@
 					{assign var=tot_qty value=$tot_qty+$i.qty}
 					{assign var=tot_harga value=$tot_harga+$i.total}
 					<tr>
+						
 						<td >{$smarty.foreach.x.iteration}</td>
 						<td>{$i.judul_buku|default:'-'}</td>
 						<td align="right">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
 						<td align="right">{$i.qty|number_format:2:',':'.'|default:'-'}</td>
 						<td align="right">Rp.{$i.total|number_format:2:',':'.'|default:'-'}</td>
+						{if $data.header.flag_ver|default:'P' eq 'P'}
+							<td style="text-align:center;">
+								<div class="skin skin-minimal">
+									<div class="btn-group">
+								<a href="javascript:void(0);" class="btn btn-sm btn-success">Edit</a>
+								<a href="javascript:void(0);" class="btn btn-sm btn-danger">Hapus</a>
+									</div>
+								</div>
+							</td>
+						{/if}
 					</tr>
 					{/foreach}
 					</tbody>
@@ -73,18 +88,21 @@
 						<td colspan="3" align="center">SUB TOTAL</td>
 						<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+						<td align="center">&nbsp;</td>
 					</tr>
 					<tr style="font-weight:bold;">
 						<td colspan="3" align="center">PAJAK</td>
 						<td align="center">&nbsp;</td>
 						<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
 						<td align="right">Rp. 0,00</td>
+						<td align="center">&nbsp;</td>
 					</tr>
 					<tr style="font-weight:bold;">
 						<td colspan="3" align="center">GRAND TOTAL</td>
 						<td align="center">&nbsp;</td>
 						<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
 						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+						<td align="center">&nbsp;</td>
 					</tr>
 					</tfoot>
 					</table>
@@ -94,6 +112,9 @@
 			<div class="pull-right">
 				{include file="backend/template/button.html" text="Cetak" style_btn="btn-default" id_na="cetak" }
 				{include file="backend/template/button.html" text="Kembali Ke Grid" style_btn="btn-default" id_na="batal" }
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{include file="backend/template/button.html" text="Verifikasi" style_btn="btn-default" id_na="ver" }
+				{/if}
 			</div>
 		</div>
 	</div>
