@@ -12,6 +12,17 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "pesan":
+				$sql="SELECT A.*,B.jenis_pembeli,
+						CASE 
+							WHEN B.jenis_pembeli = 'SEKOLAH' THEN B.nama_sekolah
+							ELSE B.nama_lengkap
+						END AS nama
+						FROM tbl_h_pemesanan A 
+						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
+						WHERE (A.flag_read <> 'F' OR A.flag_read IS NULL)";
+				//echo $sql;
+			break;
 			case "detil_invoice":
 				$data=array();
 				$sql="SELECT A.*,B.zona 

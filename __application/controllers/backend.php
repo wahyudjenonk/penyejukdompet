@@ -551,4 +551,16 @@ class backend extends JINGGA_Controller {
 		}
 		echo json_encode($chart);
 	}
+	
+	function get_pesan(){
+		$temp=$this->temp.'template/pesan.html';
+		$data=array();
+		$data_na=$this->mbackend->getdata('pesan','result_array');
+		//print_r($data_na);exit;
+		$this->nsmarty->assign('data',$data_na);
+		$data['html']=$this->nsmarty->fetch($temp);
+		$data['jml']=count($data_na);
+		echo json_encode($data);
+		
+	}
 }

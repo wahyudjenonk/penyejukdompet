@@ -1864,3 +1864,11 @@ function chart_na(id_selector,type,title,subtitle,title_y,data_x,data_y,satuan){
 		break;
 	}
 }
+
+function get_pesan(){
+	$.get(host+'Backoffice-Pesan',function(r){
+		var js=JSON.parse(r);
+		$('#pesan_main').html(js.html);
+		$('#jml_pesan').html(js.jml);
+	});
+}
