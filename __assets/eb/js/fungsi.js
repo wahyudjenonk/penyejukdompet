@@ -1675,7 +1675,7 @@ function gen_editor(id){
 function simpan_form(id_form,id_cancel,msg){
 	if ($('#'+id_form).form('validate')){
 		submit_form(id_form,function(r){
-			console.log(r)
+			//console.log(r)
 			if(r==1){
 				$.messager.alert('Aldeaz Back-Office',msg,'info');
 				$('#'+id_cancel).trigger('click');
@@ -1691,6 +1691,11 @@ function simpan_form(id_form,id_cancel,msg){
 }
 function get_detil(mod,id_data){
 	switch(mod){
+		case "invoice_edit":
+			$.post(host+'backoffice-form/invoice_edit',{mod:mod,id:id_data,editstatus:'edit'},function(r){
+				windowForm(r,'Detil Invoice',700,400);
+			});
+		break;
 		case "cetak_bast":
 			openWindowWithPost(host+'backoffice-Cetak',{mod:mod,id:id_data});
 			//openWindowWithPost(host+'backoffice-Cetak',{mod:mod,id:id_data});

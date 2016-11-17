@@ -20,7 +20,11 @@ table.gridtable td {
 	padding: 8px;
 	border-style: solid;
 	border-color: #666666;
-	background-color: #ffffff;
+	
+}
+.cancel{
+	color:#FFFFFF;
+	background-color: red;
 }
 </style>
 {/literal}
@@ -243,9 +247,11 @@ table.gridtable td {
 		{assign var=tot_pajak value=0}
 		{assign var=grand_tot value=0}
 		{foreach from=$data.detil item=i name=x}
+		{if $i.flag neq 'C'}
 		{assign var=tot_qty value=$tot_qty+$i.qty}
 		{assign var=tot_harga value=$tot_harga+$i.total}
-		<tr>
+		{/if}
+		<tr class="{if $i.flag eq 'C'}cancel{/if}">
 			<td >{$smarty.foreach.x.iteration}</td>
 			<td>{$i.judul_buku|default:'-'}</td>
 			<td align="right">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>

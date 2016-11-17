@@ -114,6 +114,10 @@ class backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "invoice_edit":
+					$data=$this->mbackend->getdata('detil_invoice','row_array');
+					$this->nsmarty->assign('data',$data);
+				break;
 				case "pengguna":
 					if($sts=='edit'){
 						$data=$this->mbackend->getdata('admin','row_array');
@@ -454,6 +458,14 @@ class backend extends JINGGA_Controller {
 	function set_flag(){
 		$mod=$this->input->post('mod');
 		switch($mod){
+			case "tbl_d_pemesanan":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'flag'=>$this->input->post('flag')
+				);
+				echo $this->mbackend->simpandata('tbl_d_pemesanan',$data,$sts);
+				exit;
+			break;
 			case "kirim_gudang":
 				$sts='add';
 				$data_konfirmasi=$this->mbackend->getdata('get_bast');

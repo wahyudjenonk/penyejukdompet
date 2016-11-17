@@ -12,6 +12,19 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "detil_invoice":
+				$data=array();
+				$sql="SELECT A.*,B.zona 
+						FROM tbl_d_pemesanan A
+						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id 
+						WHERE A.id=".$this->input->post('id');
+				$data['detil']=$this->db->query($sql)->row_array();
+				$sql="SELECT A.*,A.harga_zona_".$data['detil']['zona']." as harga,A.judul_buku as text 
+						FROM tbl_buku A ";
+				$data['buku']=$this->db->query($sql)->result_array();
+				return $data;
+				
+			break;
 			case "tbl_komplain":
 				$sql="SELECT A.*,B.no_order 
 					  FROM tbl_komplain A 
@@ -391,6 +404,7 @@ class mbackend extends CI_Model{
 		}
 		
 		switch($table){
+			
 			case "admin":
 				//print_r($data);exit;
 				if($sts_crud=='add')$data['password']=$this->encrypt->encode($data['password']);
