@@ -339,6 +339,10 @@ class frontend extends JINGGA_Controller {
 							$cek_data = $this->db->get_where('tbl_registrasi', array('npsn'=>$npsn, 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 						}elseif($type_form == 'umu'){
 							$email = $this->input->post('em');
+							$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$email) )->row_array();
+							if($cek_email){
+								echo 2; exit; //"Email Sudah Ada";
+							}
 							$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$email, 'jenis_pembeli'=>'UMUM') )->row_array();
 						}
 						
@@ -676,6 +680,8 @@ class frontend extends JINGGA_Controller {
         foreach($_POST as $k=>$v){
 			if($this->input->post($k)!=""){
 				$post[$k] = $this->db->escape_str($this->input->post($k));
+			}else{
+				$post[$k] = null;
 			}
 		}
 		

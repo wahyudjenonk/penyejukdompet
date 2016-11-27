@@ -275,9 +275,26 @@ class mfrontend extends CI_Model{
 		}
 		
 		switch($table){
-			case "checkout":
+			case "checkout":				
+				if(isset($data['kdmar'])){
+					$dbmarketing = $this->load->database('marketing',true);
+					$array_cek_kdmarketing = array( 'member_user' => $data['kdmar'] );
+					$cek_kdmarketing = $dbmarketing->get_where('tbl_member', $array_cek_kdmarketing)->row_array();
+					if(!$cek_kdmarketing){
+						echo 2; exit;
+					}
+					$kdmarketing = $data['kdmar'];
+				}else{
+					$kdmarketing = null;
+				}
+				
 				if($data['typ'] == 'skull'){
 					if($data['ckdt'] == 'TIDAK ADA'){
+						$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$data['email']) )->row_array();
+						if($cek_email){
+							echo 3; exit; //"Email Sudah Ada";
+						}
+					
 						$data_registrasi = array(
 							'jenis_pembeli' => 'SEKOLAH',
 							'email' => $data['email'],
@@ -295,7 +312,7 @@ class mfrontend extends CI_Model{
 							'cl_kecamatan_kode' => $data['kec'],
 							'kode_pos' => $data['kdpos'],
 							'alamat_pengiriman' => $data['almt'],
-							'reg_date' => date('Y-m-d H:i:s')
+							'reg_date' => date('Y-m-d H:i:s'),
 						);
 						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
 						if($insert_registrasi){
@@ -308,9 +325,15 @@ class mfrontend extends CI_Model{
 						$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 						$id = $data_pembeli['id'];
 					}
+					$nama_pemesan = $data['nmseko'];
 					
 				}elseif($data['typ'] == 'umu'){
 					if($data['ckdt'] == 'TIDAK ADA'){
+						$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$data['email']) )->row_array();
+						if($cek_email){
+							echo 3; exit; //"Email Sudah Ada";
+						}
+						
 						$data_registrasi = array(
 							'jenis_pembeli' => 'UMUM',
 							'email' => $data['email'],
@@ -323,7 +346,7 @@ class mfrontend extends CI_Model{
 							'cl_kecamatan_kode' => $data['kec'],
 							'kode_pos' => $data['kdpos'],
 							'alamat_pengiriman' => $data['pngrmn'],
-							'reg_date' => date('Y-m-d H:i:s')
+							'reg_date' => date('Y-m-d H:i:s'),
 						);
 						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
 						if($insert_registrasi){
@@ -340,6 +363,7 @@ class mfrontend extends CI_Model{
 							$id = null;
 						}
 					}
+					$nama_pemesan = $data['nm_cust'];
 					
 				}
 				
@@ -382,6 +406,7 @@ class mfrontend extends CI_Model{
 						'status' => "P",
 						'create_date' => date('Y-m-d H:i:s'),
 						'zona' => $zona_pilihan['zona_pilihan'],
+						'kode_marketing' => $kdmarketing
 					);
 					$insert_header = $this->db->insert('tbl_h_pemesanan', $data_header_pesanan);
 					if($insert_header){
@@ -404,7 +429,7 @@ class mfrontend extends CI_Model{
 						$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
 						
 						$array_email = array(
-							'pemesan' => $data['nmseko'],
+							'pemesan' => $nama_pemesan,
 							'no_order' => $acak_no_order,
 							'tot' => number_format($tot,0,",","."),
 							'pajak' => number_format($pajak,0,",","."),
