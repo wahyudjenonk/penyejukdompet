@@ -103,6 +103,10 @@ class backend extends JINGGA_Controller {
 				$opt .="<option value='A.no_komplain'>No Komplain</option>";
 				$opt .="<option value='B.no_order'>No Order</option>";
 			break;
+			case "reg_marketing":
+				$opt .="<option value='A.nama_lengkap'>Nama</option>";
+				$opt .="<option value='A.email_address'>Email</option>";
+			break;
 		}
 		return $opt;
 	}
@@ -559,7 +563,7 @@ class backend extends JINGGA_Controller {
 		//print_r($data_na);exit;
 		$this->nsmarty->assign('data',$data_na);
 		$data['html']=$this->nsmarty->fetch($temp);
-		$data['jml']=count($data_na);
+		$data['jml']=(count($data_na['inv'])+count($data_na['komp']));
 		echo json_encode($data);
 		
 	}

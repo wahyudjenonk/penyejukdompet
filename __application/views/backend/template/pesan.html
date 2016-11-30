@@ -1,5 +1,5 @@
-{if !empty($data)}
-{foreach from=$data item=i}
+{if !empty($data.inv)}
+{foreach from=$data.inv item=i}
 <li class="clearfix inv_baru" data='{$i.id}' jns="{$i.jenis_pembeli}">
     <div class="clearfix">
         <div>
@@ -10,7 +10,18 @@
 </li>
 {/foreach}
 {/if}
-
+{if !empty($data.komp)}
+{foreach from=$data.komp item=i}
+<li class="clearfix komp_baru" data='{$i.id}'>
+    <div class="clearfix">
+        <div>
+            <strong>No. Komplain : {$i.no_komplain}</strong> 
+        </div>
+        <p>Tgl. KOmplain : {$i.create_date}</p>
+    </div>
+</li>
+{/foreach}
+{/if}
 <script>
 $('.inv_baru').bind('click',function(){
 	var jns=$(this).attr('jns');
@@ -19,6 +30,16 @@ $('.inv_baru').bind('click',function(){
 		if(r==1){
 			if(jns=='SEKOLAH')loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')
 			else loadUrl(this, '{$host}backoffice-grid/invoice_umum','tbl_h_pemesanan')
+			get_pesan();
+		}
+	});
+	
+});
+$('.komp_baru').bind('click',function(){
+	var id=$(this).attr('data');
+	$.post(host+'backend/simpandata/tbl_komplain',{ editstatus:'edit',id:id,flag_read:'F' },function(r){
+		if(r==1){
+			loadUrl(this, '{$host}backoffice-grid/komplain','tbl_komplain');
 			get_pesan();
 		}
 	});

@@ -4,6 +4,7 @@ class mbackend extends CI_Model{
 	function __construct(){
 		parent::__construct();
 		$this->auth = unserialize(base64_decode($this->session->userdata('4ld33334zzzzzzt')));
+		$this->db_remote='';
 	}
 	
 	function getdata($type="", $balikan="", $p1="", $p2="",$p3="",$p4=""){
@@ -12,7 +13,29 @@ class mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "reg_marketing":
+				$sql="SELECT A.*,
+					CASE WHEN B.member_user IS NULL THEN 'P' ELSE B.member_user END AS sts_member
+					FROM tbl_registration A
+					LEFT JOIN tbl_member B ON B.tbl_registration_id=A.id ".$where ;
+					
+				$this->db_remote=$this->load->database('marketing',true);
+				$data=$this->db_remote->query($sql)->result_array();
+				if($data){
+				   $responce = new stdClass();
+				   $responce->rows= $data;
+				   $responce->total =count($data);
+				}else{ 
+				   $responce = new stdClass();
+				   $responce->rows = 0;
+				   $responce->total = 0;
+				} 
+				$this->db_remote->close();
+				return json_encode($responce);
+				
+			break;
 			case "pesan":
+				$data=array();
 				$sql="SELECT A.*,B.jenis_pembeli,
 						CASE 
 							WHEN B.jenis_pembeli = 'SEKOLAH' THEN B.nama_sekolah
@@ -21,6 +44,13 @@ class mbackend extends CI_Model{
 						FROM tbl_h_pemesanan A 
 						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
 						WHERE (A.flag_read <> 'F' OR A.flag_read IS NULL)";
+				$data['inv']=$this->db->query($sql)->result_array();
+				$sql="SELECT A.*
+						FROM tbl_komplain A
+						WHERE (A.flag_read <> 'F' OR A.flag_read IS NULL)";
+				$data['komp']=$this->db->query($sql)->result_array();
+				return $data;
+				
 				//echo $sql;
 			break;
 			case "detil_invoice":

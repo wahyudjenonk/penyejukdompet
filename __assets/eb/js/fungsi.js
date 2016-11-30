@@ -152,6 +152,31 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "reg_marketing":
+			judulnya = "Daftar Produk Aldeaz ";
+			urlnya = "reg_marketing";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama',width:200, halign:'center',align:'left'},
+				{field:'registration_date',title:'Tgl. Reg',width:150, halign:'center',align:'center'},
+				{field:'sts_member',title:'Status',width:100, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){return 'Not Member';}
+						else{return value;}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						
+					}
+				},
+				{field:'alamat',title:'Alamat',width:250, halign:'center',align:'left'},
+				{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+				{field:'email_address',title:'Email',width:200, halign:'center',align:'left'},
+			];
+		break;
 		case "pengguna":
 			judulnya = "Daftar Produk Aldeaz ";
 			urlnya = "admin";
