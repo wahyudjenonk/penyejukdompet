@@ -520,7 +520,7 @@ body {} .padding100 {
 }
 .hover-btn {
     left: 60%;
-    margin-left: -45px;
+    margin-left: -82px;
     margin-top: -37px;
     opacity: 0;
     position: absolute;
@@ -2731,7 +2731,7 @@ body {} .padding100 {
     color: red;
     font-size: 15px;
 }
-.form-inner input[type="text"], textarea, select {
+.form-inner input[type="text"], input[type="password"], textarea, select {
     border: 1px solid #ebebeb;
     height: 40px;
     line-height: 40px;
