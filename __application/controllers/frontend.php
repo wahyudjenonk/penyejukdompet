@@ -1,10 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class frontend extends JINGGA_Controller {
+class frontend extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("If-Modified-Since: Mon, 22 Jan 2008 00:00:00 GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Cache-Control: private");
+		header("Pragma: no-cache");
+		
+		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
+		$this->host	= $this->config->item('base_url');
+		$host = $this->host;
+		$this->nsmarty->assign('host',$this->host);
+		$this->nsmarty->assign('auth', $this->auth);
+		
 		$this->load->library('cart');
 	}
 	
@@ -49,6 +63,12 @@ class frontend extends JINGGA_Controller {
 				}elseif($p1 == "pembatalan"){
 					$this->nsmarty->assign( 'judulbesar', "Pembatalan Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Layanan Pembatalan Pesanan Anda." );
+				}elseif($p1 == "registrasipembeli"){
+					$this->nsmarty->assign( 'judulbesar', "Registrasi" );
+					$this->nsmarty->assign( 'judulkecil', "Daftar Dalam Web Store Kami." );
+				}elseif($p1 == "komentarpelanggan"){
+					$this->nsmarty->assign( 'judulbesar', "Komentar Anda" );
+					$this->nsmarty->assign( 'judulkecil', "Kirimkan Komentar Anda Melalui Form Dibawah Ini." );
 				}
 				
 				if($zona_pilihan){
@@ -63,6 +83,19 @@ class frontend extends JINGGA_Controller {
 			break;
 			case "loading_page":
 				switch($p1){
+					case "form_login":
+						$temp = "frontend/modul/form-login.html";
+					break;
+					case "registrasipembeli":
+						$temp = "frontend/modul/registrasi-page.html";
+						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return'));
+					break;
+					case "finish_registrasi":
+						$temp = "frontend/modul/finish-registrasi-page.html";
+					break;
+					case "komentarpelanggan":
+						$temp = "frontend/modul/komentar-page.html";
+					break;
 					case "beranda":
 						$temp = "frontend/modul/beranda-page.html";
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', '', 1, 16);
@@ -701,6 +734,51 @@ class frontend extends JINGGA_Controller {
 		}
 	}
 	
+	//fungsi login pembeli
+	function loginpembeli(){
+		$this->load->library('encrypt');
+		$user = $this->db->escape_str($this->input->post('userpmb'));
+		$pass = $this->db->escape_str($this->input->post('pwdpmb'));
+		$error=false;
+		//echo $user;exit;
+		//echo $this->encrypt->encode($pass);exit;
+		if($user && $pass){
+			$cek_user = $this->mfrontend->getdata('data_login_pembeli','row_array',$user);
+			//wzc1y
+			//print_r($cek_user);exit;
+			//print_r($this->encrypt->decode($cek_user['password']));exit;
+			//echo $pass." - ".$this->encrypt->decode($cek_user['password']);exit;
+			
+			if(count($cek_user) > 0){
+				if($pass == $this->encrypt->decode($cek_user['password'])){
+					$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+					//header("Location: ".$this->host);
+					echo 1;
+				}else{
+					//$error=true;
+					//$this->session->set_flashdata('error', 'Password Tidak Benar');
+					echo "<font color='red'>Password Tidak Benar</font>";
+				}
+			}else{
+				$error=true;
+				//$this->session->set_flashdata('error', 'User Tidak Terdaftar');
+				echo "<font color='red'>User Tidak Terdaftar</font>";
+			}
+		}else{
+			$error=true;
+			//$this->session->set_flashdata('error', 'Isi User Dan Password');
+			echo "<font color='red'>Username & Password Tidak Boleh Kosong</font>";
+		}
+	}
+	function logoutpembeli(){
+		$log = $this->db->update('tbl_registrasi', array('last_login'=>date('Y-m-d H:i:s')), array('nama_user'=>$this->auth['nama_user']) );
+		if($log){
+			$this->session->unset_userdata('aldeaz_pembeli', 'limit');
+			$this->session->sess_destroy();
+			header("Location: ".$this->host);
+		}
+	}	
+	
 	function test(){			
 		//$this->session->sess_destroy();
 		//$sess = $this->session->userdata("zonaxtreme");
@@ -752,11 +830,14 @@ class frontend extends JINGGA_Controller {
 		
 		*/
 		
-		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		//echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
 		
 		//$string = "T1 Diriku";
 		//$isi = substr($string, 0, 20);
 		//echo $isi;
+		
+		echo "<pre>";
+		print_r($this->auth);
 	}
 	
 }

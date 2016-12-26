@@ -248,6 +248,9 @@
 					<li>
                         <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/reg_marketing','reg_marketing')"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Registrasi Marketing</span></a>
                     </li>
+					<li>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backupform','backupform')"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Backup System</span></a>
+                    </li>
 					{/if}
                 </ul>
             </div>
@@ -301,6 +304,7 @@
 	<script src="{$host}__assets/tinymce/tinymce.min.js"></script>
 	<script>
 		loadUrl(this, '{$host}backoffice-Dashboard','dashboard');
+		get_pesan;
 		setInterval(get_pesan,15000);
 	</script>
 </body>

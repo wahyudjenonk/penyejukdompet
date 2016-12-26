@@ -7,7 +7,7 @@
 class mfrontend extends CI_Model{
 	function __construct(){
 		parent::__construct();
-		$this->auth = unserialize(base64_decode($this->session->userdata('4ld33334zzzzzzt')));
+		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
 	}
 	
 	function getdata($type="", $balikan="", $p1="", $p2="",$p3="",$p4=""){
@@ -17,6 +17,16 @@ class mfrontend extends CI_Model{
 		$order = "";
 		
 		switch($type){
+			case "data_login_pembeli":
+				$sql = "
+					SELECT A.*, B.provinsi, C.kab_kota, D.kecamatan
+					FROM tbl_registrasi A
+					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
+					WHERE A.nama_user = '".$p1."'
+				";
+			break;
 			case "data_buku":
 			case "data_buku_tingkatan":
 			case "data_buku_detail":
@@ -275,6 +285,77 @@ class mfrontend extends CI_Model{
 		}
 		
 		switch($table){
+			case "registrasi":
+				$this->load->library('encrypt');
+				$array_cek_registrasi1 = array( 'email' => $data['email']);
+				$cek_registrasi1 = $this->db->get_where('tbl_registrasi', $array_cek_registrasi1)->row_array();
+				if($cek_registrasi1){
+					echo 2; exit; //cek data email exist;
+				}
+				
+				$array_cek_registrasi2 = array( 'npsn' => $data['npsn'] );
+				$cek_registrasi2 = $this->db->get_where('tbl_registrasi', $array_cek_registrasi2)->row_array();
+				if($cek_registrasi2){
+					echo 3; exit; //cek data npsn exist;
+				}
+				
+				$password_asli = $this->lib->randomString(5, 'angkahuruf');
+				$password = $this->encrypt->encode(strtolower($password_asli));
+				
+				$data_registrasi = array(
+					'jenis_pembeli' => 'SEKOLAH',
+					'nama_user' => $data['npsn'],
+					'password' => $password,
+					'email' => $data['email'],
+					'status' => 1,
+					'npsn' => $data['npsn'],
+					'nama_sekolah' => $data['nmseko'],
+					'nip' => $data['nipkepsek'],
+					'nama_kepala_sekolah' => $data['nmkepsek'],
+					'nama_bendahara' => $data['nmbend'],
+					'no_hp_kepsek' => $data['nohpkepsek'],
+					'no_hp_bendahara' => $data['nohpbend'],
+					'no_telp_sekolah' => $data['notelp'],
+					'cl_provinsi_kode' => $data['prov'],
+					'cl_kab_kota_kode' => $data['kab'],
+					'cl_kecamatan_kode' => $data['kec'],
+					'kode_pos' => $data['kdpos'],
+					'alamat_pengiriman' => $data['almt'],
+					'reg_date' => date('Y-m-d H:i:s'),
+				);
+				$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
+				if($insert_registrasi){
+					$this->lib->kirimemail('email_registrasi', $data['email'], $data_registrasi, $password_asli);
+				}
+			break;
+			case "komentar":
+				$array_cek_registrasi = array( 'email' => $data['emsek'], 'npsn' => $data['npsn']);
+				$cek_registrasi = $this->db->get_where('tbl_registrasi', $array_cek_registrasi)->row_array();
+				if($cek_registrasi){
+					$tbl_registrasi_id = $cek_registrasi['id'];
+				}else{
+					$tbl_registrasi_id = null;
+					echo 2; exit; //cek data email exist;			
+				}
+				
+				$array_cek_invoice = array( 'no_order' => $data['inv'] );
+				$cek_invoice = $this->db->get_where('tbl_h_pemesanan', $array_cek_invoice)->row_array();
+				if($cek_invoice){
+					$tbl_h_pemesanan_id = $cek_invoice['id'];
+				}else{
+					$tbl_h_pemesanan_id = null;
+					echo 3; exit; //cek data invoice exist;
+				}
+				
+				$data_komentar = array(
+					'tbl_registrasi_id' => $tbl_registrasi_id,
+					'tbl_h_pemesanan_id' => $tbl_h_pemesanan_id,
+					'rating' => $data['rating'],
+					'komentar' => $data['kmntr'],
+					'create_date' => date('Y-m-d H:i:s'),
+				);
+				$insert_registrasi = $this->db->insert('tbl_komentar', $data_komentar);
+			break;
 			case "checkout":				
 				if(isset($data['kdmar'])){
 					$dbmarketing = $this->load->database('marketing',true);
@@ -289,6 +370,7 @@ class mfrontend extends CI_Model{
 				}
 				
 				if($data['typ'] == 'skull'){
+					/*
 					if($data['ckdt'] == 'TIDAK ADA'){
 						$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$data['email']) )->row_array();
 						if($cek_email){
@@ -325,7 +407,10 @@ class mfrontend extends CI_Model{
 						$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 						$id = $data_pembeli['id'];
 					}
-					$nama_pemesan = $data['nmseko'];
+					*/
+					
+					$id = $this->auth['id'];
+					$nama_pemesan = $this->auth['nama_sekolah'];
 					
 				}elseif($data['typ'] == 'umu'){
 					if($data['ckdt'] == 'TIDAK ADA'){
@@ -435,12 +520,11 @@ class mfrontend extends CI_Model{
 							'pajak' => number_format($pajak,0,",","."),
 							'grand_total' => number_format($grand_total,0,",","."),
 						);
-						$this->lib->kirimemail('email_invoice', $data['email'], $data_cart, $array_email);
+						$this->lib->kirimemail('email_invoice', $this->auth['email'], $data_cart, $array_email);
 						
 						$this->cart->destroy();
 					}
 				}else{
-					
 					
 				}
 			break;

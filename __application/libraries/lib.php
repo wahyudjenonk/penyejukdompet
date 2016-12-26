@@ -129,6 +129,12 @@ class lib {
 				$html = $ci->nsmarty->fetch('frontend/modul/email_pembatalan.html');
 				$subject = "EMAIL PEMBATALAN PESANAN";
 			break;
+			case "email_registrasi":
+				$ci->nsmarty->assign('data_registrasi', $p1);
+				$ci->nsmarty->assign('password', $p2);
+				$html = $ci->nsmarty->fetch('frontend/modul/email_registrasi.html');
+				$subject = "EMAIL REGISTRASI WEBSTORE ALDEAZ.ID";
+			break;
 		}
 		
 		/*
@@ -148,8 +154,8 @@ class lib {
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
 			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "aldeaz.id@gmail.com"
-			,"smtp_pass" => "merdeka18"
+			,"smtp_user" => "triwahyunugros@gmail.com"
+			,"smtp_pass" => "ms6713saa"
 			,"smtp_port" => "465",
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,

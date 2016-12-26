@@ -77,15 +77,21 @@
 					<div class="header-top clear">
 						<div class="container">
 							<div class="row">
-								<div class="col-md-7 hidden-sm hidden-xs">
+								<div class="col-md-8 hidden-sm hidden-xs">
 									<div class="header-top-left header-top-info">
 										<p><a href="#"><i class="fa fa-phone"></i>021 7701525</a></p>
 										<p><a href="#"><i class="fa fa-whatsapp"></i>0812 9000 7684</a></p>
 										<p><a href="mailto:info@aldeaz.id"><i class="fa fa-envelope"></i>aldeaz.id@gmail.com</a></p>  
-										<p><a href="{$host}komplain">Layanan Komplain</a></p>  
+										<p><a href="{$host}komplain">Layanan Komplain</a></p> 
+										{if $auth}
+											<p><a href="{$host}logoutpembeli" >Keluar</a></p> 
+										{else}
+											<p><a href="{$host}registrasipembeli">Daftar</a></p> 
+											<p><a href="javascript:void(0);" onClick="kumpulAction('lgnpmb');" >Masuk</a></p> 
+										{/if}
 									</div>
 								</div>
-								<div class="col-md-5">
+								<div class="col-md-4">
 									<div class="header-top-right pull-right">
 										<ul>
 											<li class="search-bar">
@@ -108,14 +114,14 @@
 						<div class="container">
 							<div class="row hidden-sm hidden-xs">
 								<!-- Start Logo -->
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="header-logo">
 										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz" /></a>
 									</div>
 								</div>
 								<!-- End Logo -->
 								<!-- Start Main Menu -->
-                                <div class="col-md-9">
+                                <div class="col-md-10">
                                     <div class="menu-wrap pull-right">
                                         <nav class="primary-menu">
 										    <ul>
@@ -126,7 +132,7 @@
 												<li><a href="{$host}lacakpesanan">Lacak Pesanan</a></li>      
 												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      
 												<li><a href="{$host}pembatalan">Pembatalan</a></li>      
-										        <!--li><a href="{$host}kontak">Kontak Kami</a></li-->
+										        <li><a href="{$host}komentar">Komentar</a></li>
 										    </ul>
 										</nav>
                                     </div>
@@ -134,12 +140,12 @@
                                 <!-- End Main Menu -->
 							</div>
 							<div class="row">
-								<div class="col-sm-3 hidden-md hidden-lg">
+								<div class="col-sm-2 hidden-md hidden-lg">
 									<div class="mobile-logo">
 										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz"/></a>
 									</div>
 								</div>
-								<div class="col-sm-9 hidden-md hidden-lg">
+								<div class="col-sm-10 hidden-md hidden-lg">
 									<!-- Main Menu End -->
 									<div class='mobile-menu-area'>
 										<nav id="mobile-menu">
@@ -152,7 +158,13 @@
 												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      
 												<li><a href="{$host}pembatalan">Pembatalan</a></li>
 												<li><a href="{$host}komplain">Layanan Komplain</a></li>
-										        <!--li><a href="{$host}kontak">Kontak Kami</a></li-->
+										        <li><a href="{$host}komentar">Komentar</a></li>
+										        {if $auth}
+													<li><a href="{$host}logoutpembeli" >Keluar</a></li>
+												{else}
+													<li><a href="{$host}registrasipembeli">Daftar</a></li>
+													<li><a href="{$host}loginpembeli">Masuk</a></li>
+												{/if}
 											</ul>
 										</nav>
 									</div>

@@ -565,6 +565,64 @@ class Backend extends JINGGA_Controller {
 		$data['html']=$this->nsmarty->fetch($temp);
 		$data['jml']=(count($data_na['inv'])+count($data_na['komp']));
 		echo json_encode($data);
-		
 	}
+	
+	//Fungsi Wahyu
+	function backupsystem($type, $p1="", $p2=""){
+		switch($type){
+			case "formbackup":
+				$this->nsmarty->display('backend/form/backup.html');
+			break;
+			case "backupdb":
+				$this->load->dbutil();
+				$filesql = "sqlfile-".date('Y-m-d');
+				
+				$prefs = array(
+					//'tables'      => array('hotel_accomodation'),  // Array of tables to backup.
+					'ignore'      => array(),           // List of tables to omit from the backup
+					'format'      => 'txt',             // gzip, zip, txt
+					'filename'    => ''.$filesql.'.sql',    // File name - NEEDED ONLY WITH ZIP FILES
+					'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
+					'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
+					'newline'     => "\n"               // Newline character used in backup file
+				  );
+				$backup = $this->dbutil->backup($prefs);
+				//*/
+				//$backup = $this->dbutil->backup();
+				
+				$this->load->helper('file');
+				$filename = "backupdb-".date('Y-m-d');
+				write_file('__backup/database/'.$filename.'.sql', $backup);
+				$this->load->helper('download');
+				force_download($filename.'.sql', $backup);
+			break;
+			case "application":
+				$this->load->library('zip'); 
+				$path = '__application/'; 
+				$time = date('Y-m-d');
+				$this->zip->read_dir($path);  
+				$this->zip->read_dir($path2);  
+				$this->zip->read_dir($path3);  
+				$result = $this->zip->download('backup-application.'.$time.'.zip'); 
+				return $result;  
+			break;
+			case "assets":
+				$this->load->library('zip'); 
+				$path = '__assets/'; 
+				$time = date('Y-m-d');
+				$this->zip->read_dir($path);  
+				$result = $this->zip->download('backup-assets.'.$time.'.zip'); 
+				return $result;  
+			break;
+			case "repository":
+				$this->load->library('zip'); 
+				$path = '__repository/'; 
+				$time = date('Y-m-d');
+				$this->zip->read_dir($path);  
+				$result = $this->zip->download('backup-repository.'.$time.'.zip'); 
+				return $result;  
+			break;
+		}
+	}
+	
 }

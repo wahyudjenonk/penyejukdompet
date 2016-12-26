@@ -22,6 +22,12 @@ $route['backoffice-GetDataChart'] = 'backend/get_chart';
 $route['backoffice-laporan/(:any)'] = 'backend/get_form/$1';
 $route['Backoffice-Pesan'] = 'backend/get_pesan';
 
+$route['backupform'] = 'backend/backupsystem/formbackup';
+$route['backupdb'] = 'backend/backupsystem/backupdb';
+$route['backup-application'] = 'backend/backupsystem/application';
+$route['backup-assets'] = 'backend/backupsystem/assets';
+$route['backup-repository'] = 'backend/backupsystem/repository';
+
 
 /* Routes Front End Routes */
 $route['beranda'] = 'frontend/getdisplay/main_page/beranda';
@@ -91,6 +97,21 @@ $route['pembatalan'] = 'frontend/getdisplay/main_page/pembatalan';
 $route['loading-pembatalan'] = 'frontend/getdisplay/loading_page/pembatalanpesan';
 $route['loading-formpemb'] = 'frontend/getdisplay/loading_page/formpembatalancuy';
 $route['submit-pembatalan'] = 'frontend/cruddata/form/pembss';
+
+$route['registrasipembeli'] = 'frontend/getdisplay/main_page/registrasipembeli';
+$route['loading-registrasipembeli'] = 'frontend/getdisplay/loading_page/registrasipembeli';
+$route['submit-registrasi'] = 'frontend/cruddata/form/registrasi';
+$route['finish-registrasi'] = 'frontend/getdisplay/loading_page/finish_registrasi';
+
+$route['form-login'] = 'frontend/getdisplay/loading_page/form_login';
+$route['submit-login'] = 'frontend/loginpembeli';
+$route['logoutpembeli'] = 'frontend/logoutpembeli';
+
+$route['komentar'] = 'frontend/getdisplay/main_page/komentarpelanggan';
+$route['loading-komentarpelanggan'] = 'frontend/getdisplay/loading_page/komentarpelanggan';
+$route['submit-komentar'] = 'frontend/cruddata/form/komentar';
+
+
 
 
 
