@@ -20,10 +20,12 @@ function kumpulAction(type, p1, p2, p3){
 			$.post(host+'form-login', { }, function(resp){
 				parsingan = $.parseJSON(resp)
 				$('#modalencuk').html(parsingan.page);
+				/*
 				$('#productModal').modal({
 					backdrop: 'static',
 					keyboard: false
 				});
+				*/
 				$('#productModal').modal('show'); 
 			})
 		break;

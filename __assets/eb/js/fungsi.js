@@ -230,7 +230,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						if(value=='P'){
 							return "Proses Pembayaran";
 						}else if(value=='F'){
-							return "Sudah DiBayar";
+							return "Sudah DiBayar <br/>"+rowData.tanggal_transfer;
 						}else{
 							return "-";
 						}
@@ -246,7 +246,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						if(value=='P'){
 							return "Tunggu Konfirmasi";
 						}else if(value=='F'){
-							return "Sudah Dikonfirmasi";
+							return "Sudah Dikonfirmasi <br/>"+rowData.tanggal_konfirmasi;
 						}else{
 							return "-";
 						}
@@ -264,7 +264,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						}else if(value=='PK'){
 							return "Proses Packing";
 						}else if(value=='F'){
-							return "Proses Pengiriman";
+							return "Proses Pengiriman <br/>"+rowData.tanggal_masuk_gudang;
 						}else{
 							return "-";
 						}
@@ -281,7 +281,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						if(value=='P'){
 							return "Proses Pengiriman";
 						}else if(value=='F'){
-							return "Sudah Dikirim";
+							return "Sudah Dikirim <br/>"+rowData.tanggal_masuk_gudang;
 						}else{
 							return "-";
 						}
