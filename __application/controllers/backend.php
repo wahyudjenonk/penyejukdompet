@@ -596,16 +596,25 @@ class Backend extends JINGGA_Controller {
 				$this->load->helper('download');
 				force_download($filename.'.sql', $backup);
 			break;
+			case "application";
+				copy('__application/controllers/backend.php', '/__backup/aplikasi/mentah/backend.php');
+			break;
+			/*
 			case "application":
 				$this->load->library('zip'); 
-				$path = '__application/'; 
-				$time = date('Y-m-d');
+				
+				$path = '__application/controller'; 
 				$this->zip->read_dir($path);  
+				$path2 = '__application/model'; 
 				$this->zip->read_dir($path2);  
+				$path3 = '__application/view'; 
 				$this->zip->read_dir($path3);  
+				
+				$time = date('Y-m-d');
 				$result = $this->zip->download('backup-application.'.$time.'.zip'); 
 				return $result;  
 			break;
+			*/
 			case "assets":
 				$this->load->library('zip'); 
 				$path = '__assets/'; 
@@ -623,6 +632,10 @@ class Backend extends JINGGA_Controller {
 				return $result;  
 			break;
 		}
+	}
+	
+	function test(){
+		echo $_SERVER["DOCUMENT_ROOT"];
 	}
 	
 }

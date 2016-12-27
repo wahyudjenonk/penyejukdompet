@@ -196,7 +196,11 @@ class Mbackend extends CI_Model{
 			break;
 			case "tbl_monitor":
 				$sql="SELECT A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
-						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi
+						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi,
+						DATE_FORMAT(E.tgl_konfirmasi,'%d %b %y') as tanggal_konfirmasi,
+						DATE_FORMAT(E.tanggal_transfer,'%d %b %y') as tanggal_transfer,
+						DATE_FORMAT(F.tgl_masuk,'%d %b %y') as tanggal_masuk_gudang,
+						DATE_FORMAT(G.create_date,'%d %b %y') as tanggal_kirim
 						FROM tbl_h_pemesanan A
 						LEFT JOIN (
 							SELECT A.tbl_h_pemesanan_id,A.flag,A.id FROM tbl_konfirmasi A
@@ -208,7 +212,12 @@ class Mbackend extends CI_Model{
 						LEFT JOIN (
 							SELECT A.tbl_h_pemesanan_id,A.`status`,A.no_resi 
 							FROM tbl_tracking_pengiriman A
-						)AS D ON D.tbl_h_pemesanan_id=A.id ".$where;
+						)AS D ON D.tbl_h_pemesanan_id=A.id 
+						
+						LEFT JOIN tbl_konfirmasi E ON E.tbl_h_pemesanan_id = A.id
+						LEFT JOIN tbl_gudang F ON F.tbl_h_pemesanan_id = A.id
+						LEFT JOIN tbl_tracking_pengiriman G ON G.tbl_h_pemesanan_id = A.id
+				".$where." ORDER BY A.id DESC";
 			break;
 			case "tbl_registrasi":
 			case "tbl_registrasi_umum":

@@ -84,7 +84,7 @@
 										<p><a href="mailto:info@aldeaz.id"><i class="fa fa-envelope"></i>aldeaz.id@gmail.com</a></p>  
 										<p><a href="{$host}komplain">Layanan Komplain</a></p> 
 										{if $auth}
-											<p><a href="{$host}logoutpembeli" >Keluar</a></p> 
+											<p><a href="{$host}logoutpembeli" onClick="alert('Anda Akan Keluar Dari System WebStore Kami. Terima Kasih');" >Keluar</a></p> 
 										{else}
 											<p><a href="{$host}registrasipembeli">Daftar</a></p> 
 											<p><a href="javascript:void(0);" onClick="kumpulAction('lgnpmb');" >Masuk</a></p> 
@@ -163,7 +163,7 @@
 													<li><a href="{$host}logoutpembeli" >Keluar</a></li>
 												{else}
 													<li><a href="{$host}registrasipembeli">Daftar</a></li>
-													<li><a href="{$host}loginpembeli">Masuk</a></li>
+													<li><a href="javascript:void(0);" onClick="kumpulAction('lgnpmb');" >Masuk</a></li>
 												{/if}
 											</ul>
 										</nav>
