@@ -418,7 +418,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 					}
 				},
 				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
-				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:200, halign:'center',align:'left'},
+				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:350, halign:'center',align:'left'},
 				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
 				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
