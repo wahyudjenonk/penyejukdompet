@@ -153,7 +153,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var nowrap=true;
 	switch(modnya){
 		case "reg_marketing":
-			judulnya = "Daftar Produk Aldeaz ";
+			judulnya = "Daftar Marketing Aldeaz ";
 			urlnya = "reg_marketing";
 			fitnya = true;
 			nowrap=false;
@@ -178,7 +178,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			];
 		break;
 		case "pengguna":
-			judulnya = "Daftar Produk Aldeaz ";
+			judulnya = "Daftar Pengguna";
 			urlnya = "admin";
 			fitnya = true;
 			nowrap=false;
@@ -202,7 +202,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			];
 		break;
 		case "komplain":
-			judulnya = "Daftar Komplain Pelnggan ";
+			judulnya = "Daftar Komplain Pelanggan ";
 			urlnya = "tbl_komplain";
 			fitnya = true;
 			nowrap=false;
@@ -298,7 +298,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 		break;
 		case "member_sekolah":
 		case "member_umum":
-			judulnya = "Daftar Member Sekolah ";
+			judulnya = "Daftar Member Sekolah";
 			urlnya = (modnya=='member_umum' ? "tbl_registrasi_umum" : "tbl_registrasi");
 			fitnya = true;
 			nowrap=false;
@@ -306,17 +306,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			row_number=true;
 			if(modnya=='member_sekolah'){
 				frozen[modnya] = [	
-					{field:'nama_lengkap',title:'Nama Lengkap',width:130, halign:'center',align:'left'},
-					{field:'email',title:'Email',width:130, halign:'center',align:'left'},
+				//	{field:'nama_lengkap',title:'Nama Lengkap',width:130, halign:'center',align:'left'},
 					{field:'nama_sekolah',title:'Nama Sekolah',width:150, halign:'center',align:'left'},
+					{field:'email',title:'Email',width:130, halign:'center',align:'left'},
 					{field:'npsn',title:'NPSN',width:80, halign:'center',align:'center'},
 					{field:'reg_date',title:'Reg. Date',width:130, halign:'center',align:'center'},
 					
 				];
 				kolom[modnya] = [	
-					{field:'prov_kota',title:'Prov.KabKota',width:200, halign:'center',align:'left'},
+					{field:'prov_kota',title:'Prov.KabKota',width:300, halign:'center',align:'left'},
 					{field:'alamat_pengiriman',title:'Alamat',width:200, halign:'center',align:'left'},
-					{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+					{field:'kode_pos',title:'Kode Pos',width:55, halign:'center',align:'left'},
 					{field:'no_telp_sekolah',title:'No. Telp Sekolah',width:100, halign:'center',align:'left'},
 					{field:'nama_kepala_sekolah',title:'Nama KEPSEK',width:120, halign:'center',align:'left'},
 					{field:'nama_bendahara',title:'Nama Bendahara',width:120, halign:'center',align:'left'},
@@ -332,9 +332,9 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 					
 				];
 				kolom[modnya] = [	
-					{field:'prov_kota',title:'Prov.KabKota',width:200, halign:'center',align:'left'},
-					{field:'alamat_pengiriman',title:'Alamat',width:200, halign:'center',align:'left'},
-					{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+					{field:'prov_kota',title:'Prov.KabKota',width:300, halign:'center',align:'left'},
+					{field:'alamat_pengiriman',title:'Alamat',width:300, halign:'center',align:'left'},
+					{field:'kode_pos',title:'Kode Pos',width:55, halign:'center',align:'left'},
 					{field:'no_hp_customer',title:'No. HP',width:100, halign:'center',align:'left'},
 					{field:'no_telp_customer',title:'No Telp.',width:120, halign:'center',align:'left'},
 					
@@ -344,7 +344,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 		break;
 		case "gudang_kirim":
 		case "gudang_konfirmasi":
-			judulnya = "Daftar Konfirmasi Order Pelanggan ";
+			judulnya = "Manajemen Order Pelanggan ";
 			urlnya = "tbl_gudang";
 			fitnya = true;
 			nowrap=false;
@@ -399,7 +399,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						}
 					}
 				},
-				{field:'no_gudang',title:'No Gudang - TGL',width:180, halign:'center',align:'left',
+				{field:'no_gudang',title:'No Gudang - TGL',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
 					}
@@ -407,17 +407,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				
 			];
 			kolom[modnya] = [	
-				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:180, halign:'center',align:'left',
+				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
 					}
 				},
-				{field:'no_order',title:'No Order - TGL ',width:180, halign:'center',align:'left',
+				{field:'no_order',title:'No Order - TGL ',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
 					}
 				},
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
 				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:200, halign:'center',align:'left'},
 				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
 				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
@@ -439,7 +439,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			];
 		break;
 		case "konfirmasi":
-			judulnya = "Daftar Konfirmasi Order Pelanggan ";
+			judulnya = "Daftar Konfirmasi Order Pelanggan";
 			urlnya = "tbl_konfirmasi";
 			fitnya = true;
 			nowrap=false;
@@ -585,47 +585,47 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			];
 		break;
 		case "produk":
-			judulnya = "Daftar Produk Aldeaz ";
+			judulnya = "Daftar Buku Aldeaz ";
 			urlnya = "tbl_buku";
 			fitnya = true;
 			nowrap=false;
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'kelas',title:'Kelas',width:100, halign:'center',align:'left'},
-				{field:'nama_group',title:'Group',width:100, halign:'center',align:'left'},
-				{field:'nama_kategori',title:'Kategori',width:100, halign:'center',align:'left'},
-				{field:'judul_buku',title:'Judul Buku',width:150, halign:'center',align:'left'}
+				{field:'kelas',title:'Kelas',width:70, halign:'center',align:'left'},
+				{field:'nama_group',title:'Jenis Buku',width:80, halign:'center',align:'left'},
+				{field:'nama_kategori',title:'Kategori',width:70, halign:'center',align:'left'},
+				{field:'judul_buku',title:'Judul Buku',width:400, halign:'center',align:'left'}
 			];
 			kolom[modnya] = [	
-				{field:'deskripsi_buku',title:'Desc. Buku',width:150, halign:'center',align:'left'},
-				{field:'jml_hal',title:'Jml. Hal',width:80, halign:'center',align:'right',
+			//	{field:'deskripsi_buku',title:'Desc. Buku',width:245, halign:'center',align:'left'},
+				{field:'jml_hal',title:'Jml. Hal',width:50, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
-				{field:'ukuran_buku',title:'Ukuran',width:80, halign:'center',align:'center'},
-				{field:'harga_zona_1',title:'Hrg. Zona 1',width:150, halign:'center',align:'right',
+				{field:'ukuran_buku',title:'Ukuran',width:125, halign:'center',align:'center'},
+				{field:'harga_zona_1',title:'Hrg. Zona 1',width:85, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
-				{field:'harga_zona_2',title:'Hrg. Zona 2',width:150, halign:'center',align:'right',
+				{field:'harga_zona_2',title:'Hrg. Zona 2',width:85, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
-				{field:'harga_zona_3',title:'Hrg. Zona 3',width:150, halign:'center',align:'right',
+				{field:'harga_zona_3',title:'Hrg. Zona 3',width:85, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
-				{field:'harga_zona_4',title:'Hrg. Zona 4',width:150, halign:'center',align:'right',
+				{field:'harga_zona_4',title:'Hrg. Zona 4',width:85, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
-				{field:'harga_zona_5',title:'Hrg. Zona 5',width:150, halign:'center',align:'right',
+				{field:'harga_zona_5',title:'Hrg. Zona 5',width:85, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
