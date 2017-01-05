@@ -1,0 +1,47 @@
+<div style="margin-left:0px;">
+<form id="form_input_terima_{$acak}" method="post" class="form-horizontal" url="{$host}simpan-tandaterima">
+	<input type="hidden" name="tbl_h_pemesanan_id" id="id_{$acak}" value="{$id|default:''}">
+	<input type="hidden" name="mod" id="mod_{$acak}" value="{$table|default:''}">
+	<input type="hidden" name="editstatus" value="add">
+	<div class="form-group " >
+		<label class="col-sm-2 control-label">Tanggal Terima</label>
+		<div class="col-sm-4">
+			<input class="form-control" name="tanggal_terima" id='tanggal_terima' style="width:100%" type="text">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Jam Terima</label>
+		<div class="col-sm-4">
+			<input class="form-control" name="jam_terima" id='jam_terima' style="width:100%" type="text">
+		</div>
+	</div>
+	{include file="backend/template/text.html" label="Petugas" type="text" name="petugas" id_na="petugas" class="validasi"}	
+	
+	<div class="col-sm-7 col-sm-offset-3">
+		{include file="backend/template/button.html" text="Simpan" id_na="simpan"}
+		{include file="backend/template/button.html" text="Tutup" style_btn="btn-default" id_na="batal" }
+	</div>
+</form>
+</div>
+
+<script>
+	$('#tanggal_terima').datebox({
+		formatter : formatDate,
+        parser : myparser,
+		required : true,
+	});
+	$('#jam_terima').timespinner({
+		showSeconds: false,
+		separator: '.',
+		required : true,
+	});
+	$(".validasi").validatebox({ required:true }); 
+	
+	$('#batal_{$acak}').bind('click',function(){
+		closeWindow();
+	});
+	$('#simpan_{$acak}').on('click',function(){	
+		simpan_form('form_input_terima_{$acak}','batal_{$acak}',"data_tersimpan");
+	});
+
+</script>
