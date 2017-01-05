@@ -12,7 +12,7 @@
 	- Json Datagrid
 	
 */
-class lib {
+class Lib {
 	public function __construct(){
 		
 	}
@@ -134,7 +134,7 @@ class lib {
 				$ci->nsmarty->assign('password', $p2);
 				$html = $ci->nsmarty->fetch('frontend/modul/email_registrasi.html');
 				$subject = "EMAIL REGISTRASI WEBSTORE ALDEAZ.ID";
-			break;
+			break;			
 		}
 		
 		/*
@@ -143,7 +143,7 @@ class lib {
 			,"mailtype" => "html"
 			,"smtp_host" => "ssl://server.jingga.co.id"
 			,"smtp_user" => "webstore@aldeaz.id"
-			,"smtp_pass" => "merdeka18"
+			,"smtp_pass" => "wonogiri100km"
 			,"smtp_port" => "465",
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,
@@ -154,14 +154,14 @@ class lib {
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
 			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "triwahyunugros@gmail.com"
-			,"smtp_pass" => "ms6713saa"
+			,"smtp_user" => "aldeaz.id@gmail.com"
+			,"smtp_pass" => "100kmwonogiri"
 			,"smtp_port" => "465",
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,
 		);
 		
-		//,"smtp_user" => "aldeaz.id@gmail.com","smtp_pass" => "merdeka18" */
+		//,"smtp_user" => "aldeaz.id@gmail.com","smtp_pass" => "wonogiri100km" */
 		
 		$ci->email->initialize($config);
 		//$ci->email->from("aldeaz.id@gmail.com", "Aldeaz Notifikasi");
@@ -336,4 +336,47 @@ class lib {
 		} 
 	}
 	//end Json Grid
+	
+	//fungsi oauthtoken
+	function oauthtoken($client_id, $client_secret, $code, $redirect_uri, $token_endpoint){
+		$params = array(
+			'grant_type' => 'authorization_code',
+			'client_id' => $client_id,
+			'client_secret' => $client_secret,
+			'code' => $code,
+			'redirect_uri' => $redirect_uri,
+		);
+		$url_params = http_build_query($params);
+		
+		$url = $token_endpoint.$url_params;
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 1);
+		$result = curl_exec($curl);
+		$result_obj = json_decode($result, true);
+		
+		return $result_obj;
+	}
+	//end fungsi oauthtoken
+	
+	//fungsi get identity
+	function oauthidentity($access_token, $url_user){
+		$params = array(
+			'access_token' => $access_token, // PROVIDER SPECIFIC: the access_token is passed to Google via POST param
+		);
+		$url_params = http_build_query($params);
+		$url = $url_user . $url_params; // TODO: we probably want to send this using a curl_setopt...
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		$result_obj = json_decode($result, true);
+		
+		return $result_obj;
+	}
+	//end fungsi get identity
 }

@@ -15,6 +15,7 @@ class Login extends JINGGA_Controller {
 		//echo $this->encrypt->encode($pass);exit;
 		if($user && $pass){
 			$cek_user = $this->mbackend->getdata('data_login','row_array',$user);
+			//echo $this->encrypt->decode($cek_user['password']);exit;
 			//print_r($cek_user);exit;
 			if(count($cek_user)>0){
 				if(isset($cek_user['status']) && $cek_user['status']==1){

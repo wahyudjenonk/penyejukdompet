@@ -68,6 +68,7 @@ class Frontend extends CI_Controller {
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
 				}elseif($p1 == "katalog"){
 					$code = $this->input->get('code');
+					echo $code;exit;
 					if($code){
 						//$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
 						//$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);

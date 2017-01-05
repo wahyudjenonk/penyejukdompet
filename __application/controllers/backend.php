@@ -132,6 +132,8 @@ class Backend extends JINGGA_Controller {
 				break;
 			
 				case "invoice_edit":
+					$this->nsmarty->assign('par_mod',$this->input->post('par_mod'));
+					
 					$data=$this->mbackend->getdata('detil_invoice','row_array');
 					$this->nsmarty->assign('data',$data);
 				break;

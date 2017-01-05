@@ -39,6 +39,7 @@
 	$('#simpan_{$acak}').bind('click',function(){	
 		//tinyMCE.get("deskripsi{$acak}").save();
 		var msg;
+		msg="Pemesanan Telah Dibatalkan";
 		{if $modul eq "kirim_gudang"}
 		msg='Transfer Ke Gudang Berhasil';
 		{else if $modul eq "set_packing"}
