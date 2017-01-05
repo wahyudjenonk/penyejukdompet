@@ -4,7 +4,7 @@
 	Models Buatan Wahyu Jinggomen
 */
 
-class mfrontend extends CI_Model{
+class Mfrontend extends CI_Model{
 	function __construct(){
 		parent::__construct();
 		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
@@ -27,6 +27,50 @@ class mfrontend extends CI_Model{
 					WHERE A.nama_user = '".$p1."'
 				";
 			break;
+			case "data_buku_paket":
+				$crfilter = $this->input->post('cr');
+				$order = "
+					ORDER BY A.id ASC
+					LIMIT $p1, $p2
+				";
+				
+				if($crfilter){
+					$where .= " AND A.nama_paket like '%".$crfilter."%' ";
+				}
+				
+				$sql = "
+					SELECT A.*
+					FROM tbl_paket A
+					$where AND A.flag_disable_enable IS NULL 
+					$order
+				";
+			break;
+			case 'hitung_data_filter_paket':
+				$crfilter = $this->input->post('cr');
+				
+				if($crfilter){
+					$where .= " AND A.nama_paket like '%".$crfilter."%' ";
+				}
+				
+				$sql = "
+					SELECT A.*
+					FROM tbl_paket A
+					$where AND A.flag_disable_enable IS NULL 
+				";
+				
+				$query = $this->db->query($sql);
+				return $query->num_rows();
+				exit;
+			break;
+			case "data_paket_detail":
+				$sql = "
+					SELECT B.*
+					FROM tbl_paket_mapping A
+					LEFT JOIN tbl_buku B ON B.id = A.tbl_buku_id
+					$where AND A.tbl_paket_id = '".$p1."'
+				";
+			break;
+			
 			case "data_buku":
 			case "data_buku_tingkatan":
 			case "data_buku_detail":
@@ -72,7 +116,7 @@ class mfrontend extends CI_Model{
 					LEFT JOIN cl_group_sekolah F ON F.id = A.cl_group_sekolah
 					LEFT JOIN cl_edisi G ON G.id = A.cl_edisi_id
 					$join
-					$where 
+					$where AND A.flag_disable_enable IS NULL 
 					$order
 				";
 				
@@ -100,7 +144,7 @@ class mfrontend extends CI_Model{
 				$sql = "
 					SELECT A.*
 					FROM tbl_buku A
-					$where 
+					$where AND A.flag_disable_enable IS NULL 
 				";
 				
 				$query = $this->db->query($sql);
@@ -122,12 +166,15 @@ class mfrontend extends CI_Model{
 			break;
 			case "header_pesanan":
 				$sql = "
-					SELECT A.*,
-						B.jasa_pengiriman, C.metode_pembayaran, D.email
+					SELECT A.*, A.id as idpesan, A.status as sts_pesan,
+						B.jasa_pengiriman, C.metode_pembayaran, D.*, E.provinsi, F.kab_kota, G.kecamatan
 					FROM tbl_h_pemesanan A
 					LEFT JOIN cl_jasa_pengiriman B ON B.id = A.cl_jasa_pengiriman_id
 					LEFT JOIN cl_metode_pembayaran C ON C.id = A.cl_metode_pembayaran_id
 					LEFT JOIN tbl_registrasi D ON D.id = A.tbl_registrasi_id
+					LEFT JOIN cl_provinsi E ON E.kode_prov = D.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota F ON F.kode_kab_kota = D.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan G ON G.kode_kecamatan = D.cl_kecamatan_kode					
 					WHERE A.no_order = '".$p1."'
 				";
 			break;
@@ -271,10 +318,68 @@ class mfrontend extends CI_Model{
 					FROM cl_metode_pembayaran
 				";
 			break;
+			case "cl_zona":
+				$sql = "
+					SELECT zona_code as id, nama_zona as txt
+					FROM cl_zona
+				";
+			break;
 			
 		}
 		
 		return $this->db->query($sql)->result_array();
+	}
+	
+	function get_report_kementerian($type, $balikan, $p1=""){
+		switch($type){
+			case "all_pesanan":
+				$sql = "
+					SELECT A.id,
+						D.npsn, D.nama_sekolah, D.alamat_pengiriman, D.provinsi, D.kab_kota, D.no_hp_kepsek, D.email,
+						DATE_FORMAT(A.create_date,'%d %b %y %T') as tanggal_pesan, A.grand_total,
+						DATE_FORMAT(E.create_date,'%d %b %y %T') as tanggal_kirim,
+						DATE_FORMAT(F.tanggal_terima,'%d %b %y') as tanggal_terima, D.nama_kepala_sekolah, D.no_hp_kepsek, F.jam_terima,
+						DATE_FORMAT(G.tanggal_transfer,'%d %b %y') as tanggal_bayar, G.total_pembayaran, G.no_bast, G.no_kwitansi,
+						C.metode_pembayaran
+					FROM tbl_h_pemesanan A
+					LEFT JOIN cl_metode_pembayaran C ON C.id = A.cl_metode_pembayaran_id
+					LEFT JOIN (
+						SELECT X.*, PR.provinsi, KB.kab_kota, KC.kecamatan
+						FROM tbl_registrasi X
+						LEFT JOIN cl_provinsi PR ON PR.kode_prov = X.cl_provinsi_kode
+						LEFT JOIN cl_kab_kota KB ON KB.kode_kab_kota = X.cl_kab_kota_kode
+						LEFT JOIN cl_kecamatan KC ON KC.kode_kecamatan = X.cl_kecamatan_kode
+						WHERE X.jenis_pembeli = 'SEKOLAH'
+					) as D ON D.id = A.tbl_registrasi_id
+					LEFT JOIN tbl_tracking_pengiriman E ON E.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_terima_barang F ON F.tbl_h_pemesanan_id = A.id
+					LEFT JOIN (
+						SELECT Y.id, Y.tbl_h_pemesanan_id, Y.tanggal_transfer, Y.total_pembayaran, OY.no_bast, YE.no_kwitansi
+						FROM tbl_konfirmasi Y
+						LEFT JOIN tbl_bast OY ON OY.tbl_konfirmasi_id = Y.id
+						LEFT JOIN tbl_kwitansi YE ON YE.tbl_konfirmasi_id = Y.id
+					) as G ON G.tbl_h_pemesanan_id = A.id
+					ORDER BY D.provinsi, D.kab_kota DESC
+				";
+			break;
+			case "count_detail_pesanan":
+				$sql = "
+					SELECT SUM(qty) as quantity
+					FROM tbl_d_pemesanan
+					WHERE tbl_h_pemesanan_id = '".$p1."'
+				";
+			break;
+		}
+		
+		if($balikan == 'json'){
+			return $this->lib->json_grid($sql);
+		}elseif($balikan == 'row_array'){
+			return $this->db->query($sql)->row_array();
+		}elseif($balikan == 'result'){
+			return $this->db->query($sql)->result();
+		}elseif($balikan == 'result_array'){
+			return $this->db->query($sql)->result_array();
+		}
 	}
 	
 	function simpansavedata($table,$data,$sts_crud){  //$sts_crud --> STATUS NYEE INSERT, UPDATE, DELETE
@@ -285,6 +390,44 @@ class mfrontend extends CI_Model{
 		}
 		
 		switch($table){
+			case "uploadfile":
+				$array_cek_invoice = array( 'no_order' => $data['inv'] );
+				$cek_invoice = $this->db->get_where('tbl_h_pemesanan', $array_cek_invoice)->row_array();
+				if($cek_invoice){
+					$tbl_h_pemesanan_id = $cek_invoice['id'];
+				}else{
+					$tbl_h_pemesanan_id = null;
+					echo 2; exit; //cek data invoice exist;
+				}
+				
+				$cek_dir = "__repository/bast_tandaterima/";
+				if(!is_dir($cek_dir)) {
+					mkdir($cek_dir, 0777);         
+				}			
+				
+				$upload_path = "./__repository/bast_tandaterima/";
+				if(!empty($_FILES['bast']['name'])){					
+					$file_bast = "BAST-".$cek_invoice['no_order'];
+					$filename_bast =  $this->lib->uploadnong($upload_path, 'bast', $file_bast); //$file.'.'.$extension;
+				}else{
+					$filename_bast = null;
+				}
+				
+				if(!empty($_FILES['tanda_terima']['name'])){					
+					$file_tandaterima = "TANDATERIMA-".$cek_invoice['no_order'];
+					$filename_tandaterima =  $this->lib->uploadnong($upload_path, 'tanda_terima', $file_tandaterima); //$file.'.'.$extension;
+				}else{
+					$filename_tandaterima = null;
+				}
+				
+				$data_upload = array(
+					'tbl_h_pemesanan_id' => $cek_invoice['id'],
+					'file_bast' => $filename_bast,
+					'file_tanda_terima' => $filename_tandaterima,
+					'create_date' => date('Y-m-d H:i:s'),
+				);
+				$this->db->insert('tbl_uploadfile', $data_upload);
+			break;
 			case "registrasi":
 				$this->load->library('encrypt');
 				$array_cek_registrasi1 = array( 'email' => $data['email']);
@@ -362,7 +505,10 @@ class mfrontend extends CI_Model{
 					$array_cek_kdmarketing = array( 'member_user' => $data['kdmar'] );
 					$cek_kdmarketing = $dbmarketing->get_where('tbl_member', $array_cek_kdmarketing)->row_array();
 					if(!$cek_kdmarketing){
-						echo 2; exit;
+						$array = array("msg"=>2);
+						//echo 2; exit;
+						echo json_encode($array);
+						exit;
 					}
 					$kdmarketing = $data['kdmar'];
 				}else{
@@ -411,6 +557,7 @@ class mfrontend extends CI_Model{
 					
 					$id = $this->auth['id'];
 					$nama_pemesan = $this->auth['nama_sekolah'];
+					$flag = "B";
 					
 				}elseif($data['typ'] == 'umu'){
 					if($data['ckdt'] == 'TIDAK ADA'){
@@ -449,7 +596,7 @@ class mfrontend extends CI_Model{
 						}
 					}
 					$nama_pemesan = $data['nm_cust'];
-					
+					$flag = "P";
 				}
 				
 				if($id != null){
@@ -488,7 +635,7 @@ class mfrontend extends CI_Model{
 						'sub_total' => $tot,
 						'pajak' => $pajak,
 						'grand_total' => $grand_total,
-						'status' => "P",
+						'status' => $flag,
 						'create_date' => date('Y-m-d H:i:s'),
 						'zona' => $zona_pilihan['zona_pilihan'],
 						'kode_marketing' => $kdmarketing
@@ -512,6 +659,25 @@ class mfrontend extends CI_Model{
 							$data_cart[$s]['subtotal'] = number_format($r['subtotal'],0,",",".");
 						}
 						$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
+						
+						if($data['typ'] == 'skull'){
+							$sql_maxkonf = "
+								SELECT MAX(no_konfirmasi) as konfirmasi_no
+								FROM tbl_konfirmasi
+							";
+							$maxkonf = $this->db->query($sql_maxkonf)->row_array();
+							if($maxkonf['konfirmasi_no'] != null){
+								$acak_no_konf = ($maxkonf['konfirmasi_no'] + 1); 
+							}else{
+								$acak_no_konf = 1;
+							}
+							$array_konfirmasi = array(
+								'tbl_h_pemesanan_id' => $cekdt_header['id'],
+								'no_konfirmasi' => $acak_no_konf,
+								'flag' => "B"
+							);
+							$this->db->insert('tbl_konfirmasi', $array_konfirmasi);
+						}
 						
 						$array_email = array(
 							'pemesan' => $nama_pemesan,
@@ -537,33 +703,70 @@ class mfrontend extends CI_Model{
 						FROM tbl_konfirmasi
 					";
 					$maxkonf = $this->db->query($sql_maxkonf)->row_array();
-					if($maxord['konfirmasi_no'] != null){
+					if($maxkonf['konfirmasi_no'] != null){
 						$acak_no_konf = ($maxkonf['konfirmasi_no'] + 1); 
 					}else{
 						$acak_no_konf = 1;
 					}
 					
+					$cek_dir = "__repository/konfirmasi/";
+					if(!is_dir($cek_dir)) {
+						mkdir($cek_dir, 0777);         
+					}			
+					
+					if(!empty($_FILES['bkt_byr']['name'])){					
+						$upload_path = "./__repository/konfirmasi/";
+						$file = "FILEBUKTIBAYAR-".$data_inv['no_order'];
+						$filename =  $this->lib->uploadnong($upload_path, 'bkt_byr', $file); //$file.'.'.$extension;
+					}else{
+						$filename = null;
+					}
+					
 					$total_pembayaran = trim($data['jml_trf']);
 					$total_pembayaran = str_replace(".", "", $total_pembayaran);
-					$array_insert = array(
-						'no_konfirmasi' => $acak_no_konf,
-						'tgl_konfirmasi' => date('Y-m-d'),
-						'tbl_h_pemesanan_id' => $data_inv['id'],
-						'total_pembayaran' => (int)$total_pembayaran,
-						'nama_bank_pengirim' => $data['bank_pengirim'],
-						'atas_nama_pengirim' => $data['atas_nama'],
-						'tanggal_transfer' => $data['tgl_trf'],
-						'nama_bank_penerima' => $data['bank_tujuan'],
-						'flag' => 'P',
-						'create_date' => date('Y-m-d H:i:s'),
-					);
-					$insert = $this->db->insert('tbl_konfirmasi', $array_insert);
-					if($insert){
-						$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
+					if($data_inv['status'] == 'P'){
+						$array_insert = array(
+							'no_konfirmasi' => $acak_no_konf,
+							'tgl_konfirmasi' => date('Y-m-d'),
+							'tbl_h_pemesanan_id' => $data_inv['id'],
+							'total_pembayaran' => (int)$total_pembayaran,
+							'nama_bank_pengirim' => $data['bank_pengirim'],
+							'atas_nama_pengirim' => $data['atas_nama'],
+							'tanggal_transfer' => $data['tgl_trf'],
+							'nama_bank_penerima' => $data['bank_tujuan'],
+							'flag' => 'P',
+							'create_date' => date('Y-m-d H:i:s'),
+							'file_bukti_bayar' => $filename,
+						);
+						$crud = $this->db->insert('tbl_konfirmasi', $array_insert);
+						if($crud){
+							$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
+							$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
+							$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
+						}
+
+					}elseif($data_inv['status'] == 'B'){
+						$array_update = array(
+							'no_konfirmasi' => $acak_no_konf,
+							'tgl_konfirmasi' => date('Y-m-d'),
+							'total_pembayaran' => (int)$total_pembayaran,
+							'nama_bank_pengirim' => $data['bank_pengirim'],
+							'atas_nama_pengirim' => $data['atas_nama'],
+							'tanggal_transfer' => $data['tgl_trf'],
+							'nama_bank_penerima' => $data['bank_tujuan'],
+							'flag' => 'F',
+							'create_date' => date('Y-m-d H:i:s'),
+							'file_bukti_bayar' => $filename,
+						);
+						$crud = $this->db->update('tbl_konfirmasi', $array_update, array('tbl_h_pemesanan_id' => $data_inv['id']) );
+						if($crud){
+							$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
+							$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
+							$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
+						}
 						
-						$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
-						$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
 					}
+					
 				}
 			break;
 			case "komp":
@@ -619,10 +822,22 @@ class mfrontend extends CI_Model{
 		}
 		
 		if($this->db->trans_status() == false){
-			$this->db->trans_rollback();
-			return 0;
+			if($table == 'checkout'){
+				$this->db->trans_rollback();
+				$array = array("msg"=>0);
+				return json_encode($array);
+			}else{
+				$this->db->trans_rollback();
+				return 0;
+			}
 		} else{
-			return $this->db->trans_commit();
+			if($table == 'checkout'){
+				$this->db->trans_commit();
+				$array = array("msg"=>1, "no_order"=>$acak_no_order);
+				return json_encode($array);
+			}else{
+				return $this->db->trans_commit();
+			}
 		}
 	
 	}

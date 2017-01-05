@@ -13,6 +13,65 @@ class Mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "mapping_paket_belum":
+				$id_paket = $this->input->post('id_paket');
+				$sqlmapping = "
+					SELECT tbl_buku_id
+					FROM tbl_paket_mapping
+					WHERE tbl_paket_id = '".$id_paket."'
+				";
+				$querymapping = $this->db->query($sqlmapping)->result_array();
+				$arraycdm = array();
+				foreach($querymapping as $k=>$v){
+					$arraycdm[$k] = $v['tbl_buku_id'];
+				}
+				if($arraycdm){
+					$join_array = join("','",$arraycdm);
+					$where .= "
+						AND A.id NOT IN ('".$join_array."') 
+					";
+				}
+				
+				$sql = "
+					SELECT A.judul_buku, A.id,
+						B.kelas, 
+						C.nama_group, 
+						D.nama_kategori, 
+						E.id as id_tingkatan,
+						E.tingkatan 
+					FROM tbl_buku A
+					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id
+					LEFT JOIN cl_group_sekolah C ON A.cl_group_sekolah=C.id
+					LEFT JOIN cl_kategori D ON A.cl_kategori_id=D.id 
+					LEFT JOIN cl_tingkatan E ON B.cl_tingkatan_id=E.id 
+					$where
+				";
+			break;
+			case "mapping_paket_sudah":
+				$id_paket = $this->input->post('id_paket');
+				$sql = "
+					SELECT B.judul_buku, A.id,
+						C.kelas, 
+						D.nama_group, 
+						E.nama_kategori, 
+						F.id as id_tingkatan,
+						F.tingkatan 
+					FROM tbl_paket_mapping A
+					LEFT JOIN tbl_buku B ON B.id = A.tbl_buku_id
+					LEFT JOIN cl_kelas C ON C.id = B.cl_group_sekolah
+					LEFT JOIN cl_group_sekolah D ON D.id = B.cl_group_sekolah
+					LEFT JOIN cl_kategori E ON E.id = B.cl_kategori_id
+					LEFT JOIN cl_tingkatan F ON F.id = C.cl_tingkatan_id
+					$where AND A.tbl_paket_id = '".$id_paket."'
+				";
+			break;
+			case "tbl_paket":
+				$sql = "
+					SELECT *
+					FROM tbl_paket
+				";
+			break;
+		
 			case "reg_marketing":
 				$sql="SELECT A.*,
 					CASE WHEN B.member_user IS NULL THEN 'P' ELSE B.member_user END AS sts_member
@@ -195,12 +254,14 @@ class Mbackend extends CI_Model{
 				}
 			break;
 			case "tbl_monitor":
-				$sql="SELECT A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
+				$sql="SELECT A.id,A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
 						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi,
 						DATE_FORMAT(E.tgl_konfirmasi,'%d %b %y') as tanggal_konfirmasi,
 						DATE_FORMAT(E.tanggal_transfer,'%d %b %y') as tanggal_transfer,
 						DATE_FORMAT(F.tgl_masuk,'%d %b %y') as tanggal_masuk_gudang,
-						DATE_FORMAT(G.create_date,'%d %b %y') as tanggal_kirim
+						DATE_FORMAT(G.create_date,'%d %b %y') as tanggal_kirim,
+						DATE_FORMAT(H.create_date,'%d %b %y') as tanggal_upload, H.file_bast, H.file_tanda_terima,
+						DATE_FORMAT(I.tanggal_terima,'%d %b %y') as tanggal_terimanya, I.jam_terima, I.petugas
 						FROM tbl_h_pemesanan A
 						LEFT JOIN (
 							SELECT A.tbl_h_pemesanan_id,A.flag,A.id FROM tbl_konfirmasi A
@@ -217,6 +278,8 @@ class Mbackend extends CI_Model{
 						LEFT JOIN tbl_konfirmasi E ON E.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_gudang F ON F.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_tracking_pengiriman G ON G.tbl_h_pemesanan_id = A.id
+						LEFT JOIN tbl_uploadfile H ON H.tbl_h_pemesanan_id = A.id
+						LEFT JOIN tbl_terima_barang I ON I.tbl_h_pemesanan_id = A.id
 				".$where." ORDER BY A.id DESC";
 			break;
 			case "tbl_registrasi":
@@ -266,7 +329,7 @@ class Mbackend extends CI_Model{
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
 					  ".$where."
-					  ORDER BY A.tgl_konfirmasi DESC";
+					  ORDER BY A.id DESC";
 			
 			break;
 			case "get_bast":
@@ -322,13 +385,15 @@ class Mbackend extends CI_Model{
 				/*if($this->input->post('key')){
 					$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 				}*/
-				$sql="SELECT A.*,B.kelas,C.nama_group,D.nama_kategori,E.id as id_tingkatan,E.tingkatan 
-					FROM tbl_buku A
+				$sql = "
+					SELECT A.*,B.kelas,C.nama_group,D.nama_kategori,E.id as id_tingkatan,E.tingkatan 
+						FROM tbl_buku A
 					LEFT JOIN cl_kelas B ON A.cl_kelas_id=B.id
 					LEFT JOIN cl_group_sekolah C ON A.cl_group_sekolah=C.id
 					LEFT JOIN cl_kategori D ON A.cl_kategori_id=D.id 
 					LEFT JOIN cl_tingkatan E ON B.cl_tingkatan_id=E.id ".$where;
-					//echo $sql;
+					
+				//echo $sql;
 			break;
 			case "tbl_h_pemesanan":
 			case "tbl_h_pemesanan_umum":
@@ -454,7 +519,6 @@ class Mbackend extends CI_Model{
 		}
 		
 		switch($table){
-			
 			case "admin":
 				//print_r($data);exit;
 				if($sts_crud=='add')$data['password']=$this->encrypt->encode($data['password']);
@@ -530,6 +594,18 @@ class Mbackend extends CI_Model{
 			case "delete":
 				$this->db->delete($table, array('id' => $id));
 			break;
+			case "disable_enable":
+				if(!isset($data['flag_disable_enable'])){
+					$array = array(
+						'flag_disable_enable' => 0
+					);
+				}elseif($data['flag_disable_enable'] == 0){
+					$array = array(
+						'flag_disable_enable' => null
+					);
+				}
+				$this->db->update($table, $array, array('id' => $id) );
+			break;
 		}
 		
 		if($this->db->trans_status() == false){
@@ -544,6 +620,14 @@ class Mbackend extends CI_Model{
 				}else{
 					return $this->db->trans_commit();
 				}
+			}elseif($table=="tbl_paket"){
+				if($sts_crud =='disable_enable'){
+					$this->db->trans_commit();
+					$js=array('msg'=>1,'data'=>$id);
+					return json_encode($js);
+				}else{
+					return $this->db->trans_commit();
+				}				
 			}else{
 				return $this->db->trans_commit();
 			}

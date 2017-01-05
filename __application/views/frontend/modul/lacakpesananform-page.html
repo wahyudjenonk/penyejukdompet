@@ -82,8 +82,36 @@
 </div>
 <div class="submit-btn-area text-center">
 	<hr/>
+	<a id='ctk_bast' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
+	<a id='ctk_kwt' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
+	<a id='ctk_tt' href='javascript:void(0);' class="estut-btn active submit">Cetak Tanda Terima</a> 
+	<a id='ctk_sp' href='javascript:void(0);' class="estut-btn active submit">Cetak Surat Pesanan</a> 
 </div>
+<script>
+	$('#ctk_bast').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-bast', post);
+	});	
+	$('#ctk_kwt').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-kwitansi', post);
+	});	
+	$('#ctk_tt').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-tanda-terima', post);
+	});	
+	$('#ctk_sp').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-surat-pesanan', post);
+	});	
+</script>
 {else}	
 	<center>Data Anda Tidak Ditemukan</center>
 {/if}
+
+
 

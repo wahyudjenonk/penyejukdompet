@@ -1,3 +1,13 @@
+<style type="text/css">
+	.datagrid-row-over td{
+		background:#D0E5F5;
+	}
+	.datagrid-row-selected td{
+		background:#FBEC88;
+		color:#000;
+	}
+</style>
+
 <div id="grid_nya_{$main}" style="width:100%">
 	<div id='grid_{$main}'></div>
 	<div id='tb_{$main}' style="padding:5px;">
@@ -21,6 +31,21 @@
 						<span class="l-btn-text">Hapus</span><span class="l-btn-icon icon-remove">&nbsp;</span>
 					</span>
 				</a>
+				&nbsp;
+					{if $button_disable|default:'false' eq 'true'}	
+					<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('disable_enable', '{$mod}','{$main}','','{$table|default:''}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Disable/Enable</span><span class="l-btn-icon icon-ok">&nbsp;</span>
+						</span>
+					</a>
+					{/if}
+					{if $button_mapping|default:'false' eq 'true'}	
+					<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('mapping', '{$mod}','{$main}','','{$table|default:''}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Mapping</span><span class="l-btn-icon cost_object">&nbsp;</span>
+						</span>
+					</a>
+					{/if}
 				&nbsp;
 				{/if}
 				{if $preview|default:'false' eq 'true'}	
@@ -47,13 +72,22 @@
 						{$data_select|default:''}
 					</select>				
 					&nbsp;&nbsp;
-					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:30%;">
+					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:20%;">
 					&nbsp;&nbsp;&nbsp;
 					<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
 						<span class="l-btn-left l-btn-icon-left">
 							<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
 						</span>
 					</a>	
+				{/if}
+				{if $search|default:'' eq 'true'}
+					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:50%;">
+					&nbsp;&nbsp;&nbsp;
+					<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
+						</span>
+					</a>
 				{/if}
 			
 			</div>
@@ -89,5 +123,5 @@
 <script>
 	var height_grid = "{$tinggi_grid|default:''}";
 	$('#grid_nya_{$main}').css('height', (height_grid != "" ? height_grid : (getClientHeight()-65) ) );
-	genGrid('{$main}','grid_{$main}');
+	genGrid('{$main}','grid_{$main}', '', '', "{$param_tambahan|default:''}");
 </script>

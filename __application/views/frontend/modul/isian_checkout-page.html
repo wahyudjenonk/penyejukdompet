@@ -3,7 +3,7 @@
 		<input type='hidden' name='ckdt' value="{$status_data|default:'TIDAK ADA'}">
 		<div class="single-input one-half left">
 			<label>Kode Marketing <span>*</span></label> 
-			<input type="text" name="kdmar" class='validasi' id="kdmar" >
+			<input type="text" name="kdmar" id="kdmar" >
 		</div>
 		<div class="single-input one-half right">
 			<label>&nbsp;</label> 
@@ -212,9 +212,9 @@
 		</div>
 	</div>	
 	<script>
-		//$('#prov_umu').on('change', function(){
-		//	fillCombo(host+'combo-kab-kota', 'kab_umu', '', $(this).val() );
-		//});
+		$('#prv_umu').on('change', function(){
+			fillCombo(host+'combo-kab-kota', 'kab_umu', '', $(this).val() );
+		});
 		$('#kab_umu').on('change', function(){
 			fillCombo(host+'combo-kecamatan', 'kec_umu', '', $(this).val() );
 		});

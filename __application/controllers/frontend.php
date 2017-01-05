@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class frontend extends CI_Controller {
+class Frontend extends CI_Controller {
 	
 	function __construct(){
 		parent::__construct();
@@ -15,9 +15,30 @@ class frontend extends CI_Controller {
 		
 		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
 		$this->host	= $this->config->item('base_url');
+		
+		$this->client_id		= 'bkk13am';
+		$this->client_secret	= 'ae044c5653e256aa8a0a53ed3cbd9db6';
+		$this->redirect_uri		= 'http://www.aldeaz.id/katalog';
+		
+		$this->token_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
+		$this->authorize_endpoint	= 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';
+		$this->profile_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/profile';
+		$this->sekolah_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/bosdata';
+		$this->sess_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/sessid';
+		
 		$host = $this->host;
 		$this->nsmarty->assign('host',$this->host);
 		$this->nsmarty->assign('auth', $this->auth);
+		
+		
+		$this->nsmarty->assign('client_id', $this->client_id);
+		$this->nsmarty->assign('client_secret', $this->client_secret);
+		$this->nsmarty->assign('redirect_uri', $this->redirect_uri);
+		$this->nsmarty->assign('token_endpoint', $this->token_endpoint);
+		$this->nsmarty->assign('authorize_endpoint', $this->authorize_endpoint);
+		$this->nsmarty->assign('profile_endpoint', $this->profile_endpoint);
+		$this->nsmarty->assign('sekolah_endpoint', $this->sekolah_endpoint);
+		$this->nsmarty->assign('sess_endpoint', $this->sess_endpoint);
 		
 		$this->load->library('cart');
 	}
@@ -46,8 +67,19 @@ class frontend extends CI_Controller {
 					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
 				}elseif($p1 == "katalog"){
+					$code = $this->input->get('code');
+					if($code){
+						//$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
+						//$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
+						
+						//print_r($token);exit;
+					}
+				
 					$this->nsmarty->assign( 'judulbesar', "Katalog Buku" );
 					$this->nsmarty->assign( 'judulkecil', "Temukan Buku Yang Anda Butuhkan" );
+				}elseif($p1 == "katalogpaket"){
+					$this->nsmarty->assign( 'judulbesar', "Katalog Paket Buku" );
+					$this->nsmarty->assign( 'judulkecil', "Paket Buku Memudahkan Belanja Anda" );
 				}elseif($p1 == "lacakpesanan"){
 					$this->nsmarty->assign( 'judulbesar', "Lacak Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Pesanan Anda" );
@@ -69,6 +101,12 @@ class frontend extends CI_Controller {
 				}elseif($p1 == "komentarpelanggan"){
 					$this->nsmarty->assign( 'judulbesar', "Komentar Anda" );
 					$this->nsmarty->assign( 'judulkecil', "Kirimkan Komentar Anda Melalui Form Dibawah Ini." );
+				}elseif($p1 == "selesaibelanja"){
+					$this->nsmarty->assign( 'judulbesar', "Keranjang Belanja" );
+					$this->nsmarty->assign( 'judulkecil', "Perhatikan Barang Yang Anda Belanjakan." );
+				}elseif($p1 == "uploadfile"){
+					$this->nsmarty->assign( 'judulbesar', "Upload File" );
+					$this->nsmarty->assign( 'judulkecil', "Upload File BAST & Tanda Terima" );
 				}
 				
 				if($zona_pilihan){
@@ -83,6 +121,9 @@ class frontend extends CI_Controller {
 			break;
 			case "loading_page":
 				switch($p1){
+					case "uploadfile":
+						$temp = "frontend/modul/uploadfile-page.html";
+					break;
 					case "form_login":
 						$temp = "frontend/modul/form-login.html";
 					break;
@@ -115,6 +156,101 @@ class frontend extends CI_Controller {
 					case "kontak":
 						$temp = "frontend/modul/kontak-page.html";
 					break;
+					case "katalogpaket":
+						if(isset($zona_pilihan)){
+							$flag_window = "oye"; // kgk nongol maning
+						}else{
+							$flag_window = "uye"; // nongol window pilihan zona nya
+						}
+						
+						$temp = "frontend/modul/paketkatalog-page.html";
+						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 9);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+						}
+						
+						$total_data = $this->db->count_all("tbl_paket");
+						$limit = 9;
+						$total_paging = $total_data / $limit;
+						$total_paging = floor($total_paging);
+						$array_paging = array();
+						for($i=0; $i <= $total_paging; $i++){
+							$j = ($i + 1);
+							if(isset($mulai)){
+								$mulai = $mulai + $limit;
+							}else{
+								$mulai = 0;
+							}
+							
+							$array_paging[$i]['angka'] = $j;
+							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
+						}
+						
+						$this->nsmarty->assign('array_paging', $array_paging);
+						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('flag_window', $flag_window);
+					break;
+					case "katalogpaketpaging":
+						$temp = "frontend/modul/paketkatalogpaging-page.html";
+						$type = $this->input->post('dtype');
+						$limit = $this->input->post('lmt');
+						$explim = explode("-",$limit);
+						
+						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', $explim[0], $explim[1]);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+						}
+						
+						$this->nsmarty->assign('type', $type);
+						$this->nsmarty->assign('data_buku', $data_buku);
+					break;
+					case "filterdtpaket":
+						$temp = "frontend/modul/paketkatalogsearch-page.html";
+						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 9);
+						foreach($data_buku as $k=>$v){
+							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+						}
+						
+						$total_data = $this->mfrontend->getdata('hitung_data_filter_paket', 'num_rows');
+						$limit = 9;
+						$total_paging = $total_data / $limit;
+						$total_paging = floor($total_paging);
+						$array_paging = array();
+						for($i=0; $i <= $total_paging; $i++){
+							$j = ($i + 1);
+							if(isset($mulai)){
+								$mulai = $mulai + $limit;
+							}else{
+								$mulai = 0;
+							}
+							
+							$array_paging[$i]['angka'] = $j;
+							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
+						}
+						$crfilter = $this->input->post('cr');
+						
+						$this->nsmarty->assign('array_paging', $array_paging);						
+						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('crfilter', $crfilter);					
+					break;
+					case "detail_paket":
+						$id = $this->input->post('isds');
+						$temp = "frontend/modul/produkwindowpaket-page.html";
+						$data_buku = $this->mfrontend->getdata('data_paket_detail', 'result_array', $id);
+						
+						foreach($data_buku as $k=>$v){	
+							$data_buku[$k]['harga_zona_1'] = "Rp. ".number_format($v['harga_zona_1'],0,",",".");
+							$data_buku[$k]['harga_zona_2'] = "Rp. ".number_format($v['harga_zona_2'],0,",",".");
+							$data_buku[$k]['harga_zona_3'] = "Rp. ".number_format($v['harga_zona_3'],0,",",".");
+							$data_buku[$k]['harga_zona_4'] = "Rp. ".number_format($v['harga_zona_4'],0,",",".");
+							$data_buku[$k]['harga_zona_5'] = "Rp. ".number_format($v['harga_zona_5'],0,",",".");
+						}
+						
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
+						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('idpaket', $id);
+					break;					
+					
 					case "katalog":
 						if(isset($zona_pilihan)){
 							$flag_window = "oye"; // kgk nongol maning
@@ -237,7 +373,9 @@ class frontend extends CI_Controller {
 					break;						
 					case "combo_zona":
 						$temp = "frontend/modul/combozona-page.html";
-						$this->nsmarty->assign('combo_zona', $this->lib->fillcombo('cl_provinsi', 'return'));
+						$ket_zona = $this->db->get('cl_zona')->result_array();
+						$this->nsmarty->assign('ket_zona',  $ket_zona);
+						$this->nsmarty->assign('combo_zona', $this->lib->fillcombo('cl_zona', 'return'));
 					break;					
 					case "kategori":
 						$temp = "frontend/modul/kategori-page.html";
@@ -262,7 +400,8 @@ class frontend extends CI_Controller {
 						$temp = "frontend/modul/produkwindow-page.html";
 						$data_buku = $this->mfrontend->getdata('data_buku_detail', 'row_array', $id);
 						$data_fotobuku = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$id))->result_array();
-						$estimasi = $this->db->get_where('cl_provinsi', array('kode_prov'=>$zona_pilihan['kode_provinsi']))->row_array();
+						//$estimasi = $this->db->get_where('cl_provinsi', array('kode_prov'=>$zona_pilihan['kode_provinsi']))->row_array();
+						$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
 						$harga_buku = number_format($data_buku['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
 						
 						for($i = 1; $i <= 5; $i++){
@@ -278,8 +417,9 @@ class frontend extends CI_Controller {
 						//print_r($data_buku);exit;
 						
 						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
-						$this->nsmarty->assign('estimasi', $estimasi['estimasi_lama_pengiriman']);
-						$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);
+						//$this->nsmarty->assign('estimasi', $estimasi['estimasi_lama_pengiriman']);
+						$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
+						//$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);
 						$this->nsmarty->assign('harga_buku', $harga_buku);
 						$this->nsmarty->assign('data_buku', $data_buku);
 						$this->nsmarty->assign('data_fotobuku', $data_fotobuku);
@@ -383,8 +523,9 @@ class frontend extends CI_Controller {
 							$this->nsmarty->assign('data', $cek_data);
 							$this->nsmarty->assign('status_data', "ADA");
 						}
-						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
-						$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
+						//$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
+						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : "" ) ));
+						$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));
 						$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($cek_data) ? $cek_data['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
 						$this->nsmarty->assign('type_form', $type_form);
 					break;
@@ -400,6 +541,32 @@ class frontend extends CI_Controller {
 					break;
 					case "finish_semuanya":
 						$temp = "frontend/modul/finish-page.html";
+						$type = $this->input->post('type');
+						if($type == 'checkout'){
+							$no_order = $this->input->post('no_order');
+							$data_header_pesanan = $this->mfrontend->getdata('header_pesanan', 'row_array', $no_order);
+							$arraynya = array();
+							if($data_header_pesanan){
+								$data_detail_pesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_header_pesanan['idpesan']);
+								$arraynya['no_order'] = $no_order;
+								$arraynya['tgl_order'] = $data_header_pesanan['tgl_order'];
+								$arraynya['grand_total'] = number_format($data_header_pesanan['grand_total'],0,",",".");
+								$arraynya['detail_pesanan'] = array();
+								foreach($data_detail_pesanan as $k=>$v){
+									$arraynya['detail_pesanan'][$k]['kelas'] = $v['kelas'];
+									$arraynya['detail_pesanan'][$k]['nama_group'] = $v['nama_group'];
+									$arraynya['detail_pesanan'][$k]['judul_buku'] = $v['judul_buku'];
+									$arraynya['detail_pesanan'][$k]['qty'] = number_format($v['qty'],0,",",".");
+									$arraynya['detail_pesanan'][$k]['harga'] = number_format($v['harga'],0,",",".");
+									$arraynya['detail_pesanan'][$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+								}
+							}
+							$this->nsmarty->assign('arraynya', $arraynya);
+							$this->nsmarty->assign('pesan', "Terima Kasih telah berbelanja di AldeaZ.ID : SILAHKAN CEK EMAIL ANDA.");
+						}elseif($type == "konfirmasi"){
+							$this->nsmarty->assign('pesan', "Terima Kasih telah melakukan konfirmasi pembayaran di Aldeaz.id : SILAHKAN CEK EMAIL ANDA");
+						}
+						$this->nsmarty->assign('type', $type);
 					break;
 					
 					case "konfirmasi_pemb":
@@ -413,7 +580,7 @@ class frontend extends CI_Controller {
 							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
 							$this->nsmarty->assign('data_customer', $data_customer);
 							if($data_invoice['status'] == 'F'){
-								$data_konfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']))->row_array();
+								$data_konfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']))->row_array();
 								$data_konfirmasi['total_pembayaran'] = number_format($data_konfirmasi['total_pembayaran'],0,",",".");
 								$this->nsmarty->assign('data_konfirmasi', $data_konfirmasi);
 							}
@@ -549,7 +716,7 @@ class frontend extends CI_Controller {
 					$no_bast = $data_invoice['no_order']."/ASP/BAST/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
-					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['id']);
+					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
 					$totqty = 0;
 					$tottotal = 0;
 					foreach($datadetailpesanan as $k => $v){
@@ -644,6 +811,73 @@ class frontend extends CI_Controller {
 				//$spdf->Output($general_path.$subgroup."/".$io_number."/"."PARTIAL-".$partial_no."/LOA/".$filename.'.pdf', 'F'); // save to file because we can
 				$spdf->Output($filename.'.pdf', 'I'); // view file
 			break;
+			case "tandaterima":
+				//$no_tanda_terima = $data_invoice['no_order']."/ASP/TT/".date('Y');
+				$inv = $this->input->post('invo');
+				if(!$inv){
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					exit;
+				}				
+				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
+				if($data_invoice){
+					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
+					foreach($datadetailpesanan as $k=>$v){
+						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
+						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+					}
+					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
+					$this->nsmarty->assign('data_invoice', $data_invoice);
+					$this->nsmarty->assign('inv', $inv);
+				}
+				
+				$filename = str_replace('/', '_', $inv);
+				$htmlcontent = $this->nsmarty->fetch('frontend/modul/tanda_terima_pdf.html');
+				
+				$pdf = $this->mlpdf->load();
+				//$spdf = new mPDF('', 'A5', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'L');
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'P');				
+				$spdf->ignore_invalid_utf8 = true;
+				$spdf->allow_charset_conversion = true;     // which is already true by default
+				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+				$spdf->SetDisplayMode('fullpage');		
+				$spdf->SetProtection(array('print'));				
+				$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+				//$spdf->Output($general_path.$subgroup."/".$io_number."/"."PARTIAL-".$partial_no."/LOA/".$filename.'.pdf', 'F'); // save to file because we can
+				$spdf->Output($filename.'.pdf', 'I'); // view file
+			break;
+			case "suratpesanan":
+				$inv = $this->input->post('invo');
+				if(!$inv){
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					exit;
+				}				
+				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
+				if($data_invoice){
+					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
+					foreach($datadetailpesanan as $k=>$v){
+						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
+						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+					}
+					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
+					$this->nsmarty->assign('data_invoice', $data_invoice);
+					$this->nsmarty->assign('inv', $inv);
+				}
+				
+				$filename = str_replace('/', '_', $inv);
+				$htmlcontent = $this->nsmarty->fetch('frontend/modul/surat_pesanan_pdf.html');
+				
+				$pdf = $this->mlpdf->load();
+				//$spdf = new mPDF('', 'A5', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'L');
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'P');				
+				$spdf->ignore_invalid_utf8 = true;
+				$spdf->allow_charset_conversion = true;     // which is already true by default
+				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+				$spdf->SetDisplayMode('fullpage');		
+				$spdf->SetProtection(array('print'));				
+				$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+				//$spdf->Output($general_path.$subgroup."/".$io_number."/"."PARTIAL-".$partial_no."/LOA/".$filename.'.pdf', 'F'); // save to file because we can
+				$spdf->Output($filename.'.pdf', 'I'); // view file
+			break;
 		}
 	}
 	
@@ -685,6 +919,43 @@ class frontend extends CI_Controller {
 					echo $this->cart->insert($data_cart);
 				}
 			break;
+			case "add_paket":
+				$id = $this->input->post('iipx');
+				$qty = $this->input->post('yqt');
+				$zona = $this->input->post('zn');
+				$data_paket = $this->mfrontend->getdata('data_paket_detail', 'result_array', $id);
+				$data_cart = $this->cart->contents();
+				
+				foreach($data_paket as $k =>$v){
+					$flag = true;
+					if($data_cart){
+						foreach ($data_cart as $item) {
+							if($item['id'] == $v['id']) {
+								$qtyd = $item['qty'] + $qty;
+								$data_update = array(
+									'rowid' => $item['rowid'],
+									'qty' => $qtyd,
+									'price' => $v['harga_zona_'.$zona],
+								);
+								$this->cart->update($data_update);
+								$flag = false;
+							}
+						}
+					}
+					if($flag){
+						$data_cart = array(
+							'id' =>  $v['id'],
+							'qty' => $qty,
+							'price' => $v['harga_zona_'.$zona],
+							'name' => $v['judul_buku'],
+							'options' => array('jml_hal' => $v['jml_hal'])
+						);
+						$this->cart->insert($data_cart);
+					}
+				}
+				
+				echo 1;
+			break;
 			case "update":
 				$data = array(
 					'rowid' => $p2,
@@ -719,11 +990,11 @@ class frontend extends CI_Controller {
 		}
 		
 		if($type == 'session_zona'){
-			$data_zona = $this->db->get_where('cl_provinsi', array('kode_prov'=>$post['kdprv']))->row_array();
+			//$data_zona = $this->db->get_where('cl_provinsi', array('kode_prov'=>$post['kdprv']))->row_array();
 			$sess = array();
-			$sess['zona_pilihan'] = $data_zona['zona'];
-			$sess['provinsi'] = $data_zona['provinsi'];
-			$sess['kode_provinsi'] = $data_zona['kode_prov'];
+			$sess['zona_pilihan'] = $post['kdprv'];
+			//$sess['provinsi'] = $data_zona['provinsi'];
+			//$sess['kode_provinsi'] = $data_zona['kode_prov'];
 			$this->session->set_userdata("zonaxtreme", $sess);
 			echo 1;
 		}else{
@@ -731,6 +1002,30 @@ class frontend extends CI_Controller {
 			else $editstatus = null;
 			
 			echo $this->mfrontend->simpansavedata($p1, $post, $editstatus);
+		}
+	}
+	
+	function report_kementerian($type){
+		$code_secret = $this->input->get('code_secret');
+		if($code_secret != $this->client_secret){
+			echo "invalid code secret";exit;
+		}
+		header('Content-Type: application/json');
+		
+		switch($type){
+			case "all":
+				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array');
+				$no = 1;
+				foreach($data_pesanan as $k=>$v){
+					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['id']);
+					$data_pesanan[$k]['no'] = $no;
+					$data_pesanan[$k]['jumlah_buku'] = $detail_pesanan['quantity'];
+					$data_pesanan[$k]['jumlah_buku_dikirim'] = $detail_pesanan['quantity'];
+					$no++;
+				}
+				
+				echo json_encode($data_pesanan);
+			break;
 		}
 	}
 	
@@ -751,6 +1046,11 @@ class frontend extends CI_Controller {
 			
 			if(count($cek_user) > 0){
 				if($pass == $this->encrypt->decode($cek_user['password'])){
+					$sess = array();
+					$sess['zona_pilihan'] = 1;
+					//$sess['provinsi'] = $data_zona['provinsi'];
+					//$sess['kode_provinsi'] = $data_zona['kode_prov'];
+					$this->session->set_userdata("zonaxtreme", $sess);
 					$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
 					//header("Location: ".$this->host);
 					echo 1;
@@ -780,6 +1080,16 @@ class frontend extends CI_Controller {
 	}	
 	
 	function test(){			
+		$curl = curl_init();
+		$url = 'http://www.mks-store.id/api/detail_paket?secretkey=7c222fb2927d828af22f592134e8932480637c0d--spesifik';
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		$result_obj = json_decode($result, true);
+		
+		echo "<pre>";
+		print_r($result_obj);exit;
+		
 		//$this->session->sess_destroy();
 		//$sess = $this->session->userdata("zonaxtreme");
 		//echo $sess['zona_pilihan'];

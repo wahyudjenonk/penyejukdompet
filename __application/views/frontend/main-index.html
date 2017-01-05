@@ -81,7 +81,7 @@
 									<div class="header-top-left header-top-info">
 										<p><a href="#"><i class="fa fa-phone"></i>021 7701525</a></p>
 										<p><a href="#"><i class="fa fa-whatsapp"></i>0812 9000 7684</a></p>
-										<p><a href="mailto:info@aldeaz.id"><i class="fa fa-envelope"></i>aldeaz.id@gmail.com</a></p>  
+										<p><a href="{$host}uploadfile">Upload</a></p> 
 										<p><a href="{$host}komplain">Layanan Komplain</a></p> 
 										{if $auth}
 											<p><a href="{$host}logoutpembeli" onClick="alert('Anda Akan Keluar Dari System WebStore Kami. Terima Kasih');" >Keluar</a></p> 
@@ -127,7 +127,13 @@
 										    <ul>
 										        <li class="current"><a href="{$host}beranda">Beranda</a></li>  
 												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>												
-										        <li><a href="{$host}katalog">Katalog</a></li>
+										        <li>
+													<a href="javascript:void(0);">Katalog <span class="indicator"><i class="fa fa-angle-down"></i></span></a>
+													<ul class="estut-dropdown">
+										                <li><a href="{$host}katalog">Buku Satuan</a></li>
+										                <li><a href="{$host}katalogpaket">Paket</a></li>
+										            </ul>
+												</li>      
 												<li><a href="{$host}konfirmasi">Konfirmasi</a></li>      
 												<li><a href="{$host}lacakpesanan">Lacak Pesanan</a></li>      
 												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      
@@ -152,7 +158,13 @@
 											<ul>
 												<li><a href="{$host}beranda">Beranda</a></li>
 												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>
-												<li><a href="{$host}katalog">Katalog</a></li>
+												<li>
+													<a href="javascript:void(0);">Katalog</a>
+													<ul>
+										                <li><a href="{$host}katalog">Buku Satuan</a></li>
+										                <li><a href="{$host}katalogpaket">Paket</a></li>
+										            </ul>
+												</li>
 												<li><a href="{$host}konfirmasi">Konfirmasi Pesanan</a></li>      
 												<li><a href="{$host}lacakpesanan">Lacak Pesanan</a></li>      
 												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      

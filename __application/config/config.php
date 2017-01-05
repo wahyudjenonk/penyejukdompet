@@ -51,3 +51,14 @@ $config['compress_output'] = FALSE;
 $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
+
+$config['client_id'] = 'bkk13am';
+$config['client_secret'] = 'ae044c5653e256aa8a0a53ed3cbd9db6';
+$config['redirect_uri'] = 'http://www.aldeaz.id/katalog';
+
+$config['token_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
+$config['authorize_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';
+$config['profile_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/profile';
+$config['sekolah_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/bosdata';
+$config['sess_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/sessid';
+

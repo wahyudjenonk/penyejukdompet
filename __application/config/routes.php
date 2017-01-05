@@ -22,6 +22,11 @@ $route['backoffice-GetDataChart'] = 'backend/get_chart';
 $route['backoffice-laporan/(:any)'] = 'backend/get_form/$1';
 $route['Backoffice-Pesan'] = 'backend/get_pesan';
 
+$route['simpan-tandaterima'] = 'backend/simpandata';
+$route['onoff-produk'] = 'backend/simpandata';
+$route['mapping-add'] = 'backend/mappingpaket/add';
+$route['mapping-delete'] = 'backend/mappingpaket/delete';
+
 $route['backupform'] = 'backend/backupsystem/formbackup';
 $route['backupdb'] = 'backend/backupsystem/backupdb';
 $route['backup-application'] = 'backend/backupsystem/application';
@@ -48,6 +53,12 @@ $route['paginationdata'] = 'frontend/getdisplay/loading_page/datapaging';
 $route['filtering-data'] = 'frontend/getdisplay/loading_page/filterdt';
 $route['cari-data'] = 'frontend/getdisplay/loading_page/crdt';
 
+$route['katalogpaket'] = 'frontend/getdisplay/main_page/katalogpaket';
+$route['loading-katalogpaket'] = 'frontend/getdisplay/loading_page/katalogpaket';
+$route['paginationdatapaket'] = 'frontend/getdisplay/loading_page/katalogpaketpaging';
+$route['filtering-datapaket'] = 'frontend/getdisplay/loading_page/filterdtpaket';
+$route['detil-paket'] = 'frontend/getdisplay/loading_page/detail_paket';
+
 $route['kategori/(:any)'] = 'frontend/getdisplay/main_page/kategori/$1';
 $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$1';
 
@@ -60,6 +71,7 @@ $route['pilih-zona'] = 'frontend/cruddata/session_zona';
 $route['keranjang-belanja'] = 'frontend/getdisplay/loading_page/keranjangnya';
 $route['banyak-belanja'] = 'frontend/getdisplay/loading_page/total_item';
 $route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add';
+$route['keranjang-belanja-masuk-paket'] = 'frontend/keranjang_belanja/add_paket';
 $route['perbaharui-keranjang'] = 'frontend/getdisplay/loading_page/update_keranjang';
 $route['hapus-keranjang'] = 'frontend/getdisplay/loading_page/hapusitem_keranjang';
 
@@ -77,6 +89,8 @@ $route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
 $route['submit-konfirmasi'] = 'frontend/cruddata/form/konf';
 $route['cetak-bast'] = 'frontend/generatepdf/bastnya';
 $route['cetak-kwitansi'] = 'frontend/generatepdf/kwitansinya';
+$route['cetak-tanda-terima'] = 'frontend/generatepdf/tandaterima';
+$route['cetak-surat-pesanan'] = 'frontend/generatepdf/suratpesanan';
 
 $route['lacakpesanan'] = 'frontend/getdisplay/main_page/lacakpesanan';
 $route['loading-lacakpesanan'] = 'frontend/getdisplay/loading_page/lacakpesan';
@@ -85,6 +99,10 @@ $route['loading-lacakform'] = 'frontend/getdisplay/loading_page/lacakform';
 $route['riwayatpesanan'] = 'frontend/getdisplay/main_page/riwayat';
 $route['loading-riwayat'] = 'frontend/getdisplay/loading_page/pesananriwayat';
 $route['loading-riwayatform'] = 'frontend/getdisplay/loading_page/formriwayat';
+
+$route['uploadfile'] = 'frontend/getdisplay/main_page/uploadfile';
+$route['loading-uploadfile'] = 'frontend/getdisplay/loading_page/uploadfile';
+$route['submit-uploadfile'] = 'frontend/cruddata/form/uploadfile';
 
 $route['komplain'] = 'frontend/getdisplay/main_page/komplain';
 $route['loading-komplain'] = 'frontend/getdisplay/loading_page/laykomplainbro';
@@ -110,6 +128,9 @@ $route['logoutpembeli'] = 'frontend/logoutpembeli';
 $route['komentar'] = 'frontend/getdisplay/main_page/komentarpelanggan';
 $route['loading-komentarpelanggan'] = 'frontend/getdisplay/loading_page/komentarpelanggan';
 $route['submit-komentar'] = 'frontend/cruddata/form/komentar';
+
+
+$route['data_pesanan_all'] = 'frontend/report_kementerian/all';
 
 
 

@@ -118,6 +118,19 @@ class Backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "mapping_paket":
+					$nama_paket = $this->input->post('nama_paket');
+					$id = $this->input->post('id');
+					$this->nsmarty->assign('nama_paket',$nama_paket);
+					$this->nsmarty->assign('id',$id);
+				break;
+				case "paket":
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('tbl_paket','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
+			
 				case "invoice_edit":
 					$data=$this->mbackend->getdata('detil_invoice','row_array');
 					$this->nsmarty->assign('data',$data);
@@ -197,6 +210,15 @@ class Backend extends JINGGA_Controller {
 					$this->nsmarty->assign('id',$id);
 					//$id=$this
 				break;
+				case "terima_barang":
+					$modul=$this->input->post('mod');
+					$id=$this->input->post('id');
+					$table="tbl_terima_barang";
+					$this->nsmarty->assign('modul',$modul);
+					$this->nsmarty->assign('table',$table);
+					$this->nsmarty->assign('id',$id);
+					//$id=$this
+				break;
 			}
 			$this->nsmarty->assign('mod',$mod);
 			$this->nsmarty->assign('temp',$temp);
@@ -272,8 +294,8 @@ class Backend extends JINGGA_Controller {
 				$post[$k] = $this->db->escape_str($this->input->post($k));
 				//$post[$k] = $this->input->post($k);
 			}
-			
 		}
+		unset($post['mod']);
 		if(isset($post['editstatus'])){$editstatus = $post['editstatus'];unset($post['editstatus']);}
 		else $editstatus = $p2;
 		echo $this->mbackend->simpandata($p1, $post, $editstatus);
@@ -632,6 +654,25 @@ class Backend extends JINGGA_Controller {
 				return $result;  
 			break;
 		}
+	}
+	
+	function mappingpaket($type){
+		$idpaket = $this->input->post('idpaket');
+		$idbuku = $this->input->post('idbuku');
+		if($type == 'add'){
+			$array_insert = array(
+				'tbl_paket_id' =>  $idpaket,
+				'tbl_buku_id' =>  $idbuku,
+				'create_date' =>  date('Y-m-d H:i:s'),
+				'create_by' =>  $this->auth['username'],
+			);
+			$crud = $this->db->insert('tbl_paket_mapping', $array_insert);
+		}elseif($type == 'delete'){
+			$id = $this->input->post('id');
+			$crud = $this->db->delete('tbl_paket_mapping', array('id'=>$id) );
+		}
+		
+		echo $crud;
 	}
 	
 	function test(){
