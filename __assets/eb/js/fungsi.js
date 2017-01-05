@@ -127,7 +127,7 @@ function getClientWidth(){
 
 
 
-function genGrid(modnya, divnya, lebarnya, tingginya){
+function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 	if(lebarnya == undefined){
 		lebarnya = getClientWidth-250;
 	}
@@ -152,6 +152,49 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "mapping_paket_belum":
+			judulnya = "Data Master Buku";
+			urlnya = "mapping_paket_belum";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			param['id_paket'] = param_tambahan;
+			kolom[modnya] = [	
+				{field:'kelas',title:'Kelas',width:70, halign:'center',align:'left'},
+				{field:'nama_group',title:'Jenis Buku',width:80, halign:'center',align:'left'},
+				{field:'nama_kategori',title:'Kategori',width:70, halign:'center',align:'left'},
+				{field:'judul_buku',title:'Judul Buku',width:300, halign:'center',align:'left'}
+			];
+		break;
+		case "mapping_paket_sudah":
+			judulnya = "Data Mapping Paket";
+			urlnya = "mapping_paket_sudah";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			param['id_paket'] = param_tambahan;
+			kolom[modnya] = [	
+				{field:'kelas',title:'Kelas',width:70, halign:'center',align:'left'},
+				{field:'nama_group',title:'Jenis Buku',width:80, halign:'center',align:'left'},
+				{field:'nama_kategori',title:'Kategori',width:70, halign:'center',align:'left'},
+				{field:'judul_buku',title:'Judul Buku',width:300, halign:'center',align:'left'}
+			];
+		break;
+		case "paket":
+			judulnya = "Daftar Paket Buku Aldeaz ";
+			urlnya = "tbl_paket";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			kolom[modnya] = [	
+				{field:'nama_paket',title:'Nama Paket',width:350, halign:'center',align:'left'},
+				//{field:'nama_kategori',title:'Harga Paket',width:150, halign:'center',align:'left'},
+			];
+		break;
+	
 		case "reg_marketing":
 			judulnya = "Daftar Marketing Aldeaz ";
 			urlnya = "reg_marketing";
@@ -225,10 +268,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 			
 			kolom[modnya] = [	
 				{field:'no_order',title:'No. Order',width:200, halign:'center',align:'center'},
-				{field:'status_order',title:'Status Order',width:150, halign:'center',align:'center',
+				{field:'status_order',title:'Status Bayar',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
 							return "Proses Pembayaran";
+						}else if(value=='B'){
+							return "Proses";
 						}else if(value=='F'){
 							return "Sudah DiBayar <br/>"+rowData.tanggal_transfer;
 						}else{
@@ -236,25 +281,47 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:green;color:#ffffff;'}
-						else if(value=='F'){return 'background:white;color:navy;'}
-						else {return 'background:red;color:navy;'}
+						if(value=='P'){
+							return 'background:green;color:#ffffff;';
+						}else if(value=='B'){
+							return 'background:white;color:navy;';
+						}else if(value=='F'){
+							return 'background:white;color:navy;';
+						}else {
+							return 'background:red;color:navy;';
+						}
 					}
 				},
 				{field:'status_konfirmasi',title:'Status Konfirmasi',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
-						if(value=='P'){
-							return "Tunggu Konfirmasi";
-						}else if(value=='F'){
-							return "Sudah Dikonfirmasi <br/>"+rowData.tanggal_konfirmasi;
+						if(rowData.status_order == 'B'){	
+							return "Proses";
 						}else{
-							return "-";
+							if(value=='P'){
+								return "Tunggu Konfirmasi";
+							}else if(value=='B'){
+								return "Proses";
+							}else if(value=='F'){
+								return "Sudah Dikonfirmasi <br/>"+rowData.tanggal_konfirmasi;
+							}else{
+								return "-";
+							}
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:green;color:#ffffff;'}
-						else if(value=='F'){return 'background:white;color:navy;'}
-						else {return 'background:red;color:navy;'}
+						if(rowData.status_order == 'B'){
+							return 'background:white;color:navy;'
+						}else{
+							if(value=='P'){
+								return 'background:green;color:#ffffff;'
+							}else if(value=='B'){
+								return 'background:white;color:navy;'
+							}else if(value=='F'){
+								return 'background:white;color:navy;'
+							}else{
+								return 'background:red;color:navy;'
+							}
+						}
 					}
 				},
 				{field:'status_gudang',title:'Status Gudang',width:150, halign:'center',align:'center',
@@ -292,7 +359,35 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						else {return 'background:red;color:navy;'}
 					}
 				},
-				{field:'no_resi',title:'No Resi',width:150, halign:'center',align:'center'}
+				{field:'no_resi',title:'No Resi',width:150, halign:'center',align:'center'},
+				{field:'tanggal_terimanya',title:'Terima Barang',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value == null){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\"terima_barang\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/cost_object.png'></a>";
+						}else{
+							return "Sudah Terima <br/>"+value+" - "+rowData.jam_terima;
+						}
+					}
+				},
+				{field:'file_bast',title:'File BAST',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value == null){
+							return "<font color='red'>Belum Upload</font>";
+						}else{
+							return "<a href='"+host+"__repository/bast_tandaterima/"+value+"' target='_blank'>Lihat File</a>"	
+						}
+					}
+				},
+				{field:'file_tanda_terima',title:'File Tanda Terima',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value == null){
+							return "<font color='red'>Belum Upload</font>";
+						}else{
+							return "<a href='"+host+"__repository/bast_tandaterima/"+value+"' target='_blank'>Lihat File</a>"	
+						}
+					}
+				},
+				{field:'tanggal_upload',title:'Tanggal Upload',width:150, halign:'center',align:'center'}
 				
 			];
 		break;
@@ -458,6 +553,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						if(rowData.jenis_pembeli=='SEKOLAH'){
 							if(rowData.flag=='F'){
 								return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+							}else if(rowData.flag=='BP'){
+								return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
 							}else if(rowData.flag=='C'){
 								return "DiCancel";
 							}else{
@@ -473,6 +570,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 						var modul="kirim_gudang";
 						if(value=='P'){
 							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/logout.png'></a>";
+						}else if(value=='B'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/logout.png'></a>";
 						}else if(value=='C'){
 							return "DiCancel";
 						}else{
@@ -484,6 +583,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 					formatter:function(value,rowData,rowIndex){
 						var modul="cancel_pesanan";
 						if(rowData.flag=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/no.png'></a>";
+						}else if(rowData.flag=='B'){
 							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/easyui/themes/icons/no.png'></a>";
 						}else if(rowData.flag=='F'){
 							return "Status Sudah Finish";
@@ -500,6 +601,15 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
+					}
+				},
+				{field:'file_bukti_bayar',title:'Bukti Bayar',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value == null){
+							return "Belum Bayar";
+						}else{
+							return "<a href='"+host+"__repository/konfirmasi/"+value+"' target='_blank'>Lihat File</a>"	
+						}
 					}
 				},
 				{field:'no_order',title:'No Order - TGL ',width:200, halign:'center',align:'left',
@@ -543,16 +653,26 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
 				},
 				{field:'status',title:'Status',width:120, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						if(value=='P'){return 'Proses Pembayaran';}
-						else if(value=='C'){
+						if(value=='P'){
+							return 'Proses Pembayaran';
+						}else if(value=='C'){
 							return 'DiCancel';
-						}else return 'Sudah Bayar';
+						}else if(value=='B'){
+							return 'Proses';
+						}else{
+							return 'Sudah Bayar';
+						} 
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:yellow;color:navy;'}
-						else if(value=='C'){
+						if(value=='P'){
+							return 'background:yellow;color:navy;'
+						}else if(value=='B'){
+							return 'background:yellow;color:yellow;color:navy;';
+						}else if(value=='C'){
 							return 'background:red;color:#ffffff;';
-						}else {return 'background:green;color:#ffffff;'}
+						}else {
+							return 'background:green;color:#ffffff;'
+						}
 						
 					}
 				},
@@ -734,22 +854,19 @@ function genGrid(modnya, divnya, lebarnya, tingginya){
             kolom[modnya]
         ],
 		onLoadSuccess:function(d){
-			//console.log(d.total);
-			if(modnya=='list_act'){
-				
-			}
-			//gridVRList.datagrid('selectRow', 0);
-			$('.prev').linkbutton({  
-					iconCls: 'cost_object'  
-			});
-			$('.no').linkbutton({  
-					iconCls: 'icon-ok'  
-			});
 			
 		},
 		rowStyler: function(index,row){
 			if(modnya=='konfirmasi'){
 				if(row.flag=='P'){return 'background-color:#8EC354;color:#navy;'}
+			}else if(modnya=='produk'){
+				if(row.flag_disable_enable == 0){
+					return 'background-color:#FFD1BB;color:#navy;'
+				}
+			}else if(modnya=='paket'){
+				if(row.flag_disable_enable == 0){
+					return 'background-color:#FFD1BB;color:#navy;'
+				}
 			}
 		},
 		onClickRow:function(rowIndex,rowData){
@@ -826,7 +943,8 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 		break;
 		case "edit":
 		case "delete":
-		case "copy_model":
+		case "disable_enable":
+		case "mapping":
 			var row = $("#grid_"+modulnya).datagrid('getSelected');
 			if(row){
 				if(type=='edit'){
@@ -844,8 +962,7 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 							$('#detil_nya_'+modulnya).html(resp).removeClass("loading");
 						}
 					});
-				}
-				else if(type=='delete'){
+				}else if(type=='delete'){
 					if(confirm("Do You Want To Delete This Data ?")){
 						loadingna();
 						$.post(urldelete, {id:row.id,'editstatus':'delete',mod:tabel}, function(r){
@@ -853,42 +970,44 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 								winLoadingClose();
 								$.messager.alert('Aldeaz',"Data Sudah Terhapus",'info');
 								$('#grid_'+modulnya).datagrid('reload');
-								
-								var arraynya = [
-									'assign_act_employee',
-									'expense_source_employee',
-									'assign_act_expense',
-									'assign_emp_expense',
-									'assign_assets_expense',
-									'assign_act_assets',
-									'assign_exp_assets',
-								];
-								if( $.inArray(modulnya, arraynya) > -1 ){
-									$.post(urltot, {}, function(respo){
-										var obj = $.parseJSON(respo);
-										$('#'+divtotcost).html(obj.total_cost);
-										$('#'+divtotpercent).val(obj.total_percent);
-										$('#'+divtxtpercent).val(obj.total_percent);
-									});
-								}
-								
-							}
-							else{
+									
+							}else{
 								winLoadingClose();
 								console.log(r)
-								$.messager.alert('Bimbel',"Failed",'error');
+								$.messager.alert('Aldeaz',"Gagal",'error');
 							}
 						});	
 					}
-				}
-				else if(type=='copy_model'){
-					$.post(host+'home/modul/'+modulnya+'/copy_model', { id:row.id }, function(resp){
-						windowForm(resp, judulwindow, (getClientWidth()-500), (getClientHeight()-280));
+				}else if(type=='disable_enable'){
+					$.post(host+'onoff-produk', { id:row.id, 'flag_disable_enable':row.flag_disable_enable, 'editstatus':'disable_enable', mod:tabel }, function(resp){
+						var jsrw = JSON.parse(resp);
+						if(jsrw.msg == 1){
+							winLoadingClose();
+							if(row.flag_disable_enable == 0){
+								$.messager.alert('Aldeaz',"Data Kembali Ada Katalog Webstore",'info');
+							}else{
+								$.messager.alert('Aldeaz',"Data Sudah Hilang Dari Katalog Webstore",'info');
+							}
+							$('#grid_'+modulnya).datagrid('reload');
+								
+						}else{
+							winLoadingClose();
+							console.log(resp)
+							$.messager.alert('Aldeaz',"Gagal",'error');
+						}
+					});
+				}else if(type=='mapping'){
+					$('#grid_nya_'+modulnya).hide();
+					$('#detil_nya_'+modulnya).html('').show().addClass("loading");	
+					
+					$.post(host+'backoffice-form/mapping_paket', { 'editstatus':'mapping', id:row.id, nama_paket:row.nama_paket, 'tabel':table }, function(resp){
+						$('#detil_nya_'+modulnya).show();
+						$('#detil_nya_'+modulnya).html(resp).removeClass("loading");
 					});
 				}	
-			}
-			else{
-				$.messager.alert('Bimbel',"Pilih Data Dalam List",'error');
+					
+			}else{
+				$.messager.alert('Aldeaz',"Pilih Data Dalam List",'error');
 			}
 		break;
 	}
@@ -1755,6 +1874,11 @@ function get_detil(mod,id_data){
 				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
 			});
 			
+		break;
+		case "terima_barang":
+			$.post(host+'backoffice-form/terima_barang',{mod:mod,id:id_data},function(r){
+				windowForm(r,'Form Terima Barang',580,450);
+			});
 		break;
 		
 		default:
