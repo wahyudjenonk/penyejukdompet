@@ -22,14 +22,14 @@
 				  <td>Zona Pengiriman</td>
 				  <td>{$data_inv.zona|default:'-'}</td>
 				</tr>				
-				<tr>
+				<!--tr>
 				  <td>Subtotal</td>
 				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
 				</tr>
 				<tr>
 				  <td>Pajak</td>
 				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
-				</tr>
+				</tr-->
 				<tr>
 				  <td>Grand Total</td>
 				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
@@ -77,15 +77,20 @@
 		</table>
 	</div>
 </div>
-<div class="single-input">
+<!--div class="single-input">
 	<label>&nbsp;<span>&nbsp;</span></label> 
-</div>
+</div-->
 <div class="submit-btn-area text-center">
 	<hr/>
-	<a id='ctk_bast' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
-	<a id='ctk_kwt' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
-	<a id='ctk_tt' href='javascript:void(0);' class="estut-btn active submit">Cetak Tanda Terima</a> 
-	<a id='ctk_sp' href='javascript:void(0);' class="estut-btn active submit">Cetak Surat Pesanan</a> 
+	<!--a id='ctk_bast' href='javascript:void(0);' class="btn btn-success active submit">BAST</a>
+	<a id='ctk_kwt' href='javascript:void(0);' class="btn btn-success active submit">Kwitansi</a> 
+	<a id='ctk_tt' href='javascript:void(0);' class="btn btn-success active submit">Tanda Terima</a> 
+	<a id='ctk_sp' href='javascript:void(0);' class="btn btn-success active submit">Surat Pesanan</a--> 
+	<a id='ctk_bast' href='javascript:void(0);' class="btn btn-primary btn-default active submit"><span class="glyphicon glyphicon-calendar"></span> BAST</a>
+	<a id='ctk_kwt' href='javascript:void(0);' class="btn btn-primary btn-default active submit"><span class="glyphicon glyphicon-list-alt"></span> Kwitansi</a>
+	<a id='ctk_tt' href='javascript:void(0);' class="btn btn-primary btn-default active submit"><span class="glyphicon glyphicon-file"></span> Tanda Terima</a>
+	<a id='ctk_sp' href='javascript:void(0);' class="btn btn-primary btn-default active submit"><span class="glyphicon glyphicon-barcode"></span> Surat Pesanan</a>
+	
 </div>
 <script>
 	$('#ctk_bast').on('click', function(){
