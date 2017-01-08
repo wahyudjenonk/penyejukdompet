@@ -130,7 +130,7 @@ $route['loading-komentarpelanggan'] = 'frontend/getdisplay/loading_page/komentar
 $route['submit-komentar'] = 'frontend/cruddata/form/komentar';
 
 
-$route['data_pesanan_all'] = 'frontend/report_kementerian/all';
+$route['api/detail_paket'] = 'frontend/report_kementerian/all';
 
 
 

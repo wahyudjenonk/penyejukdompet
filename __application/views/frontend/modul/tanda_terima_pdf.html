@@ -65,7 +65,7 @@ table.gridtable td {
 	<tr>
 		<td>Zona Pengiriman</td>
 		<td>:</td>
-		<td>{$data_invoice.zona}</td>
+		<td>Zona - {$data_invoice.zonapesan}</td>
 	</tr>
 	<tr>
 		<td>Provinsi</td>
@@ -172,6 +172,12 @@ table.gridtable td {
 			</tr>
 			{assign var=ind value=$ind+1}
 		{/foreach}
+		<tr style='background:#FAF8FD'>
+			<td colspan='4' style='font-weight:bold;text-align:center'>Jumlah</td>
+			<td>{$tot_harga}</td>
+			<td>{$tot_qty}</td>
+			<td>{$tot_total}</td>
+		</tr>
 	</tbody>
 </table>
 <br/>
@@ -191,7 +197,7 @@ table.gridtable td {
 			<br/>
 			<br/>
 			<br/>
-			<br/>
+			
 			( ....................... )
 		</td>
 		<td style="width: 30%; height: 80px; color: #00000; text-align: center; " align='center'>
@@ -202,7 +208,7 @@ table.gridtable td {
 			<br/>
 			<br/>
 			<br/>
-			<br/>
+			
 			( ....................... )
 		</td>
 		<td style="width: 35%; height: 80px;" align='center'>

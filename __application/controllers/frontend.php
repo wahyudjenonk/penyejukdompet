@@ -25,6 +25,7 @@ class Frontend extends CI_Controller {
 		$this->profile_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/profile';
 		$this->sekolah_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/bosdata';
 		$this->sess_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/sessid';
+		$this->infosp				= 'http://data.dikdasmen.kemdikbud.go.id/sso/infosp';
 		
 		$host = $this->host;
 		$this->nsmarty->assign('host',$this->host);
@@ -68,12 +69,69 @@ class Frontend extends CI_Controller {
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
 				}elseif($p1 == "katalog"){
 					$code = $this->input->get('code');
-					echo $code;exit;
+					//echo $code;exit;
 					if($code){
-						//$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
-						//$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
-						
+						$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
+						if(isset($token['error'])){
+							echo "Error : <b>".$token['error']." </b> Pesan : <b>".$token['error_description']."</b>";exit;
+						}
 						//print_r($token);exit;
+						$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
+						$infosp = $this->lib->oauthidentity($token['access_token'], $this->infosp);
+						$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+						//echo "<pre>";print_r($infosp);echo "</pre>";exit;
+						if(isset($cek_user['email'])){
+							$sess = array();
+							$sess['zona_pilihan'] = $infosp['zona'];
+							$this->session->set_userdata("zonaxtreme", $sess);
+							$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+							header("Location: " . $this->host ."katalog");
+						}else{
+							$data=array('email'=>$getidentity['username'],
+										'nama_user'=>$getidentity['username'],
+										'nama_lengkap'=>$getidentity['nama'],
+										'no_telp_sekolah'=>$getidentity['no_telepon'],
+										'kode_wilayah'=>$getidentity['kode_wilayah'],
+										'sekolah_id'=>$getidentity['sekolah_id'],
+										'peran_id'=>$getidentity['peran_id'],
+										'jenis_pembeli'=>'SEKOLAH',
+										'status'=>1,
+										'pengguna_id'=>$getidentity['pengguna_id'],
+										'alamat_pengiriman'=>$infosp['alamat'],
+										'nama_sekolah'=>$infosp['nama_sekolah'],
+										'nama_kepala_sekolah'=>$infosp['nama_kepsek'],
+										'nip'=>$infosp['nip_kepsek'],
+										'nama_bendahara'=>$infosp['nama_operator'],
+										'npsn'=>$infosp['npsn'],
+										'kd_prov'=>$infosp['kd_prov'],
+										'cl_provinsi_kode'=>$infosp['kd_prov'],
+										'prov'=>$infosp['prov'],
+										'kd_kab'=>$infosp['kd_kab'],
+										'cl_kab_kota_kode'=>$infosp['kd_kab'],
+										'kab'=>$infosp['kab'],
+										'kd_kec'=>$infosp['kd_kec'],
+										'kec'=>$infosp['kec'],
+										'desa'=>$infosp['desa'],
+										'kode_pos'=>$infosp['kode_pos'],
+										'email_kepsek'=>$infosp['email_kepsek'],
+										'email_operator'=>$infosp['email_operator'],
+										'no_hp_kepsek'=>$infosp['hp_kepsek'],
+										'no_hp_bendahara'=>$infosp['hp_operator']
+										
+							);
+							$simpan_dapotik=$this->mfrontend->simpansavedata('tbl_reg_dapotik',$data,'add');
+							if($simpan_dapotik==1){
+								$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+								$sess = array();
+								$sess['zona_pilihan'] = $infosp['zona'];
+								$this->session->set_userdata("zonaxtreme", $sess);
+								$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+								header("Location: " . $this->host ."katalog");
+							}else{
+								echo "FAILED SAVE ";exit;
+							}
+						}
+						//print_r($getidentity);exit;
 					}
 				
 					$this->nsmarty->assign( 'judulbesar', "Katalog Buku" );
@@ -716,7 +774,7 @@ class Frontend extends CI_Controller {
 				if($data_invoice){
 					$no_bast = $data_invoice['no_order']."/ASP/BAST/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
-					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
 					$totqty = 0;
 					$tottotal = 0;
@@ -777,7 +835,7 @@ class Frontend extends CI_Controller {
 					$no_kwitansi = $data_invoice['no_order']."/ASP/K/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$jumlah = number_to_words($data_invoice['grand_total']);
-					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					
 					$cekdatakwitansi = $this->db->get_where('tbl_kwitansi', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
 					if(!$cekdatakwitansi){
@@ -822,16 +880,25 @@ class Frontend extends CI_Controller {
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
+					$tot_harga = 0;
+					$tot_qty = 0;
+					$tot_total = 0;
 					foreach($datadetailpesanan as $k=>$v){
 						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
 						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						$tot_harga +=  $v['harga'];
+						$tot_qty +=  $v['qty'];
+						$tot_total +=  $v['subtotal'];
 					}
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('data_invoice', $data_invoice);
+					$this->nsmarty->assign('tot_harga', number_format($tot_harga,0,",","."));
+					$this->nsmarty->assign('tot_qty', number_format($tot_qty,0,",","."));
+					$this->nsmarty->assign('tot_total', number_format($tot_total,0,",","."));
 					$this->nsmarty->assign('inv', $inv);
 				}
 				
-				$filename = str_replace('/', '_', $inv);
+				$filename = "TANDATERIMA-".str_replace('/', '_', $inv);
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/tanda_terima_pdf.html');
 				
 				$pdf = $this->mlpdf->load();
@@ -855,16 +922,25 @@ class Frontend extends CI_Controller {
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
+					$tot_harga = 0;
+					$tot_qty = 0;
+					$tot_total = 0;
 					foreach($datadetailpesanan as $k=>$v){
 						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
 						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						$tot_harga +=  $v['harga'];
+						$tot_qty +=  $v['qty'];
+						$tot_total +=  $v['subtotal'];
 					}
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('data_invoice', $data_invoice);
+					$this->nsmarty->assign('tot_harga', number_format($tot_harga,0,",","."));
+					$this->nsmarty->assign('tot_qty', number_format($tot_qty,0,",","."));
+					$this->nsmarty->assign('tot_total', number_format($tot_total,0,",","."));
 					$this->nsmarty->assign('inv', $inv);
 				}
 				
-				$filename = str_replace('/', '_', $inv);
+				$filename = "SURATPESANAN-".str_replace('/', '_', $inv);
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/surat_pesanan_pdf.html');
 				
 				$pdf = $this->mlpdf->load();
@@ -1015,17 +1091,89 @@ class Frontend extends CI_Controller {
 		
 		switch($type){
 			case "all":
-				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array');
+				$per_page = $this->input->get('per_page');
+				$page = $this->input->get('page');
+				$sort = $this->input->get('sort');
+				$start_date = $this->input->get('start_date');
+				$end_date = $this->input->get('end_date');
+				$id = $this->input->get('id');
+				
+				$array_parameter = array(
+					'per_page' => $per_page,
+					'page' => $page,
+					'sort' => $sort,
+					'start_date' => $start_date,
+					'end_date' => $end_date,
+					'id' => $id,
+				);
+				
+				if(isset($id) || $id != null){
+					$per_page = 1;
+				}
+				
+				$array_pesanan = array();
+				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array', $array_parameter);
+				$count = count($data_pesanan);
+				if( $count >0 ) { 
+					$limit = (isset($per_page) ? $per_page : 200);
+					$total_pages = ceil($count/$limit); 
+				}else{ 
+					$total_pages = 0; 
+				} 
+				
+				$array_pesanan['total'] = $count;
+				$array_pesanan['current_page'] = (isset($page) ? $page : 1);
+				$array_pesanan['per_page'] = (isset($per_page) ? $per_page : 200);
+				$array_pesanan['total_page'] = $total_pages;
+				$array_pesanan['detail_paket'] = array();
+				
 				$no = 1;
 				foreach($data_pesanan as $k=>$v){
-					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['id']);
-					$data_pesanan[$k]['no'] = $no;
-					$data_pesanan[$k]['jumlah_buku'] = $detail_pesanan['quantity'];
-					$data_pesanan[$k]['jumlah_buku_dikirim'] = $detail_pesanan['quantity'];
+					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['idpesan']);
+					
+					$array_pesanan['detail_paket'][$k]['id'] = $v['idpesan'];
+					$array_pesanan['detail_paket'][$k]['id_pesanan'] = $v['no_order'];
+					$array_pesanan['detail_paket'][$k]['sekolah_id'] = $v['sekolah_id'];
+					$array_pesanan['detail_paket'][$k]['bentuk'] = "SD"; //hardcode aja udah
+					$array_pesanan['detail_paket'][$k]['npsn'] = $v['npsn'];
+					$array_pesanan['detail_paket'][$k]['nama_sekolah'] = $v['nama_sekolah'];
+					$array_pesanan['detail_paket'][$k]['kd_prop'] = $v['kd_prov'];
+					$array_pesanan['detail_paket'][$k]['prop'] = $v['prov'];
+					$array_pesanan['detail_paket'][$k]['kd_kab_kota'] = $v['kd_kab'];
+					$array_pesanan['detail_paket'][$k]['kab_kota'] = $v['kab'];
+					$array_pesanan['detail_paket'][$k]['p_tgl_pesan'] = $v['tanggal_pesan'];
+					$array_pesanan['detail_paket'][$k]['p_tanggal_konfirmasi'] = $v['tanggal_konfirmasi'];
+					$array_pesanan['detail_paket'][$k]['p_waktu_pelaksanaan'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['p_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['p_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['p_total_harga'] = $v['grand_total'];
+					$array_pesanan['detail_paket'][$k]['k_tgl_kirim'] = $v['tanggal_kirim'];
+					$array_pesanan['detail_paket'][$k]['k_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['k_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['s_tgl_sampai'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['s_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['s_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['s_nama_penerima'] = $v['penerima'];
+					$array_pesanan['detail_paket'][$k]['t_tgl_terima'] = $v['tanggal_terima'];
+					$array_pesanan['detail_paket'][$k]['t_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['t_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['t_nomor_surat'] = $v['no_bast'];
+					$array_pesanan['detail_paket'][$k]['t_tanggal_bast'] = $v['tanggal_bast'];
+					$array_pesanan['detail_paket'][$k]['b_tgl_bayar'] = $v['tanggal_bayar'];
+					$array_pesanan['detail_paket'][$k]['b_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['b_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['b_jml_bayar'] = $v['total_pembayaran'];
+					$array_pesanan['detail_paket'][$k]['active'] = 1;
+					$array_pesanan['detail_paket'][$k]['updated_date'] = date('Y-m-d H:i:s');
 					$no++;
 				}
 				
-				echo json_encode($data_pesanan);
+				
+				echo "<pre>";
+				print_r($array_pesanan);exit;
+				echo "</pre>";//*/
+				
+				echo json_encode($array_pesanan);
 			break;
 		}
 	}

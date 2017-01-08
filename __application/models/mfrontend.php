@@ -166,7 +166,7 @@ class Mfrontend extends CI_Model{
 			break;
 			case "header_pesanan":
 				$sql = "
-					SELECT A.*, A.id as idpesan, A.status as sts_pesan,
+					SELECT A.*, A.id as idpesan, A.status as sts_pesan, A.zona as zonapesan,
 						B.jasa_pengiriman, C.metode_pembayaran, D.*, E.provinsi, F.kab_kota, G.kecamatan
 					FROM tbl_h_pemesanan A
 					LEFT JOIN cl_jasa_pengiriman B ON B.id = A.cl_jasa_pengiriman_id
@@ -333,14 +333,32 @@ class Mfrontend extends CI_Model{
 	function get_report_kementerian($type, $balikan, $p1=""){
 		switch($type){
 			case "all_pesanan":
+				$where = " WHERE 1=1 ";
+				$per_page = (isset($p1['per_page']) || $p1['per_page'] != null ? $p1['per_page'] : 200);
+				$page = (isset($p1['page'])  || $p1['page'] != null ? $p1['page'] : 1);
+				$sort = (isset($p1['sort'])  || $p1['sort'] != null ? $p1['sort'] : "DESC");
+				
+				$start = (($per_page*$page) - $per_page); // do not put $limit*($page - 1)
+				
+				if(isset($p1['start_date']) || $p1['start_date'] != null){
+					$where .= " AND (A.tgl_order BETWEEN '".$p1['start_date']."' AND '".$p1['end_date']."') ";
+				}
+				
+				if(isset($p1['id']) || $p1['id'] != null){
+					$where .= " AND A.id = '".$p1['id']."' ";
+				}
+				
+				// D.npsn, D.nama_sekolah, D.alamat_pengiriman, D.provinsi, D.kab_kota, D.no_hp_kepsek, D.email,
+				
 				$sql = "
-					SELECT A.id,
-						D.npsn, D.nama_sekolah, D.alamat_pengiriman, D.provinsi, D.kab_kota, D.no_hp_kepsek, D.email,
+					SELECT A.id as idpesan, A.no_order, D.*,
 						DATE_FORMAT(A.create_date,'%d %b %y %T') as tanggal_pesan, A.grand_total,
 						DATE_FORMAT(E.create_date,'%d %b %y %T') as tanggal_kirim,
-						DATE_FORMAT(F.tanggal_terima,'%d %b %y') as tanggal_terima, D.nama_kepala_sekolah, D.no_hp_kepsek, F.jam_terima,
-						DATE_FORMAT(G.tanggal_transfer,'%d %b %y') as tanggal_bayar, G.total_pembayaran, G.no_bast, G.no_kwitansi,
-						C.metode_pembayaran
+						DATE_FORMAT(F.tanggal_terima,'%d %b %y') as tanggal_terima, F.jam_terima, F.petugas as penerima,
+						DATE_FORMAT(G.tanggal_transfer,'%d %b %y') as tanggal_bayar, 
+						DATE_FORMAT(G.tgl_konfirmasi,'%d %b %y') as tanggal_konfirmasi, 
+						DATE_FORMAT(G.create_date,'%d %b %y') as tanggal_bast, 
+						G.total_pembayaran, G.no_bast, G.no_kwitansi, G.total_pembayaran, C.metode_pembayaran
 					FROM tbl_h_pemesanan A
 					LEFT JOIN cl_metode_pembayaran C ON C.id = A.cl_metode_pembayaran_id
 					LEFT JOIN (
@@ -354,12 +372,14 @@ class Mfrontend extends CI_Model{
 					LEFT JOIN tbl_tracking_pengiriman E ON E.tbl_h_pemesanan_id = A.id
 					LEFT JOIN tbl_terima_barang F ON F.tbl_h_pemesanan_id = A.id
 					LEFT JOIN (
-						SELECT Y.id, Y.tbl_h_pemesanan_id, Y.tanggal_transfer, Y.total_pembayaran, OY.no_bast, YE.no_kwitansi
+						SELECT Y.id, Y.tgl_konfirmasi, Y.tbl_h_pemesanan_id, Y.tanggal_transfer, Y.total_pembayaran, OY.no_bast, YE.no_kwitansi, OY.create_date
 						FROM tbl_konfirmasi Y
 						LEFT JOIN tbl_bast OY ON OY.tbl_konfirmasi_id = Y.id
 						LEFT JOIN tbl_kwitansi YE ON YE.tbl_konfirmasi_id = Y.id
 					) as G ON G.tbl_h_pemesanan_id = A.id
-					ORDER BY D.provinsi, D.kab_kota DESC
+					".$where." AND D.jenis_pembeli = 'SEKOLAH'
+					ORDER BY D.prov, D.kab ".$sort."
+					LIMIT $start,$per_page
 				";
 			break;
 			case "count_detail_pesanan":

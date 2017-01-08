@@ -126,6 +126,74 @@
 		});
 	});
 </script>
+{else}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $data_customer.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td>Nama Sekolah</td>
+				  <td>{$data_customer.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$data_customer.npsn|default:'-'}</td>
+				</tr>	
+				{/if}
+				<tr>
+				  <td>Zona Pengiriman</td>
+				  <td>{$data_inv.zona|default:'-'}</td>
+				</tr>				
+				<tr>
+				  <td>Subtotal</td>
+				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Pajak</td>
+				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Grand Total</td>
+				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Jasa Pengiriman</td>
+				  <td>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Metode Pembayaran</td>
+				  <td>{$data_inv.metode_pembayaran|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Status Konfirmasi Pembayaran</td>
+				  <td>
+						{if $data_konfirmasi.flag|default:'' eq 'P'}
+							Pending
+						{elseif $data_konfirmasi.flag|default:'' eq 'F'}
+							Sudah Terverifikasi
+						{/if}
+				  </td>
+				</tr>
+				<tr>
+				  <td>Jumlah Transfer</td>
+				  <td>
+						Rp. {$data_konfirmasi.total_pembayaran|default:'-'}
+				  </td>
+				</tr>
+				<tr>
+				  <td>Tanggal Transfer</td>
+				  <td>
+						{$data_konfirmasi.tanggal_transfer|date_format:'%d-%m-%Y'|default:'-'}
+				  </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>		
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
 {/if}
 
 {if $data_konfirmasi.flag|default:'' eq 'B'}
@@ -308,13 +376,13 @@
 				<tr>
 				  <td>Jumlah Transfer</td>
 				  <td>
-						Rp. {$data_konfirmasi.total_pembayaran|default:''}
+						Rp. {$data_konfirmasi.total_pembayaran|default:'-'}
 				  </td>
 				</tr>
 				<tr>
 				  <td>Tanggal Transfer</td>
 				  <td>
-						{$data_konfirmasi.tanggal_transfer|date_format:'%d-%m-%Y'|default:''}
+						{$data_konfirmasi.tanggal_transfer|date_format:'%d-%m-%Y'|default:'-'}
 				  </td>
 				</tr>
 			</tbody>
