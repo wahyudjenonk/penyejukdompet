@@ -1297,7 +1297,13 @@ body {} .padding100 {
 }
 .header-logo img {
     transition: all 0.3s ease 0s;
+<<<<<<< .mine
+    width: 165px;
+||||||| .r128
+    width: 126px;
+=======
     width: 200px;
+>>>>>>> .r163
 }
 .stick .header-logo img {
     margin-top: 1px;
