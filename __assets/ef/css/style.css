@@ -112,7 +112,7 @@ a:active {
     text-decoration: none;
 }
 img {
-    max-width: 90%;
+    max-width: 100%;
     height: auto
 }
 .fix {
@@ -1297,17 +1297,11 @@ body {} .padding100 {
 }
 .header-logo img {
     transition: all 0.3s ease 0s;
-<<<<<<< .mine
     width: 165px;
-||||||| .r128
-    width: 126px;
-=======
-    width: 200px;
->>>>>>> .r163
 }
 .stick .header-logo img {
-    margin-top: 1px;
-    width: 50px;
+    margin-top: 3px;
+    width: 100px;
 }
 /*--------------------------------------  
 	9.1 Service area
