@@ -310,9 +310,12 @@ class Mbackend extends CI_Model{
 				return $id_baru;
 			break;
 			case "tbl_gudang":
-				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
-						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
-						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
+				$sql="SELECT A.*,B.no_konfirmasi,B.total_pembayaran,
+						C.no_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman,
+						DATE_FORMAT(B.create_date,'%d %b %Y  %h:%i %p') as tgl_konfirmasi,
+						DATE_FORMAT(A.tgl_masuk,'%d %b %Y  %h:%i %p') as tgl_masukk,
+						DATE_FORMAT(C.tgl_order,'%d %b %Y  %h:%i %p') as tgl_order
 						FROM tbl_gudang A 
 						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 						LEFT JOIN tbl_h_pemesanan C ON (A.tbl_h_pemesanan_id=C.id AND B.tbl_h_pemesanan_id=C.id)

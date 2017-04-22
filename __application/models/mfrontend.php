@@ -27,6 +27,16 @@ class Mfrontend extends CI_Model{
 					WHERE A.nama_user = '".$p1."'
 				";
 			break;
+			case "data_login_dapotik":
+				$sql = "
+					SELECT A.*, B.provinsi, C.kab_kota, CASE WHEN D.kecamatan IS NULL THEN '-' ELSE D.kecamatan END AS kecamatan
+					FROM tbl_registrasi A
+					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
+					WHERE A.email = '".$p1."'
+				";
+			break;
 			case "data_buku_paket":
 				$crfilter = $this->input->post('cr');
 				$order = "
@@ -292,6 +302,12 @@ class Mfrontend extends CI_Model{
 					FROM cl_provinsi
 				";
 			break;
+			case "cl_provinsi_copy":
+				$sql = "
+					SELECT kode_prov as id, provinsi as txt
+					FROM cl_provinsi_copy
+				";
+			break;			
 			case "cl_kab_kota":
 				$sql = "
 					SELECT kode_kab_kota as id, kab_kota as txt
@@ -299,6 +315,13 @@ class Mfrontend extends CI_Model{
 					WHERE cl_provinsi_kode = '".$p2."'
 				";
 			break;
+			case "cl_kab_kota_copy":
+				$sql = "
+					SELECT kode_kab_kota as id, kab_kota as txt
+					FROM cl_kab_kota_copy
+					WHERE cl_provinsi_kode = '".$p2."'
+				";
+			break;			
 			case "cl_kecamatan":
 				$sql = "
 					SELECT kode_kecamatan as id, kecamatan as txt
@@ -380,7 +403,7 @@ class Mfrontend extends CI_Model{
 					".$where." AND D.jenis_pembeli = 'SEKOLAH'
 					ORDER BY D.prov, D.kab ".$sort."
 					LIMIT $start,$per_page
-				";
+				";				
 			break;
 			case "count_detail_pesanan":
 				$sql = "
@@ -410,6 +433,9 @@ class Mfrontend extends CI_Model{
 		}
 		
 		switch($table){
+			case "tbl_reg_dapotik":
+				$table="tbl_registrasi";
+			break;
 			case "uploadfile":
 				$array_cek_invoice = array( 'no_order' => $data['inv'] );
 				$cek_invoice = $this->db->get_where('tbl_h_pemesanan', $array_cek_invoice)->row_array();
@@ -577,6 +603,7 @@ class Mfrontend extends CI_Model{
 					
 					$id = $this->auth['id'];
 					$nama_pemesan = $this->auth['nama_sekolah'];
+					$email = $this->auth['email'];
 					$flag = "B";
 					
 				}elseif($data['typ'] == 'umu'){
@@ -616,6 +643,7 @@ class Mfrontend extends CI_Model{
 						}
 					}
 					$nama_pemesan = $data['nm_cust'];
+					$email = $data['email'];
 					$flag = "P";
 				}
 				
@@ -706,7 +734,7 @@ class Mfrontend extends CI_Model{
 							'pajak' => number_format($pajak,0,",","."),
 							'grand_total' => number_format($grand_total,0,",","."),
 						);
-						$this->lib->kirimemail('email_invoice', $this->auth['email'], $data_cart, $array_email);
+						$this->lib->kirimemail('email_invoice', $email, $data_cart, $array_email);
 						
 						$this->cart->destroy();
 					}
