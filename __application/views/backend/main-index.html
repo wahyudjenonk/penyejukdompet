@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js sidebar-large lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js sidebar-large lt-ie9 lt-ie8"> <![endif]-->
-<html class="no-js sidebar-large">
+<html class="no-js sidebar-medium">
 <head>
     <!-- BEGIN META SECTION -->
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
     <link href="{$host}__assets/eb/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
     <link href="{$host}__assets/eb/plugins/metrojs/metrojs.css" rel="stylesheet">
 	
-	<link rel="stylesheet" href="{$host}__assets/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" href="{$host}__assets/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" href="{$host}__assets/easyui/themes/icon.css">
 	<link rel="stylesheet" href="{$host}__assets/eb/css/uploadfile.css">
     <!-- END PAGE LEVEL STYLE -->
@@ -44,7 +44,7 @@
                 <a id="menu-medium" class="sidebar-toggle tooltips">
                     <i class="fa fa-outdent"></i>
                 </a>
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="#">
                    <img src="{$host}__assets/ef/img/logo.png" alt="logo" width="155" height="45">
                 </a>
             </div>
@@ -117,10 +117,10 @@
                         <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')" ><i class="fa fa-book"></i><span class="sidebar-text">Produk</span></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/paket','tbl_paket')" ><i class="fa fa-book"></i><span class="sidebar-text">Paket Produk</span></a>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/paket','tbl_paket')" ><i class="fa fa-puzzle-piece"></i><span class="sidebar-text">Paket Produk</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-check-square-o"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="glyph-icon flaticon-shopping80"></i><span class="sidebar-text">Transaksi</span><span class="fa arrow"></span></a>
                         <ul class="submenu collapse">
                             <li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan')"><span class="sidebar-text">Invoice Order Sekolah</span></a>
@@ -189,7 +189,7 @@
 					{/if}
 					{if $auth.flag_group neq 'L'}
                     <li>
-                        <a href="#"><i class="glyph-icon flaticon-panels"></i><span class="sidebar-text">Master</span><span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-archive"></i><span class="sidebar-text">Master</span><span class="fa arrow"></span></a>
                           <ul class="submenu collapse">
 							<li>
                                 <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/member_sekolah','tbl_reg')" >									
@@ -235,7 +235,7 @@
 					{/if}
 					{if $auth.flag_group eq 'A'}
                     <li>
-                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin')"><i class="glyph-icon flaticon-account"></i><span class="sidebar-text">Manajemen User</span></a>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin')"><i class="fa fa-eye-slash"></i><span class="sidebar-text">Manajemen User</span></a>
                           <!--ul class="submenu collapse">
                             <li>
                                 <a href="profil.html"><span class="sidebar-text">User Profile</span></a>
@@ -252,7 +252,7 @@
                         <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/reg_marketing','reg_marketing')"><i class="glyphicon glyphicon-gift"></i><span class="sidebar-text">Registrasi Marketing</span></a>
                     </li>
 					<li>
-                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backupform','backupform')"><i class="glyphicon glyphicon-hdd"></i><span class="sidebar-text">Backup System</span></a>
+                        <a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backupform','backupform')"><i class="fa fa-dropbox"></i><span class="sidebar-text">Backup System</span></a>
                     </li>
 					{/if}
                 </ul>
