@@ -5,12 +5,12 @@
 	<thead>
 	<tr>
 		<th style="text-align:left;">No.</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th class="sakola">Nama Sekolah</th>
 		<th class="sakola">NPSN</th>
 		<th class="sakola">PIC</th>
 		
-		<th style="text-align:right;">Jumlah/Qty</th>
+		<th style="text-align:right;">Jumlah</th>
 		<th style="text-align:right;">Total</th>
 		<th style="text-align:right;">Bayar</th>
 	</tr>
@@ -44,7 +44,7 @@
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="5" align="center">GRAND TOTAL</td>
+		<td colspan="5" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>

@@ -1,4 +1,21 @@
 <div class="row">
+	<div class="">
+		<div class="col-md-12 text-left">
+			<ul class="page-numbers">
+				{foreach from=$array_paging item=pag}
+					{if $pag.angka eq '1'}
+						<li id="{$pag.angka}-atas" class="isipaging-atas page-number current"><a class="page-number" href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					{else}
+						<li id="{$pag.angka}-atas" class="isipaging-atas page-number"><a class="page-number" href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					{/if}
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+</div>
+<br/>
+<br/>
+<div class="row">
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active" id="grid">
 			{if $data_buku}
@@ -33,6 +50,18 @@
 <div class="row">
 	<div class="pagination-area-v1">
 		<div class="col-md-12 text-left">
+			<ul class="page-numbers">
+				{foreach from=$array_paging item=pag}
+					{if $pag.angka eq '1'}
+						<li id="{$pag.angka}" class="isipaging page-number current"><a class="page-number" href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					{else}
+						<li id="{$pag.angka}" class="isipaging page-number"><a class="page-number" href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					{/if}
+				{/foreach}
+			</ul>
+			
+			
+			{*
 			Halaman :
 			<select id='pag' onChange="pagjs('{$typefilter}', '{$idfilter}', '{$crfilter}');" style='width:70px !important;'>
 				{foreach from=$array_paging item=pag}
@@ -40,7 +69,7 @@
 				{/foreach}
 			</select>
 			
-			{*
+			
 			{if $array_paging}
 				<ul class="page-numbers">
 				{foreach from=$array_paging item=pag}

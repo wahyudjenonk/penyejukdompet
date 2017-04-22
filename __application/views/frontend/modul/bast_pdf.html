@@ -39,6 +39,8 @@ table.gridtable td {
 				<h3>NO. {$no_bast} </h3>
 			</h5>
 			</div>
+			
+			<br />
 		</td>
 		<td style="width: 120px; height: 80px;">
 			
@@ -165,7 +167,7 @@ table.gridtable td {
 	</tr>	
 </table>
 
-<p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+<p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:10px;'>
 	Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima nomor #{$datainvoice.no_order|default:''} tanggal {$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''},
 	PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima buku yang dimaksud dengan detail pemesanan buku sebagai berikut :
 </p>
@@ -208,21 +210,17 @@ table.gridtable td {
 		{/foreach}
 		<tr style='background:#EFEFEF;'>
 			<td style='border:1px solid #000;padding:5px;font-weight:bold;' >&nbsp;</td>
-			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='3' align='center'>Total Oplah</td>
-			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='center'>{$totqty|default:'0'}</td>
-			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='4' align='center'>Total Harga</td>
-			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='center'>{$tottotal|default:'0'}</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='3' align='right'>Total Oplah</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='right'>{$totqty|default:'0'}</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='4' align='right'>Total Harga</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='right'>{$tottotal|default:'0'}</td>
 		</tr>
 	{/if}
 </table>
 
-<br />
-
 <p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	Demikian Berita Acara Serah Terima ini dibuat dengan sebenar-benarnya, dan untuk dapat dipergunakan dengan semestinya.
 </p>
-
-<br />
 
 <table width="100%" style='margin-top:10px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	<tr>
@@ -238,7 +236,7 @@ table.gridtable td {
 						<br />
 						<br />
 						<br />
-						( {$datacust.nama_kepala_sekolah|default:''} )
+						( {$datacust.nama_lengkap|default:''} )
  					</td>
 				</tr>
 			</table>
@@ -259,7 +257,6 @@ table.gridtable td {
 		</td>
 	</tr>
 </table>
-<br>
 <p style='font-family:helvetica,arial,verdana,sans; font-size:12px; font-weight:bold;'> 
 	<i>Catatan :</i>
 		<ol style='font-family:helvetica,arial,verdana,sans; font-size:10px;'>

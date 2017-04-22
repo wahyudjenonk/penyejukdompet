@@ -224,7 +224,7 @@
 											</div>																						
 											<div class="single-input one-half left">
 												<label>Email Anda<span>*</span></label> 
-												<input name="email" id='em' class='validasi' type="text" required="required">
+												<input name="email" id='em' class='validasi emailss' type="text" required="required">
 											</div>
 											<div class="single-input one-half right">
 												<label>&nbsp;</label> 
@@ -262,6 +262,10 @@
 	});
 	*/
 	$(".validasi").validatebox({ required:true }); 
+	$('.emailss').validatebox({
+		required: true,
+		validType: 'email'
+	});
 	$('#slesai_belanja').on('click', function(){
 		validasi = $('#frmskul').form('validate');
 		if(validasi){
@@ -308,8 +312,9 @@
 	
 		$.post(host+'loading-formcheckout', { 'tpefrm':'umu', 'em':$('#em').val() }, function(ex){
 			if(ex == 2){
-				$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+				$('#modalencuk').html("Email Sudah Terdaftar Sebagai Pembeli Sekolah!! Silahkan Coba Dengan Email Lainnya.");			
 				$('#productModal').modal('show'); 
+				$('#load_form_umum').html('');
 			}else{
 				parsinganssd = $.parseJSON(ex)
 				$('#load_form_umum').html(parsinganssd.page);

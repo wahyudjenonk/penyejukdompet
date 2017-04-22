@@ -37,13 +37,13 @@
 		</div>
 		<div class="single-input one-half left">
 			<label>No. HP Kepala Sekolah <span>*</span></label> 
-			<input type="text" name="nohpkepsek" class='validasi' value="{$data.no_hp_kepsek|default:''}" required="required">
+			<input type="text" name="nohpkepsek" class='validasi numerics' value="{$data.no_hp_kepsek|default:''}" required="required">
 			<br/>
 			<br/>
 		</div>	
 		<div class="single-input one-half right">
 			<label>No. HP Bendahara<span>*</span></label> 
-			<input type="text" name="nohpbend" class='validasi' value="{$data.no_hp_bendahara|default:''}" required="required">
+			<input type="text" name="nohpbend" class='validasi numerics' value="{$data.no_hp_bendahara|default:''}" required="required">
 			<br/>
 			<br/>
 		</div>		
@@ -73,7 +73,7 @@
 		</div>
 		<div class="single-input one-half right">
 			<label>Kode Pos<span>*</span></label> 
-			<input type="text" name="kdpos" class='validasi' value="{$data.kode_pos|default:''}" />
+			<input type="text" name="kdpos" class='validasi numerics' value="{$data.kode_pos|default:''}" />
 			<br/>
 			<br/>
 		</div>
@@ -107,42 +107,45 @@
 		});
 		
 		/////testetsetse
-		$(".validasi").validatebox({ required:true }); 
+		$(".validasi").validatebox({ required:true });
+		$(".numerics").numeric();		
 		$('#slesai_belanja').on('click', function(){
-			validasi = $('#frmskul').form('validate');
-			if(validasi){
-				$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
-			}
-			$('#modalencuk').html("");
-			submit_form('frmskul', function(resp){
-				if(resp == 1){
-					$.post(host+'finish', { } , function(s){
-						if(s){
-							$.unblockUI();
-						}
-						parsinganxs = $.parseJSON(s)
-						$('#modalencuk').html(parsinganxs.page);			
-						$('#productModal').modal({
-							backdrop: 'static',
-							keyboard: false
-						}); 
-						$('#productModal').modal('show'); 
-						$('#button_close').hide();
-					});
-				}else if(resp == 2){
-					$.unblockUI();
-					$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
-					$('#productModal').modal('show'); 
-				}else if(resp == 3){
-					$.unblockUI();
-					$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
-					$('#productModal').modal('show'); 					
-				}else if(resp == 0){
-					$.unblockUI();
-					$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
-					$('#productModal').modal('show'); 
+			if(confirm('Anda Yakin Untuk Submit Transaksi ?')){
+				validasi = $('#frmskul').form('validate');
+				if(validasi){
+					$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
 				}
-			});
+				$('#modalencuk').html("");
+				submit_form('frmskul', function(resp){
+					if(resp == 1){
+						$.post(host+'finish', { } , function(s){
+							if(s){
+								$.unblockUI();
+							}
+							parsinganxs = $.parseJSON(s)
+							$('#modalencuk').html(parsinganxs.page);			
+							$('#productModal').modal({
+								backdrop: 'static',
+								keyboard: false
+							}); 
+							$('#productModal').modal('show'); 
+							$('#button_close').hide();
+						});
+					}else if(resp == 2){
+						$.unblockUI();
+						$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
+						$('#productModal').modal('show'); 
+					}else if(resp == 3){
+						$.unblockUI();
+						$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+						$('#productModal').modal('show'); 					
+					}else if(resp == 0){
+						$.unblockUI();
+						$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
+						$('#productModal').modal('show'); 
+					}
+				});
+			}
 		});
 	</script>
 {elseif $type_form eq 'umu'}
@@ -186,19 +189,19 @@
 		</div>
 		<div class="single-input one-half right">
 			<label>Kode Pos<span>*</span></label> 
-			<input type="text" class='validasi' name="kdpos" value="{$data.kode_pos|default:''}" />
+			<input type="text" class='validasi numerics' name="kdpos" value="{$data.kode_pos|default:''}" />
 			<br/>
 			<br/>			
 		</div>
 		<div class="single-input one-half left">
 			<label>No. Handphone<span>*</span></label> 
-			<input type="text" class='validasi' value="{$data.no_hp_customer|default:''}" name="nhp" required="required">
+			<input type="text" class='validasi numerics' value="{$data.no_hp_customer|default:''}" name="nhp" required="required">
 			<br/>
 			<br/>			
 		</div>
 		<div class="single-input one-half right">
 			<label>No. Telp.<span></span></label> 
-			<input type="text" name="ntlp" value="{$data.no_telp_customer|default:''}">
+			<input type="text" class="numerics" name="ntlp" value="{$data.no_telp_customer|default:''}">
 			<br/>
 			<br/>			
 		</div>
@@ -220,42 +223,45 @@
 		});
 		
 		/////testetsetse
-		
+		$(".numerics").numeric();
 		$(".validasi").validatebox({ required:true }); 
 		$('#slesai_belanja_umu').on('click', function(){
-			validasi = $('#frmumu').form('validate');
-			if(validasi){
-				$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
-			}
-			submit_form('frmumu', function(resp){
-				if(resp == 1){
-					$.post(host+'finish', { } , function(s){
-						if(s){
-							$.unblockUI();
-						}
-						parsinganxs = $.parseJSON(s)
-						$('#modalencuk').html(parsinganxs.page);			
-						$('#productModal').modal({
-							backdrop: 'static',
-							keyboard: false
-						}); 
-						$('#productModal').modal('show'); 
-						$('#button_close').hide();
-					});
-				}else if(resp == 2){
-					$.unblockUI();
-					$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
-					$('#productModal').modal('show'); 
-				}else if(resp == 3){
-					$.unblockUI();
-					$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
-					$('#productModal').modal('show'); 
-				}else if(resp == 0){
-					$.unblockUI();
-					$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
-					$('#productModal').modal('show'); 
+			if(confirm('Anda Yakin Untuk Submit Transaksi ?')){
+				validasi = $('#frmumu').form('validate');
+				if(validasi){
+					$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
 				}
-			});
+				submit_form('frmumu', function(resp){
+					var jsn = JSON.parse(resp);
+					if(jsn.msg == 1){
+						$.post(host+'finish', { 'type':'checkout', 'no_order':jsn.no_order } , function(s){
+							if(s){
+								$.unblockUI();
+							}
+							parsinganxs = $.parseJSON(s)
+							$('#modalencuk').html(parsinganxs.page);			
+							$('#productModal').modal({
+								backdrop: 'static',
+								keyboard: false
+							}); 
+							$('#productModal').modal('show'); 
+							$('#button_close').hide();
+						});
+					}else if(jsn.msg == 2){
+						$.unblockUI();
+						$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
+						$('#productModal').modal('show'); 
+					}else if(jsn.msg == 3){
+						$.unblockUI();
+						$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+						$('#productModal').modal('show'); 
+					}else if(jsn.msg == 0){
+						$.unblockUI();
+						$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
+						$('#productModal').modal('show'); 
+					}
+				});
+			}
 		});
 	</script>
 {/if}

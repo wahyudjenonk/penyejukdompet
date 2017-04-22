@@ -1,17 +1,17 @@
  <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>Data Detil</strong> Invoice Order</h3>
+                <h3 class="panel-title"><strong>Data Detil</strong> Faktur Pesanan</h3>
             </div>
 			<div class="panel-body">
 				<div style="padding:10px;font-weight:bold;" >
 					<div class="col-md-6">
-						<div class="col-md-6" style="text-align:right;">NO. Order/Invoice</div>
+						<div class="col-md-6" style="text-align:right;">Nomor Pesanan</div>
 						<div class="col-md-1">:</div>
 						<div class="col-md-5">{$data.header.no_order|default:'-'}</div>
 					</div>
 					<div class="col-md-6">
-						<div class="col-md-6" style="text-align:right;">Tgl. Order/Invoice</div>
+						<div class="col-md-6" style="text-align:right;">Tgl. Pesanan</div>
 						<div class="col-md-1">:</div>
 						<div class="col-md-5">{$data.header.tgl_order|default:'-'}</div>
 					</div>
@@ -27,13 +27,13 @@
 						<div class="col-md-5">{$data.header.zona|default:'-'}</div>
 					</div>
 					<div class="col-md-6">
-						<div class="col-md-6" style="text-align:right;">SubTotal & Pajak</div>
+						<div class="col-md-6" style="text-align:right;">Alamat</div>
 						<div class="col-md-1">:</div>
 						<!--div class="col-md-5">({$data.header.sub_total|number_format:2:',':'.'|default:'-'})&nbsp;-&nbsp;({$data.header.pajak|number_format:2:',':'.'|default:'-'})</div-->
 						<div class="col-md-5">({$data.header.sub_total|number_format:2:',':'.'|default:'-'})&nbsp;-&nbsp;(0,00)</div>
 					</div>
 					<div class="col-md-6">
-						<div class="col-md-6" style="text-align:right;">GrandTotal</div>
+						<div class="col-md-6" style="text-align:right;">Total Bayar</div>
 						<div class="col-md-1">:</div>
 						<div class="col-md-5">{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</div>
 					</div>
@@ -48,7 +48,7 @@
 						<th style="text-align:left;">No.</th>
 						<th>Judul Buku</th>
 						<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
-						<th style="text-align:right;">Jumlah/Qty</th>
+						<th style="text-align:right;">Jumlah</th>
 						<th style="text-align:right;">Total</th>
 						{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
 						{if $data.header.flag_ver|default:'P' eq 'P'}
@@ -104,20 +104,20 @@
 					</tbody>
 					<tfoot>
 					<tr style="font-weight:bold;">
-						<td colspan="3" align="center">SUB TOTAL</td>
+						<td colspan="3" align="right">SUB TOTAL</td>
 						<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
 						<td align="center">&nbsp;</td>
 					</tr>
 					<tr style="font-weight:bold;">
-						<td colspan="3" align="center">PAJAK</td>
+						<td colspan="3" align="right">PAJAK</td>
 						<td align="center">&nbsp;</td>
 						<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
 						<td align="right">Rp. 0,00</td>
 						<td align="center">&nbsp;</td>
 					</tr>
 					<tr style="font-weight:bold;">
-						<td colspan="3" align="center">GRAND TOTAL</td>
+						<td colspan="3" align="right">TOTAL BAYAR</td>
 						<td align="center">&nbsp;</td>
 						<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
 						<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>

@@ -30,15 +30,15 @@ table.gridtable td {
 {/literal}
 {if $mod eq 'cetak_bast'}
 <div style="float:left;width:100%;">
-<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">Pada hari ini, {$param.hari|default:'-'} tanggal {$param.tgl_text|default:'-'} bulan {$param.bulan|default:'-'} tahun {$param.tahun|default:'-'},</p>
-<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">yang bertanda tangan di bawah ini:</p>
+<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">Pada hari ini, {$param.hari|default:'-'} tanggal {$param.tgl_text|default:'-'} bulan {$param.bulan|default:'-'} tahun {$param.tahun|default:'-'},
+yang bertanda tangan di bawah ini:</p>
  
 <table width="100%" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
 	<tr>
 		<td>1.</td>
 		<td>Nama</td>
 		<td>:</td>
-		<td>Hardi</td>
+		<td>Suhardi</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -50,13 +50,13 @@ table.gridtable td {
 		<td></td>
 		<td>Perusahaan</td>
 		<td>:</td>
-		<td>CV. Aldeaz</td>
+		<td>CV. Aldeaz Sejahtera Printig</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>Alamat</td>
 		<td>:</td>
-		<td>Jl. Depok Utama</td>
+		<td>Jl. Merdeka No. 100, Abadijaya, Sukmajaya, Depok, Jawa Barat, Indonesia.</td>
 	</tr>
 	<tr>
 		<td></td>
@@ -125,14 +125,12 @@ table.gridtable td {
 		<td colspan="3">Selanjutnya disebut sebagai PIHAK KEDUA</td>
 	</tr>
 </table>
-<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima nomor {$data.header.no_order|default:'-'}  Tanggal {$data.header.tgl_order|default:'-'} </p>
-<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima Buku dimaksud sebagai berikut:</p>
+<p style="font-family:helvetica,arial,verdana,sans; font-size:12px;">Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima nomor {$data.header.no_order|default:'-'}  Tanggal {$data.header.tgl_order|default:'-'} 
+PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima Buku dimaksud sebagai berikut:</p>
 
 </div>
-<br>
-<br>
-<div style="float:left;width:100%;margin-top:20px;">
-	<table class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
+<div style="float:left;width:100%;margin-top:5px;">
+	<table class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:8px;">
 		<tr style="border:1px solid black;">
 		  <th style="border-bottom:1px solid black;" width="5%" rowspan="2">No.</th>
 		  <th style="border-bottom:1px solid black;" rowspan="2">Judul Buku</th>
@@ -213,10 +211,10 @@ table.gridtable td {
 	<div style="padding:10px;">
 		<table width="100%">
 			<tr>
-				<td>NO. Order/Invoice</td>
+				<td>No. Pesanan</td>
 				<td>:</td>
-				<td width="20%">{$data.header.no_order|default:'-'}</td>
-				<td>Tgl. Order/Invoice</td>
+				<td style="text-align:left;">{$data.header.no_order|default:'-'}</td>
+				<td>Tgl. Pesanan</td>
 				<td>:</td>
 				<td>{$data.header.tgl_order|default:'-'}</td>
 			</tr>
@@ -237,7 +235,7 @@ table.gridtable td {
 			<th style="text-align:left;">No.</th>
 			<th>Judul Buku</th>
 			<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
-			<th style="text-align:right;">Jumlah/Qty</th>
+			<th style="text-align:right;">Jumlah</th>
 			<th style="text-align:right;">Total</th>
 		</tr>
 		</thead>
@@ -262,18 +260,18 @@ table.gridtable td {
 		</tbody>
 		<tfoot>
 		<tr style="font-weight:bold;">
-			<td colspan="3" align="center">SUB TOTAL</td>
+			<td colspan="3" align="right">SUB TOTAL</td>
 			<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 			<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
 		</tr>
 		<tr style="font-weight:bold;">
-			<td colspan="3" align="center">PAJAK</td>
+			<td colspan="3" align="right">PAJAK</td>
 			<td align="center">&nbsp;</td>
 			<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
 			<td align="right">Rp. 0,00</td>
 		</tr>
 		<tr style="font-weight:bold;">
-			<td colspan="3" align="center">GRAND TOTAL</td>
+			<td colspan="3" align="right">TOTAL PEMBAYARAN</td>
 			<td align="center">&nbsp;</td>
 			<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
 			<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
@@ -291,7 +289,7 @@ table.gridtable td {
 		<th class="sakola">NPSN</th>
 		<th class="sakola">PIC</th>
 		
-		<th style="text-align:right;">Jumlah/Qty</th>
+		<th style="text-align:right;">Jumlah</th>
 		<th style="text-align:right;">Total</th>
 		<th style="text-align:right;">Bayar</th>
 	</tr>
@@ -325,7 +323,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="5" align="center">GRAND TOTAL</td>
+		<td colspan="5" align="right">TOTAL PEMBAYARAN</td>
 		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
@@ -337,9 +335,9 @@ table.gridtable td {
 	<thead>
 	<tr>
 		<th style="text-align:left;">No.</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th >Nama Lengkap</th>
-		<th style="text-align:right;">Jumlah/Qty</th>
+		<th style="text-align:right;">Jumlah</th>
 		<th style="text-align:right;">Total</th>
 		<th style="text-align:right;">Bayar</th>
 	</tr>
@@ -370,7 +368,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="3" align="center">GRAND TOTAL</td>
+		<td colspan="3" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
@@ -378,13 +376,13 @@ table.gridtable td {
 	</tfoot>
 	</table>
 {else if $mod eq 'detil_penjualan_SEKOLAH'}
-	<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
+	<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:8px;">
 	<thead>
 	<tr>
 		<th style="text-align:left;">No.</th>
-		<th>No. Order/Sekolah/Item</th>
+		<th>No. Pesanan/Sekolah/Item</th>
 		<th style="text-align:right;">Harga</th>
-		<th style="text-align:right;">Jumlah/Qty</th>
+		<th style="text-align:right;">Jumlah</th>
 		<th style="text-align:right;">Total</th>
 		
 	</tr>
@@ -422,18 +420,18 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="3" align="center">GRAND TOTAL</td>
+		<td colspan="3" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
 	</tfoot>
 	</table>
 {else if $mod eq 'detil_penjualan_UMUM'}
-	<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
+	<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:8px;">
 	<thead>
 	<tr>
 		<th style="text-align:left;">No.</th>
-		<th>No. Order/Nama Lengkap/Item</th>
+		<th>No. Pesanan/Nama Lengkap/Item</th>
 		<th style="text-align:right;">Harga</th>
 		<th style="text-align:right;">Jumlah/Qty</th>
 		<th style="text-align:right;">Total</th>
@@ -450,10 +448,10 @@ table.gridtable td {
 	{assign var=grand_tot value=$grand_tot+$i.grand_total}
 	<tr style="font-weight:bold;">
 		<td >{$smarty.foreach.x.iteration}</td>
-		<td colspan="2">{$i.no_order|default:'-'} ( {$i.nama_lengkap|default:'-'} )</td>
+		<td colspan="2"><i>{$i.no_order|default:'-'} ( {$i.nama_lengkap|default:'-'} )</i></td>
 		{*<td align="right">Rp. {$i.jml_buku|number_format:2:',':'.'|default:'-'}</th>*}
 		<td align="right">{$i.jml_buku|number_format:2:',':'.'|default:'-'}</td>
-		<td align="right">Rp.{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
+		<td align="right"><b>Rp.{$i.grand_total|number_format:2:',':'.'|default:'-'}</b></td>
 	</tr>
 		{foreach from=$i.detil item=y name=t}
 		<tr>
@@ -473,7 +471,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="3" align="center">GRAND TOTAL</td>
+		<td colspan="3" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
@@ -485,7 +483,7 @@ table.gridtable td {
 	<tr>
 		<th style="text-align:left;">No.</th>
 		<th>No. BAST</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th>Nama Sekolah</th>
 		<th>NPSN</th>
 		<th style="text-align:right;">Total</th>
@@ -518,7 +516,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="5" align="center">GRAND TOTAL</td>
+		<td colspan="5" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
@@ -530,7 +528,7 @@ table.gridtable td {
 	<tr>
 		<th style="text-align:left;">No.</th>
 		<th>No. BAST</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th>Nama Lengkap</th>
 		<th style="text-align:right;">Total</th>
 		<th style="text-align:right;">Bayar</th>
@@ -562,7 +560,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="4" align="center">GRAND TOTAL</td>
+		<td colspan="4" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
@@ -574,7 +572,7 @@ table.gridtable td {
 	<tr>
 		<th style="text-align:left;">No.</th>
 		<th>No. KWITANSI</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th>Nama Sekolah</th>
 		<th>NPSN</th>
 		<th style="text-align:right;">Total</th>
@@ -607,7 +605,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="5" align="center">GRAND TOTAL</td>
+		<td colspan="5" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
@@ -619,7 +617,7 @@ table.gridtable td {
 	<tr>
 		<th style="text-align:left;">No.</th>
 		<th>No. KWITANSI</th>
-		<th>No. Order</th>
+		<th>No. Pesanan</th>
 		<th>Nama Lengkap</th>
 		<th style="text-align:right;">Total</th>
 		<th style="text-align:right;">Bayar</th>
@@ -650,7 +648,7 @@ table.gridtable td {
 	</tbody>
 	<tfoot>
 	<tr style="font-weight:bold;">
-		<td colspan="4" align="center">GRAND TOTAL</td>
+		<td colspan="4" align="center">TOTAL PEMBAYARAN</td>
 		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
 		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
