@@ -132,13 +132,7 @@ class Backend extends JINGGA_Controller {
 				break;
 			
 				case "invoice_edit":
-<<<<<<< .mine
 					$this->nsmarty->assign('par_mod',$this->input->post('par_mod'));
-||||||| .r128
-=======
-					$this->nsmarty->assign('par_mod',$this->input->post('par_mod'));
-					
->>>>>>> .r163
 					$data=$this->mbackend->getdata('detil_invoice','row_array');
 					$this->nsmarty->assign('data',$data);
 				break;
@@ -384,7 +378,7 @@ class Backend extends JINGGA_Controller {
 				case "invoice_umum":
 				case "konfirmasi":
 				case "gudang_konfirmasi":
-					$judul="INVOICE";
+					$judul="FAKTUR PESANAN";
 					$data=$this->mbackend->getdata('get_pemesanan','result_array');
 					$file_name=$data['header']['no_order'];
 				break;
