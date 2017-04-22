@@ -571,26 +571,37 @@ class Frontend extends CI_Controller {
 							$cek_data = $this->db->get_where('tbl_registrasi', array('npsn'=>$npsn, 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 						}elseif($type_form == 'umu'){
 							$email = $this->input->post('em');
-							$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$email) )->row_array();
+							$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$email, 'jenis_pembeli'=>'SEKOLAH') )->row_array();
 							if($cek_email){
 								echo 2; exit; //"Email Sudah Ada";
 							}
 							$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$email, 'jenis_pembeli'=>'UMUM') )->row_array();
+							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi_copy', 'return', (isset($cek_data['cl_provinsi_kode']) ? $cek_data['cl_provinsi_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota_copy', 'return', (isset($cek_data['cl_kab_kota_kode']) ? $cek_data['cl_kab_kota_kode'] : "" ), (isset($cek_data['cl_provinsi_kode']) ? $cek_data['cl_provinsi_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($cek_data['cl_kecamatan_kode']) ? $cek_data['cl_kecamatan_kode'] : "" ), (isset($cek_data['cl_kab_kota_kode']) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
+
 						}
 						
 						if($cek_data){
 							$this->nsmarty->assign('data', $cek_data);
 							$this->nsmarty->assign('status_data', "ADA");
 						}
+<<<<<<< .mine
+||||||| .r128
+						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
+						$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
+						$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($cek_data) ? $cek_data['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
+=======
 						//$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
 						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : "" ) ));
 						$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));
 						$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($cek_data) ? $cek_data['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
+>>>>>>> .r163
 						$this->nsmarty->assign('type_form', $type_form);
 					break;
 					case "combo_kab_kota":
 						$v2 = $this->input->post('v2');
-						echo $this->lib->fillcombo('cl_kab_kota', 'return', '', $v2);
+						echo $this->lib->fillcombo('cl_kab_kota_copy', 'return', '', $v2);
 						exit;
 					break;
 					case "combo_kecamatan":
@@ -1082,6 +1093,159 @@ class Frontend extends CI_Controller {
 		}
 	}
 	
+<<<<<<< .mine
+	function report_kementerian($type){
+		$code_secret = $this->input->get('code_secret');
+		if($code_secret != $this->client_secret){
+			echo "invalid code secret";exit;
+		}
+		header('Content-Type: application/json');
+		
+		switch($type){
+			case "all":
+				$per_page = $this->input->get('per_page');
+				$page = $this->input->get('page');
+				$sort = $this->input->get('sort');
+				$start_date = $this->input->get('start_date');
+				$end_date = $this->input->get('end_date');
+				$id = $this->input->get('id');
+				
+				$array_parameter = array(
+					'per_page' => $per_page,
+					'page' => $page,
+					'sort' => $sort,
+					'start_date' => $start_date,
+					'end_date' => $end_date,
+					'id' => $id,
+				);
+				
+				if(isset($id) || $id != null){
+					$per_page = 1;
+				}
+				
+				$array_pesanan = array();
+				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array', $array_parameter);
+				$count = count($data_pesanan);
+				if( $count >0 ) { 
+					$limit = (isset($per_page) ? $per_page : 200);
+					$total_pages = ceil($count/$limit); 
+				}else{ 
+					$total_pages = 0; 
+				} 
+				
+				$array_pesanan['total'] = $count;
+				$array_pesanan['current_page'] = (isset($page) ? $page : 1);
+				$array_pesanan['per_page'] = (isset($per_page) ? $per_page : 200);
+				$array_pesanan['total_page'] = $total_pages;
+				$array_pesanan['detail_paket'] = array();
+				
+				$no = 1;
+				foreach($data_pesanan as $k=>$v){
+					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['idpesan']);
+					
+					$array_pesanan['detail_paket'][$k]['id'] = $v['idpesan'];
+					$array_pesanan['detail_paket'][$k]['id_pesanan'] = $v['no_order'];
+					$array_pesanan['detail_paket'][$k]['sekolah_id'] = $v['sekolah_id'];
+					$array_pesanan['detail_paket'][$k]['bentuk'] = "SD"; //hardcode aja udah
+					$array_pesanan['detail_paket'][$k]['npsn'] = $v['npsn'];
+					$array_pesanan['detail_paket'][$k]['nama_sekolah'] = $v['nama_sekolah'];
+					$array_pesanan['detail_paket'][$k]['kd_prop'] = $v['kd_prov'];
+					$array_pesanan['detail_paket'][$k]['prop'] = $v['prov'];
+					$array_pesanan['detail_paket'][$k]['kd_kab_kota'] = $v['kd_kab'];
+					$array_pesanan['detail_paket'][$k]['kab_kota'] = $v['kab'];
+					$array_pesanan['detail_paket'][$k]['p_tgl_pesan'] = $v['tanggal_pesan'];
+					$array_pesanan['detail_paket'][$k]['p_tanggal_konfirmasi'] = $v['tanggal_konfirmasi'];
+					$array_pesanan['detail_paket'][$k]['p_waktu_pelaksanaan'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['p_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['p_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['p_total_harga'] = $v['grand_total'];
+					$array_pesanan['detail_paket'][$k]['k_tgl_kirim'] = $v['tanggal_kirim'];
+					$array_pesanan['detail_paket'][$k]['k_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['k_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['s_tgl_sampai'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['s_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['s_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['s_nama_penerima'] = $v['penerima'];
+					$array_pesanan['detail_paket'][$k]['t_tgl_terima'] = $v['tanggal_terima'];
+					$array_pesanan['detail_paket'][$k]['t_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['t_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['t_nomor_surat'] = $v['no_bast'];
+					$array_pesanan['detail_paket'][$k]['t_tanggal_bast'] = $v['tanggal_bast'];
+					$array_pesanan['detail_paket'][$k]['b_tgl_bayar'] = $v['tanggal_bayar'];
+					$array_pesanan['detail_paket'][$k]['b_kode_buku'] = null; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['b_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['b_jml_bayar'] = $v['total_pembayaran'];
+					$array_pesanan['detail_paket'][$k]['active'] = 1;
+					$array_pesanan['detail_paket'][$k]['updated_date'] = date('Y-m-d H:i:s');
+					$no++;
+				}
+				
+				/*
+				echo "<pre>";
+				print_r($array_pesanan);exit;
+				echo "</pre>";//*/
+				
+				echo json_encode($array_pesanan);
+			break;
+		}
+	}
+	
+	//fungsi login pembeli
+	function loginpembeli(){
+		$this->load->library('encrypt');
+		$user = $this->db->escape_str($this->input->post('userpmb'));
+		$pass = $this->db->escape_str($this->input->post('pwdpmb'));
+		$error=false;
+		//echo $user;exit;
+		//echo $this->encrypt->encode($pass);exit;
+		if($user && $pass){
+			$cek_user = $this->mfrontend->getdata('data_login_pembeli','row_array',$user);
+			//wzc1y
+			//print_r($cek_user);exit;
+			//print_r($this->encrypt->decode($cek_user['password']));exit;
+			//echo $pass." - ".$this->encrypt->decode($cek_user['password']);exit;
+			
+			if(count($cek_user) > 0){
+				if($pass == $this->encrypt->decode($cek_user['password'])){
+					$sess = array();
+					$sess['zona_pilihan'] = 1;
+					//$sess['provinsi'] = $data_zona['provinsi'];
+					//$sess['kode_provinsi'] = $data_zona['kode_prov'];
+					$this->session->set_userdata("zonaxtreme", $sess);
+					$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+					//header("Location: ".$this->host);
+					echo 1;
+				}else{
+					//$error=true;
+					//$this->session->set_flashdata('error', 'Password Tidak Benar');
+					echo "<font color='red'>Password Tidak Benar</font>";
+				}
+			}else{
+				$error=true;
+				//$this->session->set_flashdata('error', 'User Tidak Terdaftar');
+				echo "<font color='red'>User Tidak Terdaftar</font>";
+			}
+		}else{
+			$error=true;
+			//$this->session->set_flashdata('error', 'Isi User Dan Password');
+			echo "<font color='red'>Username & Password Tidak Boleh Kosong</font>";
+		}
+	}
+	function logoutpembeli(){
+		$log = $this->db->update('tbl_registrasi', array('last_login'=>date('Y-m-d H:i:s')), array('nama_user'=>$this->auth['nama_user']) );
+		if($log){
+			$this->session->unset_userdata('aldeaz_pembeli', 'limit');
+			$this->session->sess_destroy();
+			header("Location: ".$this->host);
+		}
+	}	
+	
+	function testerisasi(){
+		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+	}
+	
+||||||| .r128
+=======
 	function report_kementerian($type){
 		$code_secret = $this->input->get('code_secret');
 		if($code_secret != $this->client_secret){
@@ -1228,6 +1392,7 @@ class Frontend extends CI_Controller {
 		}
 	}	
 	
+>>>>>>> .r163
 	function test(){			
 		$curl = curl_init();
 		$url = 'http://www.mks-store.id/api/detail_paket?secretkey=7c222fb2927d828af22f592134e8932480637c0d--spesifik';
