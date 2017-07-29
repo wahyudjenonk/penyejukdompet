@@ -4,14 +4,14 @@
 .intro-courses-container .estut-btn, 
 .brand-logo-area.solid-bg-1,
 .quick-add-to-cart .single_add_to_cart_button, .call-to-action .estut-btn {
-    background: #fff none repeat scroll 0 0;
+    background: #88C843 none repeat scroll 0 0;
 }
 .total-amount span{
-	color: #69D2E7;
+	color: #009B4C;
 }
 .header-top, .action-cart a, .estut-dropdown > li:hover > a , .estut-btn.active:hover, .intro-courses-container .estut-btn:hover, 
 .quick-add-to-cart .single_add_to_cart_button:hover, .call-to-action .estut-btn:hover{
-    background: #404040 none repeat scroll 0 0;
+    background: #6BAF23 none repeat scroll 0 0;
 }
 .action-cart a, .estut-dropdown > li:hover > a , .estut-btn.active:hover, .intro-courses-container .estut-btn:hover, 
 .quick-add-to-cart .single_add_to_cart_button:hover, .call-to-action .estut-btn:hover {
@@ -21,7 +21,7 @@
 	border-bottom: 2px solid #69d2e7 ;
 }
 .primary-menu > ul > li:hover > a , .estut-dropdown li a:hover, .course-content .course-title a:hover {
-  color: #F3C020 !important;
+  color: black !important;
 }
 .estut-dropdown li a:hover {
   color: #fff !important;
@@ -37,7 +37,7 @@
 .cart-btn a, 
 .cart-single-product-title p , 
 .cart-single-product-del a{
-	color: #aaaaaa;
+	color: black;
 }
 .pro-title a:hover, .blog-title a:hover, .blog-post-dlc ul li a:hover , .filter-menu .nav-tabs > li > a:hover, .filter-menu .nav-tabs > li.active > a, .filter-menu .nav-tabs > li.active > a:focus, .filter-menu .nav-tabs > li.active > a:hover{
   color: #f98f6f;
